@@ -12,10 +12,18 @@ module.exports = {
   darkMode: "class",
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      fontFamily: {
+        instrument: ["Instrument Sans", "sans-serif"],
+      },
+      colors: {
+        "base-dark": "#633CFF",
+        base: "#BEADFF",
+        "base-light": "#EFEBFF",
+        black: "#333",
+        "grey- dark": "#737373",
+        grey: "#D9D9D9",
+        "grey-light": "#FAFAFA",
+        red: "#FF3939",
       },
     },
   },
@@ -25,7 +33,7 @@ module.exports = {
 function addVariablesForColors({ addBase, theme }: any) {
   let allColors = flattenColorPalette(theme("colors"));
   let newVars = Object.fromEntries(
-    Object.entries(allColors).map(([key, val]) => [`--${key}`, val]),
+    Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
   );
 
   addBase({
