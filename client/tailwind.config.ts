@@ -17,10 +17,10 @@ module.exports = {
       },
       colors: {
         "base-dark": "#633CFF",
-        base: "#BEADFF",
+        "base-normal": "#BEADFF",
         "base-light": "#EFEBFF",
         black: "#333",
-        "grey- dark": "#737373",
+        "grey-dark": "#737373",
         grey: "#D9D9D9",
         "grey-light": "#FAFAFA",
         red: "#FF3939",
