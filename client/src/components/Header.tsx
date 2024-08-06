@@ -18,10 +18,10 @@ export default function Header() {
         </p>
       </Link>
 
-      <div className="flex lg:gap-4 items-center text-grey-dark">
+      <div className="flex lg:gap-4 items-center text-gray-dark">
         <Link
           href="links"
-          className={`text-base font-semibold sm:py-3 py-4 px-7 sm:flex items-center gap-2 hover:text-base-dark ${
+          className={`hS sm:py-3 py-4 px-7 sm:flex items-center gap-2 hover:text-base-dark ${
             pathname === "/links" && "text-base-dark bg-base-light rounded-lg"
           }`}
         >
@@ -31,7 +31,7 @@ export default function Header() {
 
         <Link
           href="profile"
-          className={`text-base font-semibold sm:py-3 py-4 px-7 sm:flex items-center gap-2 hover:text-base-dark ${
+          className={`hS sm:py-3 py-4 px-7 sm:flex items-center gap-2 hover:text-base-dark ${
             pathname === "/profile" && "text-base-dark bg-base-light rounded-lg"
           }`}
         >
@@ -42,11 +42,11 @@ export default function Header() {
 
       <Link
         href="preview"
-        className={`text-base font-semibold py-[11px] sm:px-7 px-4 border-[1px] border-base-dark rounded-lg text-base-dark hover:bg-base-light ${
+        className={`button px-4 border-[1px] border-base-dark text-base-dark hover:bg-base-light ${
           pathname === "/preview" && "bg-base-light"
         }`}
       >
-        <p className="sm:inline-flex hidden">Preview</p>
+        <p className="sm:inline-flex hS hidden">Preview</p>
         <MdOutlineRemoveRedEye className="inline-flex sm:hidden size-4" />
       </Link>
     </nav>
