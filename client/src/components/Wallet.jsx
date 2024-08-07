@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { AppConfig, UserSession, showConnect } from "@stacks/connect";
 import { FaPowerOff } from "react-icons/fa6";
+import { FaInfo } from "react-icons/fa";
 
 export default function Wallet() {
   const [userData, setUserData] = useState(null);
@@ -61,15 +62,23 @@ export default function Wallet() {
 
   return (
     <div className="fixed bottom-4 sm:left-6 left-4">
-      <button
-        onClick={handleDetails}
-        className={`text-white w-fit button hS ${
-          userData ? "bg-base-dark" : "bg-base-normal hover:bg-base-dark"
-        }`}
-      >
-        {userData
-          ? `${userAddress.slice(0, 5)}...${userAddress.slice(-5)}`
-          : userAddress}
+      <button onClick={handleDetails} className={`w-fit hS`}>
+        <span
+          className={`hidden md:block button text-white  ${
+            userData ? "bg-base-dark" : "bg-base-normal hover:bg-base-dark"
+          }`}
+        >
+          {userData
+            ? `${userAddress.slice(0, 5)}...${userAddress.slice(-5)}`
+            : userAddress}
+        </span>
+        <span
+          className={`block md:hidden rounded-full p-2 text-base-dark ${
+            userData ? "bg-base-normal" : "bg-base-normal"
+          }`}
+        >
+          <FaInfo className="size-4" />
+        </span>
       </button>
       <div
         className={`${

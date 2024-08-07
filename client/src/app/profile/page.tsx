@@ -1,13 +1,13 @@
 import Header from "@/components/Header";
-import Preview from "@/components/Preview";
+import ProfileDetails from "@/components/profileDetails/ProfileDetails";
 import Wallet from "@/components/Wallet";
 
 export default function Home() {
   return (
     <div className="bg-gray-light sm:p-6 w-full max-w-[1440px] mx-auto relative">
       <Header />
-      <div className="sm:p-0 p-4 bg-white">
-        <Preview />
+      <div className="sm:p-0 sm:pt-6 p-4">
+        <ProfileDetails />
       </div>
       <Wallet />
     </div>

@@ -44,7 +44,7 @@ export function SelectLink() {
       <div
         onClick={() => setIsOpen(!isOpen)}
         className={`w-full px-4 py-3 bg-white border-[1px] border-gray rounded-lg cursor-pointer ${
-          isOpen && "active-selection"
+          isOpen && "shadow-active"
         }`}
       >
         {selectedOption && (
@@ -60,11 +60,10 @@ export function SelectLink() {
         )}
       </div>
       {isOpen && (
-        <div className="absolute top-full left-0 w-full mt-4 bg-white border border-gray select-shadow rounded-lg px-4 h-[248px] overflow-y-auto z-10">
+        <div className="absolute top-full left-0 w-full mt-4 bg-white border border-gray shadow-dropdown rounded-lg px-4 h-[248px] overflow-y-auto z-10">
           {options.map((option, index) => (
-            <div>
+            <div key={option.value}>
               <div
-                key={option.value}
                 className={`py-3 hover:bg-gray-100 cursor-pointer flex items-center
                 gap-3 {option.value === selectedOption ? 'text-base-dark' : "text-black"}`}
                 onClick={() => {

@@ -27,7 +27,7 @@ export default function LinkEditor() {
           <p className="bS text-black">Link</p>
           <div
             className={`flex items-center gap-3 px-4 py-3 border-[1px] border-gray rounded-lg bg-white ${
-              isActive && "active-selection"
+              isActive && "shadow-active"
             }`}
           >
             <label htmlFor="link" className="cursor pointer">
