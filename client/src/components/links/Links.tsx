@@ -5,7 +5,14 @@ import GetStarted from "./GetStarted";
 import LinkEditor from "./LinkEditor";
 
 export default function Links() {
-  const [addLink, setAddLink] = useState(false);
+  const [linkIsEmpty, setLinkEmpty] = useState(true);
+  const [linkIds, setLinkIds] = useState<string[]>([]);
+  const addNewLink = () => {
+    setLinkEmpty(false);
+    const newId = Date.now().toString();
+    setLinkIds((prevIds) => [...prevIds, newId]);
+  };
+
   return (
     <div className="lg:flex gap-6 w-full">
       <Preview className="w-[40vw] lg:flex hidden" />
@@ -18,14 +25,25 @@ export default function Links() {
               the world!
             </p>
             <button
-              onClick={() => setAddLink(true)}
+              onClick={() => addNewLink()}
               className="hS text-base-dark border-[1px] border-base-dark hover:bg-base-light py-[11px] px-7 rounded-lg w-full"
             >
               + Add new link
             </button>
           </div>
-          <div className="min-h-[calc(100vh-518px)]">
-            {addLink ? <LinkEditor /> : <GetStarted />}
+          <div className="min-h-[calc(100vh-518px)] flex flex-col gap-6">
+            {linkIsEmpty ? (
+              <GetStarted />
+            ) : (
+              linkIds.map((id, index) => (
+                <LinkEditor
+                  key={id}
+                  index={index}
+                  id={id}
+                  setLinkIds={setLinkIds}
+                />
+              ))
+            )}
           </div>
         </div>
         <div>
@@ -33,7 +51,7 @@ export default function Links() {
           <div className="sm:py-6 sm:px-10 p-4 flex justify-end">
             <button
               className={`hS button text-white bg-base-dark ${
-                !addLink && "opacity-25"
+                linkIsEmpty && "opacity-25"
               } sm:w-fit w-full`}
             >
               Save

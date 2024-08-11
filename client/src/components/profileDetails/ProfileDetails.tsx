@@ -25,7 +25,7 @@ export default function ProfileDetails() {
               <p className="bM text-gray-dark">Profile Picture</p>
               <div className=" flex md:flex-row flex-col gap-6 md:items-center items-start justify-between">
                 <div
-                  className="rounded-xl flex flex-col items-center justify-center cursor-pointer hS size-48 relative"
+                  className="rounded-xl flex flex-col items-center justify-center cursor-pointer hS size-48 relative overflow-hidden"
                   onClick={() => fileInputRef.current?.click()}
                   onMouseEnter={() => setIsHovered(true)}
                   onMouseLeave={() => setIsHovered(false)}
@@ -36,7 +36,7 @@ export default function ProfileDetails() {
                       alt="Profile Picture"
                       width={192}
                       height={192}
-                      className="rounded-xl object-contain"
+                      className="rounded-xl object-cover"
                     />
                   ) : (
                     <div className="rounded-xl flex flex-col items-center justify-center cursor-pointer text-base-dark  bg-base-light size-48">
