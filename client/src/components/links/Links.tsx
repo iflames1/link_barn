@@ -16,22 +16,24 @@ export default function Links() {
   return (
     <div className="lg:flex gap-6 w-full">
       <Preview className="w-[40vw] lg:flex hidden" />
-      <div className="bg-white flex flex-col justify-between rounded-xl lg:w-[60%] z-0">
+      <div className="bg-white flex flex-col justify-between rounded-xl lg:w-[60%] z-0 h-[calc(100vh-152px)] overflow-auto">
         <div className="sm:p-10 p-6">
-          <div className="pb-6">
+          <div className="pb-6  relative">
             <h2 className="hM text-black pb-2">Customize your links</h2>
             <p className="bM text-gray-dark pb-10">
               Add/edit/remove links below and then share all your profiles with
               the world!
             </p>
-            <button
-              onClick={() => addNewLink()}
-              className="hS text-base-dark border-[1px] border-base-dark hover:bg-base-light py-[11px] px-7 rounded-lg w-full"
-            >
-              + Add new link
-            </button>
+            <div className="sticky top-0 bg-white">
+              <button
+                onClick={() => addNewLink()}
+                className="hS text-base-dark border-[1px] border-base-dark hover:bg-base-light py-[11px] px-7 rounded-lg w-full"
+              >
+                + Add new link
+              </button>
+            </div>
           </div>
-          <div className="min-h-[calc(100vh-518px)] flex flex-col gap-6">
+          <div className=" flex flex-col gap-6">
             {linkIsEmpty ? (
               <GetStarted />
             ) : (

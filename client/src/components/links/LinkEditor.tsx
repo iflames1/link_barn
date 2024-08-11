@@ -44,7 +44,7 @@ export default function LinkEditor({ id, setLinkIds, index }: LinkEditorProps) {
               id="link"
               type="text"
               placeholder="e.g. https://www.github.com/iflames1"
-              className="placeholder:text-gray-dark text-black w-full border-none outline-none linkInput"
+              className="placeholder:text-gray-dark text-black w-full border-none outline-none"
             />
           </div>
         </div>
