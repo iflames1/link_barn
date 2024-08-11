@@ -1,0 +1,24 @@
+[
+  {
+    "1": {
+      "Name": "Github",
+      "Link": "https://github.com/iflames1",
+      "icon": "icon"
+    },
+    "3": {
+      "Name": "Twitter",
+      "Link": "https://twitter.com/username",
+      "icon": "icon"
+    },
+    "2": {
+      "Name": "LinkedIn",
+      "Link": "https://www.linkedin.com/in/username",
+      "icon": "icon"
+    },
+    "4": {
+      "Name": "Portfolio",
+      "Link": "https://www.portfolio-website.com",
+      "icon": "icon"
+    }
+  }
+]

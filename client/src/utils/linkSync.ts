@@ -1,15 +1,45 @@
-// src/utils/linkSync.ts
-
+"use client";
 import { useState, useCallback } from "react";
+import axios from "axios";
 
 interface Link {
   id: string;
+  name: string;
   url: string;
-  title: string;
+  icon: string;
+}
+
+interface LinkData {
+  [key: string]: {
+    Name: string;
+    Link: string;
+    icon: string;
+  };
 }
 
 export const useLinkSync = (initialLinks: Link[] = []) => {
   const [links, setLinks] = useState<Link[]>(initialLinks);
+
+  async function getLinks(url: string = "/data.json") {
+    try {
+      const response = await axios.get<LinkData[]>(url);
+
+      // Assuming the data is an array with a single object
+      const linkObject = response.data[0];
+      const extractedLinks: Link[] = Object.entries(linkObject).map(
+        ([key, { Name, Link, icon }]) => ({
+          id: key,
+          name: Name,
+          url: Link,
+          icon,
+        })
+      );
+
+      setLinks(extractedLinks);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const addLink = useCallback((newLink: Omit<Link, "id">) => {
     const linkWithId = { ...newLink, id: Date.now().toString() };
@@ -30,6 +60,7 @@ export const useLinkSync = (initialLinks: Link[] = []) => {
 
   return {
     links,
+    getLinks,
     addLink,
     updateLink,
     removeLink,

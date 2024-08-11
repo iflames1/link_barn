@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import Preview from "../Preview";
+import Preview from "../preview/Preview";
 import GetStarted from "./GetStarted";
 import LinkEditor from "./LinkEditor";
 

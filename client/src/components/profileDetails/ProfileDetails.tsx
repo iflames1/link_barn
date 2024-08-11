@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useRef } from "react";
 import Image from "next/image";
-import Preview from "../Preview";
+import Preview from "../preview/Preview";
 import { IoImageOutline } from "react-icons/io5";
 
 export default function ProfileDetails() {
