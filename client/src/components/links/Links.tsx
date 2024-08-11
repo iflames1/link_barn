@@ -1,14 +1,23 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Preview from "../preview/Preview";
 import GetStarted from "./GetStarted";
 import LinkEditor from "./LinkEditor";
+import { useLinkSync } from "@/utils/linkSync";
 
 export default function Links() {
   const [linkIsEmpty, setLinkEmpty] = useState(true);
   const [linkIds, setLinkIds] = useState<string[]>([]);
+  const { links, getLinks } = useLinkSync();
+
+  useEffect(() => {
+    getLinks();
+    if (links.length == 0) {
+      setLinkEmpty(false);
+    }
+  }, []);
+
   const addNewLink = () => {
-    setLinkEmpty(false);
     const newId = Date.now().toString();
     setLinkIds((prevIds) => [...prevIds, newId]);
   };
