@@ -48,6 +48,8 @@ export const useWallet = () => {
     }
   }, []);
 
+  console.log(userData);
+
   return {
     userData,
     userAddress,
