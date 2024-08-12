@@ -4,7 +4,7 @@ from fastapi import HTTPException, status as http_status
 from sqlalchemy import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from app.models.links import LinkCreate, Link
+from app.links.models import LinkCreate, Link
 
 
 class LinksCRUD:
@@ -22,7 +22,7 @@ class LinksCRUD:
 
     async def get(self, link_id: str | UUID) -> Link:
         statement = select(Link).where(Link.uuid == link_id)
-        results = await self.session.exec(statement=statement)
+        results = await self.session.execute(statement=statement)
         link = results.scalar_one_or_none()
 
         if link is None:
