@@ -9,7 +9,7 @@ export default function Home() {
       <div className="rounded-xl sm:p-6 p-4">
         <Preview />
       </div>
-      <Wallet />
+      {/* <Wallet /> */}
     </div>
   );
 }
