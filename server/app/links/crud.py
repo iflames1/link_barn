@@ -29,3 +29,10 @@ class LinksCRUD:
             raise HTTPException(status_code=http_status.HTTP_404_NOT_FOUND, detail="Link not found")
 
         return link
+
+    async def get_all(self, user_id: str | UUID) -> list[Link]:
+        statement = select(Link).where(Link.user_id == user_id)
+        results = await self.session.execute(statement=statement)
+        links = results.scalars().all()
+
+        return links

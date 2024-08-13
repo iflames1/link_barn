@@ -12,6 +12,9 @@ from contextlib import asynccontextmanager
 
 
 async def create_tables():
+    """
+    Creates tables if not exists
+    """
     async with async_engine.begin() as conn:
         await conn.run_sync(SQLModel.metadata.create_all)
 
@@ -27,6 +30,9 @@ app = FastAPI(title=settings.project_name, openapi_url=f"{settings.api_v1_prefix
 app.include_router(api_router, prefix=settings.api_v1_prefix)
 
 
+# BE USER
+# 4588c991-f556-4c04-9a0b-c857e6d11640
+
 @app.get("/", tags=["status"])
 async def health_check():
     return {
@@ -34,11 +40,6 @@ async def health_check():
         "version": settings.version,
         "description": settings.description
     }
-
-
-async def create_tables():
-    async with async_engine.begin() as conn:
-        await conn.run_sync(SQLModel.metadata.create_all)
 
 
 if __name__ == '__main__':
