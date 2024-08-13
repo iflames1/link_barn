@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useRef } from "react";
 import Image from "next/image";
-import Preview from "../Preview";
+import Preview from "../preview/Preview";
 import { IoImageOutline } from "react-icons/io5";
 
 export default function ProfileDetails() {
@@ -12,7 +12,7 @@ export default function ProfileDetails() {
   return (
     <div className="lg:flex gap-6 w-full">
       <Preview className="w-[40vw] lg:flex hidden" />
-      <div className="bg-white flex flex-col justify-between rounded-xl lg:w-[60%]">
+      <div className="bg-white flex flex-col justify-between rounded-xl lg:w-[60%] h-[calc(100vh-152px)] overflow-auto">
         <div className="sm:p-10 p-6">
           <div className="pb-10">
             <h2 className="pb-2 hM text-black">Profile Details</h2>
@@ -25,7 +25,7 @@ export default function ProfileDetails() {
               <p className="bM text-gray-dark">Profile Picture</p>
               <div className=" flex md:flex-row flex-col gap-6 md:items-center items-start justify-between">
                 <div
-                  className="rounded-xl flex flex-col items-center justify-center cursor-pointer hS size-48 relative"
+                  className="rounded-xl flex flex-col items-center justify-center cursor-pointer hS size-48 relative overflow-hidden"
                   onClick={() => fileInputRef.current?.click()}
                   onMouseEnter={() => setIsHovered(true)}
                   onMouseLeave={() => setIsHovered(false)}
@@ -36,7 +36,7 @@ export default function ProfileDetails() {
                       alt="Profile Picture"
                       width={192}
                       height={192}
-                      className="rounded-xl object-contain"
+                      className="rounded-xl object-cover"
                     />
                   ) : (
                     <div className="rounded-xl flex flex-col items-center justify-center cursor-pointer text-base-dark  bg-base-light size-48">
