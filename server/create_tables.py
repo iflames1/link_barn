@@ -3,6 +3,7 @@ import asyncio
 from sqlmodel import SQLModel
 
 from app.core.database import async_engine
+from app.links.models import Link
 
 
 async def create_tables():
