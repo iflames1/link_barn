@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import Preview from "../preview/Preview";
-import GetStarted from "./GetStarted";
-import LinkEditor from "./LinkEditor";
 import { useLinkSync } from "@/utils/linkSync";
+import GetStarted from "./get-started";
+import LinkEditor from "./link-editor";
 
 export default function Links() {
   const [linkIsEmpty, setLinkEmpty] = useState(true);
