@@ -1,5 +1,4 @@
 from fastapi import APIRouter, status as http_status, Depends
-
 from app.links.crud import LinksCRUD
 from app.links.deps import get_links_crud
 from app.links.models import LinkRead, LinkCreate

@@ -5,10 +5,25 @@ from sqlmodel import SQLModel
 
 from app import settings
 from app.core.database import async_engine
+from app.links.models import Link
+from app.users.models import User
 from app.router.api_v1.endpoints import api_router
+from contextlib import asynccontextmanager
+
+
+async def create_tables():
+    async with async_engine.begin() as conn:
+        await conn.run_sync(SQLModel.metadata.create_all)
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await create_tables()
+    yield
+
 
 app = FastAPI(title=settings.project_name, openapi_url=f"{settings.api_v1_prefix}/openapi.json", debug=settings.debug,
-              version=settings.version)
+              version=settings.version, lifespan=lifespan)
 app.include_router(api_router, prefix=settings.api_v1_prefix)
 
 
