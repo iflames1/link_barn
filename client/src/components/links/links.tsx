@@ -4,6 +4,7 @@ import Preview from "../preview/Preview";
 import { useLinkSync } from "@/utils/linkSync";
 import GetStarted from "./get-started";
 import LinkEditor from "./link-editor";
+import { Button } from "../ui/button";
 
 export default function Links() {
   const [linkIsEmpty, setLinkEmpty] = useState(true);
@@ -34,12 +35,13 @@ export default function Links() {
               the world!
             </p>
             <div className="sticky top-0 bg-white">
-              <button
+              <Button
                 onClick={() => addNewLink()}
+                variant={"outline"}
                 className="hS text-base-dark border-[1px] border-base-dark hover:bg-base-light py-[11px] px-7 rounded-lg w-full"
               >
                 + Add new link
-              </button>
+              </Button>
             </div>
           </div>
           <div className=" flex flex-col gap-6">
@@ -60,13 +62,15 @@ export default function Links() {
         <div>
           <hr className="h-[1px] bg-gray border-none" />
           <div className="sm:py-6 sm:px-10 p-4 flex justify-end">
-            <button
+            {/*Just import the component from shadcn it handles all those annoying accessibility stuff */}
+            {/*Its not the number 1 for show*/}
+            <Button
               className={`hS button text-white bg-base-dark ${
                 linkIsEmpty && "opacity-25"
               } sm:w-fit w-full`}
             >
               Save
-            </button>
+            </Button>
           </div>
         </div>
       </form>

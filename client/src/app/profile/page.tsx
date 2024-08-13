@@ -9,7 +9,7 @@ export default function Home() {
       <div className="sm:p-0 sm:pt-6 p-4">
         <ProfileDetails />
       </div>
-      <Wallet />
+      {/* <Wallet /> */}
     </div>
   );
 }

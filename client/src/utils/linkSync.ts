@@ -1,21 +1,7 @@
 "use client";
 import { useState, useCallback } from "react";
 import axios from "axios";
-
-interface Link {
-  id: string;
-  name: string;
-  url: string;
-  icon: string;
-}
-
-interface LinkData {
-  [key: string]: {
-    Name: string;
-    Link: string;
-    icon: string;
-  };
-}
+import { Link, LinkData } from "@/types/links";
 
 export const useLinkSync = (initialLinks: Link[] = []) => {
   const [links, setLinks] = useState<Link[]>(initialLinks);
@@ -32,7 +18,7 @@ export const useLinkSync = (initialLinks: Link[] = []) => {
           name: Name,
           url: Link,
           icon,
-        })
+        }),
       );
 
       setLinks(extractedLinks);
@@ -49,8 +35,8 @@ export const useLinkSync = (initialLinks: Link[] = []) => {
   const updateLink = useCallback((id: string, updatedLink: Partial<Link>) => {
     setLinks((prevLinks) =>
       prevLinks.map((link) =>
-        link.id === id ? { ...link, ...updatedLink } : link
-      )
+        link.id === id ? { ...link, ...updatedLink } : link,
+      ),
     );
   }, []);
 
