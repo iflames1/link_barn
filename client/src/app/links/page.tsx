@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
-import Links from "@/components/links/Links";
 import Wallet from "@/components/Wallet";
+import Links from "@/components/links/links";
 
 export default function Home() {
   return (

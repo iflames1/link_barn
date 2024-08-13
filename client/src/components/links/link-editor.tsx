@@ -1,6 +1,6 @@
 import { HiMenuAlt4 } from "react-icons/hi";
-import { SelectLink } from "./SelectLink";
 import { FiLink } from "react-icons/fi";
+import { SelectLink } from "./select-link";
 
 interface LinkEditorProps {
   id: string;
