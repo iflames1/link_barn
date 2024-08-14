@@ -1,3 +1,6 @@
+"""
+User Model
+"""
 from sqlmodel import SQLModel, Field, Relationship
 from sqlalchemy import event, Column, Enum
 from typing import Optional, List, TYPE_CHECKING
