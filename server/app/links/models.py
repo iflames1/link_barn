@@ -28,6 +28,6 @@ class LinkCreate(LinkBase):
 
 
 class LinkUpdate(SQLModel):
-    platform: str | None = Field(nullable=False)
-    index: int | None = Field(nullable=False)
-    url: str | None = Field(nullable=False)
+    platform: Optional[str] = Field(default=None)
+    index: Optional[int] = Field(default=None)
+    url: Optional[str] = Field(default=None)

@@ -12,7 +12,8 @@ if TYPE_CHECKING:
 else:
     LinkRead = object
 
-auth_type = Enum('crypto', 'supabase', name='auth_type_enum', create_type=False)
+auth_type = Enum('crypto', 'supabase',
+                 name='auth_type_enum', create_type=False)
 
 
 @event.listens_for(SQLModel.metadata, "before_create")
@@ -45,7 +46,8 @@ class UserBase(SQLModel):
 
 class User(TimestampModel, UserBase, UUIDModel, table=True):
     __tablename__ = "users"
-    links: List["Link"] = Relationship(back_populates="user", sa_relationship_kwargs={"lazy": "selectin"})
+    links: List["Link"] = Relationship(
+        back_populates="user", sa_relationship_kwargs={"lazy": "selectin"})
 
 
 class UserRead(UserBase, UUIDModel):
@@ -57,15 +59,15 @@ class UserCreate(UserBase):
 
 
 class UserUpdate(SQLModel):
-    first_name: str | None = Field(nullable=True)
-    last_name: str | None = Field(nullable=True)
-    profile_picture: str | None = Field(nullable=True)
-    email: str | None = Field(nullable=True)
-    decentralized_id: str | None = Field(nullable=True)
-    stx_address_testnet: str | None = Field(nullable=True)
-    stx_address_mainnet: str | None = Field(nullable=True)
-    btc_address_mainnet: str | None = Field(nullable=True)
-    btc_address_testnet: str | None = Field(nullable=True)
-    wallet_provider: str | None = Field(nullable=True)
-    public_key: str | None = Field(nullable=True)
-    gaia_hub_url: str | None = Field(nullable=True)
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    profile_picture: Optional[str] = None
+    email: Optional[str] = None
+    decentralized_id: Optional[str] = None
+    stx_address_testnet: Optional[str] = None
+    stx_address_mainnet: Optional[str] = None
+    btc_address_mainnet: Optional[str] = None
+    btc_address_testnet: Optional[str] = None
+    wallet_provider: Optional[str] = None
+    public_key: Optional[str] = None
+    gaia_hub_url: Optional[str] = None

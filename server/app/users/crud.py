@@ -23,19 +23,22 @@ class UsersCRUD:
         user = results.scalars().first()
 
         if user is None:
-            raise HTTPException(status_code=http_status.HTTP_404_NOT_FOUND, detail="User not found")
+            raise HTTPException(
+                status_code=http_status.HTTP_404_NOT_FOUND, detail="User not found")
 
         return user
 
-    async def put(self, user_id: str | UUID, data: UserUpdate) -> User:
+    async def patch(self, user_id: str | UUID, data: UserUpdate) -> User:
         statement = select(User).where(User.uuid == user_id)
         results = await self.session.execute(statement)
         user = results.scalars().first()
 
         if user is None:
-            raise HTTPException(status_code=http_status.HTTP_404_NOT_FOUND, detail="User not found")
+            raise HTTPException(
+                status_code=http_status.HTTP_404_NOT_FOUND, detail="User not found")
 
-        for key, attr in data.dict().items():
+        update_data = data.dict(exclude_unset=True)
+        for key, attr in update_data.items():
             setattr(user, key, attr)
 
         await self.session.commit()
