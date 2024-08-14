@@ -34,6 +34,7 @@ class UserBase(SQLModel):
     stx_address_mainnet: str | None = Field(nullable=True)
     btc_address_mainnet: str | None = Field(nullable=True)
     btc_address_testnet: str | None = Field(nullable=True)
+    test: Optional[str] = Field(nullable=True)
     wallet_provider: str | None = Field(nullable=True)
     public_key: str | None = Field(nullable=True)
     gaia_hub_url: str | None = Field(nullable=True)
@@ -53,15 +54,15 @@ class UserCreate(UserBase):
 
 
 class UserUpdate(SQLModel):
-    first_name: Optional[str] = None
-    last_name: Optional[str] = None
-    profile_picture: Optional[str] = None
-    email: Optional[str] = None
-    decentralized_id: Optional[str] = None
-    stx_address_testnet: Optional[str] = None
-    stx_address_mainnet: Optional[str] = None
-    btc_address_mainnet: Optional[str] = None
-    btc_address_testnet: Optional[str] = None
-    wallet_provider: Optional[str] = None
-    public_key: Optional[str] = None
-    gaia_hub_url: Optional[str] = None
+    first_name: str | None = Field(nullable=True)
+    last_name: str | None = Field(nullable=True)
+    profile_picture: str | None = Field(nullable=True)
+    email: str | None = Field(nullable=True)
+    decentralized_id: str | None = Field(nullable=True)
+    stx_address_testnet: str | None = Field(nullable=True)
+    stx_address_mainnet: str | None = Field(nullable=True)
+    btc_address_mainnet: str | None = Field(nullable=True)
+    btc_address_testnet: str | None = Field(nullable=True)
+    wallet_provider: str | None = Field(nullable=True)
+    public_key: str | None = Field(nullable=True)
+    gaia_hub_url: str | None = Field(nullable=True)

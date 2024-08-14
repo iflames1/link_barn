@@ -8,9 +8,16 @@ from alembic import context
 from dotenv import load_dotenv
 from sqlalchemy import engine_from_config, pool
 from sqlalchemy.ext.asyncio import AsyncEngine
+
+import sys
+from pathlib import Path
+
+from app.users.models import *
+from app.links.models import *
+from app.core.models import *
 from sqlmodel import SQLModel
-from app.links.models import Link
-from app.users.models import User
+
+sys.path.append(str(Path(__file__).parent.parent))
 
 config = context.config
 

@@ -33,7 +33,7 @@ app.include_router(api_router, prefix=settings.api_v1_prefix)
 
 
 # BE USER
-# 4588c991-f556-4c04-9a0b-c857e6d11640
+# 18b6597c-8ac9-4425-a162-06c19b11bf45
 
 @app.get("/", tags=["status"])
 async def health_check():
