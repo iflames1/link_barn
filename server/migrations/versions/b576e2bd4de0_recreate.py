@@ -1,8 +1,8 @@
-"""links updated
+"""recreate
 
-Revision ID: e8e3e29a7d98
-Revises: 603931ba44ec
-Create Date: 2024-08-12 01:28:29.754375
+Revision ID: b576e2bd4de0
+Revises: 
+Create Date: 2024-08-14 02:36:51.167062
 
 """
 from typing import Sequence, Union
@@ -13,8 +13,8 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'e8e3e29a7d98'
-down_revision: Union[str, None] = '603931ba44ec'
+revision: str = 'b576e2bd4de0'
+down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

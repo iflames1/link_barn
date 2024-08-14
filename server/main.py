@@ -5,13 +5,18 @@ from sqlmodel import SQLModel
 
 from app import settings
 from app.core.database import async_engine
-from app.links.models import Link
-from app.users.models import User
 from app.router.api_v1.endpoints import api_router
 from contextlib import asynccontextmanager
+from app.links.models import Link
+from app.users.models import User
 
 
 async def create_tables():
+    """
+    Creates tables if not exists
+    """
+    from app.links.models import Link
+    from app.users.models import User
     async with async_engine.begin() as conn:
         await conn.run_sync(SQLModel.metadata.create_all)
 
@@ -27,6 +32,9 @@ app = FastAPI(title=settings.project_name, openapi_url=f"{settings.api_v1_prefix
 app.include_router(api_router, prefix=settings.api_v1_prefix)
 
 
+# BE USER
+# 18b6597c-8ac9-4425-a162-06c19b11bf45
+
 @app.get("/", tags=["status"])
 async def health_check():
     return {
@@ -34,11 +42,6 @@ async def health_check():
         "version": settings.version,
         "description": settings.description
     }
-
-
-async def create_tables():
-    async with async_engine.begin() as conn:
-        await conn.run_sync(SQLModel.metadata.create_all)
 
 
 if __name__ == '__main__':

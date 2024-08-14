@@ -1,19 +1,20 @@
-"""links
+"""test
 
-Revision ID: 03e293722ffd
-Revises: 
-Create Date: 2024-08-12 01:22:05.139700
+Revision ID: d434328bb9e0
+Revises: b576e2bd4de0
+Create Date: 2024-08-14 02:46:09.726059
 
 """
 from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
+import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = '03e293722ffd'
-down_revision: Union[str, None] = None
+revision: str = 'd434328bb9e0'
+down_revision: Union[str, None] = 'b576e2bd4de0'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

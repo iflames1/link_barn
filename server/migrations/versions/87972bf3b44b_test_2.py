@@ -1,8 +1,8 @@
-"""Create links table in new db imported
+"""test 2
 
-Revision ID: 87c204495831
-Revises: 3e7c44ea2488
-Create Date: 2024-08-13 01:33:13.434730
+Revision ID: 87972bf3b44b
+Revises: d434328bb9e0
+Create Date: 2024-08-14 02:52:11.937369
 
 """
 from typing import Sequence, Union
@@ -13,8 +13,8 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = '87c204495831'
-down_revision: Union[str, None] = '3e7c44ea2488'
+revision: str = '87972bf3b44b'
+down_revision: Union[str, None] = 'd434328bb9e0'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
