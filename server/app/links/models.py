@@ -1,7 +1,10 @@
-from sqlmodel import SQLModel, Field
-from typing import Optional
+from sqlmodel import SQLModel, Field, Relationship
+from typing import Optional, TYPE_CHECKING
 from uuid import UUID
 from app.core.models import TimestampModel, UUIDModel
+
+if TYPE_CHECKING:
+    from app.users.models import User
 
 
 class LinkBase(SQLModel):
@@ -11,8 +14,9 @@ class LinkBase(SQLModel):
     user_id: Optional[UUID] = Field(default=None, foreign_key="users.uuid")
 
 
-class Link(TimestampModel, LinkBase, UUIDModel, SQLModel, table=True):
+class Link(TimestampModel, LinkBase, UUIDModel, table=True):
     __tablename__ = 'links'
+    user: "User" = Relationship(back_populates="links")
 
 
 class LinkRead(LinkBase, UUIDModel):

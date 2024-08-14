@@ -1,6 +1,6 @@
 from fastapi import HTTPException, status as http_status
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.users.models import User, UserCreate
+from app.users.models import User, UserCreate, UserUpdate
 from sqlalchemy import select
 from uuid import UUID
 
@@ -24,5 +24,21 @@ class UsersCRUD:
 
         if user is None:
             raise HTTPException(status_code=http_status.HTTP_404_NOT_FOUND, detail="User not found")
+
+        return user
+
+    async def put(self, user_id: str | UUID, data: UserUpdate) -> User:
+        statement = select(User).where(User.uuid == user_id)
+        results = await self.session.execute(statement)
+        user = results.scalars().first()
+
+        if user is None:
+            raise HTTPException(status_code=http_status.HTTP_404_NOT_FOUND, detail="User not found")
+
+        for key, attr in data.dict().items():
+            setattr(user, key, attr)
+
+        await self.session.commit()
+        await self.session.refresh(user)
 
         return user

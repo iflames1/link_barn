@@ -5,16 +5,18 @@ from sqlmodel import SQLModel
 
 from app import settings
 from app.core.database import async_engine
-from app.links.models import Link
-from app.users.models import User
 from app.router.api_v1.endpoints import api_router
 from contextlib import asynccontextmanager
+from app.links.models import Link
+from app.users.models import User
 
 
 async def create_tables():
     """
     Creates tables if not exists
     """
+    from app.links.models import Link
+    from app.users.models import User
     async with async_engine.begin() as conn:
         await conn.run_sync(SQLModel.metadata.create_all)
 

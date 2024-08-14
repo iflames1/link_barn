@@ -1,0 +1,326 @@
+---- The name ./__init__.py ----
+from os import getenv
+
+from dotenv import load_dotenv
+
+from app.core.config import Settings
+
+load_dotenv(getenv("ENV_FILE"))
+settings = Settings()
+---- The name ./links/__init__.py ----
+---- The name ./links/crud.py ----
+from uuid import UUID
+
+from fastapi import HTTPException, status as http_status
+from sqlalchemy import select
+from sqlmodel.ext.asyncio.session import AsyncSession
+
+from app.links.models import LinkCreate, Link
+
+
+class LinksCRUD:
+    def __init__(self, session: AsyncSession):
+        self.session = session
+
+    async def create(self, data: LinkCreate) -> Link:
+        values = data.model_dump()
+        link = Link(**values)
+        self.session.add(link)
+        await self.session.commit()
+        await self.session.refresh(link)
+
+        return link
+
+    async def get(self, link_id: str | UUID) -> Link:
+        statement = select(Link).where(Link.uuid == link_id)
+        results = await self.session.execute(statement=statement)
+        link = results.scalar_one_or_none()
+
+        if link is None:
+            raise HTTPException(status_code=http_status.HTTP_404_NOT_FOUND, detail="Link not found")
+
+        return link
+
+    async def get_all(self, user_id: str | UUID) -> list[Link]:
+        statement = select(Link).where(Link.user_id == user_id)
+        results = await self.session.execute(statement=statement)
+        links = results.scalars().all()
+
+        return links
+---- The name ./links/api.py ----
+from fastapi import APIRouter, status as http_status, Depends
+from app.links.crud import LinksCRUD
+from app.links.deps import get_links_crud
+from app.links.models import LinkRead, LinkCreate
+from typing import List
+
+router = APIRouter()
+
+
+@router.post("", response_model=LinkRead, status_code=http_status.HTTP_201_CREATED)
+async def create_link(data: LinkCreate, links: LinksCRUD = Depends(get_links_crud)):
+    link = await links.create(data=data)
+
+    return link
+
+
+@router.get("", response_model=LinkRead, status_code=http_status.HTTP_200_OK)
+async def get_link_by_uuid(link_id: str, links: LinksCRUD = Depends(get_links_crud)):
+    link = await links.get(link_id=link_id)
+    return link
+
+
+@router.get("/user/{user_id}", response_model=List[LinkRead], status_code=http_status.HTTP_200_OK)
+async def get_user_links(user_id: str, links: LinksCRUD = Depends(get_links_crud)):
+    links = await links.get_all(user_id=user_id)
+
+    return links
+---- The name ./links/deps.py ----
+from fastapi import Depends
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.core.database import get_async_session
+from app.links.crud import LinksCRUD
+
+
+async def get_links_crud(
+        session: AsyncSession = Depends(get_async_session),
+) -> LinksCRUD:
+    return LinksCRUD(session=session)
+---- The name ./links/models.py ----
+from sqlmodel import SQLModel, Field, Relationship
+from typing import Optional
+from uuid import UUID
+from app.core.models import TimestampModel, UUIDModel
+from app.users import models as user_models
+
+
+class LinkBase(SQLModel):
+    platform: str = Field(nullable=False)
+    index: int = Field(nullable=False)
+    url: str = Field(nullable=False)
+    user_id: Optional[UUID] = Field(default=None, foreign_key="users.uuid")
+
+    user: Optional["user_models.User"] = Relationship(back_populates="links")
+
+
+class Link(TimestampModel, LinkBase, UUIDModel, SQLModel, table=True):
+    __tablename__ = 'links'
+
+
+class LinkRead(LinkBase, UUIDModel):
+    ...
+
+
+class LinkCreate(LinkBase):
+    ...
+---- The name ./core/__init__.py ----
+---- The name ./core/database.py ----
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.orm import sessionmaker
+
+from app import settings
+
+async_engine = create_async_engine(
+    settings.db_async_connection_str,
+    echo=True,
+    future=True,
+)
+
+
+async def get_async_session() -> AsyncSession:
+    async_session = sessionmaker(bind=async_engine, class_=AsyncSession, expire_on_commit=False)
+    async with async_session() as session:
+        try:
+            yield session
+        finally:
+            session.close()
+---- The name ./core/config.py ----
+from pydantic_settings import BaseSettings
+
+
+class Settings(BaseSettings):
+    # Base
+    api_v1_prefix: str
+    debug: bool
+    project_name: str
+    version: str
+    description: str
+
+    # Database
+    db_async_connection_str: str
+---- The name ./core/models.py ----
+import uuid as uuid_pkg
+from datetime import datetime
+
+from pydantic import BaseModel
+from sqlalchemy import text
+from sqlmodel import Field, SQLModel
+
+
+class HealthCheck(BaseModel):
+    name: str
+    version: str
+    description: str
+
+
+class UUIDModel(SQLModel):
+    uuid: uuid_pkg.UUID = Field(
+        default_factory=uuid_pkg.uuid4,
+        primary_key=True,
+        index=True,
+        nullable=False,
+        sa_column_kwargs={
+            "server_default": text("gen_random_uuid()"),
+            "unique": True
+        }
+    )
+
+
+class TimestampModel(SQLModel):
+    created_at: datetime = Field(
+        default_factory=datetime.utcnow,
+        nullable=False,
+        sa_column_kwargs={
+            "server_default": text("current_timestamp(0)")
+        }
+    )
+
+    updated_at: datetime = Field(
+        default_factory=datetime.utcnow,
+        nullable=False,
+        sa_column_kwargs={
+            "server_default": text("current_timestamp(0)"),
+            "onupdate": text("current_timestamp(0)")
+        }
+    )
+---- The name ./users/__init__.py ----
+---- The name ./users/crud.py ----
+from fastapi import HTTPException, status as http_status
+from sqlalchemy.ext.asyncio import AsyncSession
+from app.users.models import User, UserCreate
+from sqlalchemy import select
+from uuid import UUID
+
+
+class UsersCRUD:
+    def __init__(self, session: AsyncSession):
+        self.session = session
+
+    async def create(self, data: UserCreate) -> User:
+        values = data.dict()
+        user = User(**values)
+        self.session.add(user)
+        await self.session.commit()
+        await self.session.refresh(user)
+        return user
+
+    async def get(self, user_id: str | UUID) -> User:
+        statement = select(User).where(User.uuid == user_id)
+        results = await self.session.execute(statement)
+        user = results.scalars().first()
+
+        if user is None:
+            raise HTTPException(status_code=http_status.HTTP_404_NOT_FOUND, detail="User not found")
+
+        return user
+---- The name ./users/api.py ----
+from fastapi import APIRouter, status as http_status, Depends
+from starlette import status
+
+from app.users.crud import UsersCRUD
+from app.users.deps import get_users_crud
+from app.users.models import UserRead, UserCreate
+
+router = APIRouter()
+
+
+@router.post("/", response_model=UserRead, status_code=status.HTTP_201_CREATED)
+async def create_user(data: UserCreate, users: UsersCRUD = Depends(get_users_crud)):
+    user = await users.create(data)
+
+    return user
+
+
+@router.get("/", response_model=UserRead, status_code=status.HTTP_200_OK)
+async def get_user_by_uuid(user_id: str, users: UsersCRUD = Depends(get_users_crud)):
+    user = await users.get(user_id)
+    return user
+---- The name ./users/deps.py ----
+from fastapi import Depends
+from sqlalchemy.ext.asyncio import AsyncSession
+from app.core.database import get_async_session
+from app.users.crud import UsersCRUD
+
+
+async def get_users_crud(session: AsyncSession = Depends(get_async_session)) -> UsersCRUD:
+    return UsersCRUD(session=session)
+---- The name ./users/models.py ----
+from sqlmodel import SQLModel, Field, Relationship
+from sqlalchemy import event, Column, Enum
+from typing import Optional, List
+from app.core.models import TimestampModel, UUIDModel
+from app.links import models as links_models
+
+auth_type = Enum('crypto', 'supabase', name='auth_type_enum', create_type=False)
+
+
+@event.listens_for(SQLModel.metadata, "before_create")
+def _create_enums(metadata, conn, **kw):
+    auth_type.create(conn, checkfirst=True)
+
+
+#
+
+class UserBase(SQLModel):
+    auth_type: str = Field(
+        sa_column=Column(
+            "auth_type",
+            auth_type,
+        )
+    )
+    supabase_user_id: str = Field(nullable=True)
+    email: str = Field(nullable=True)
+    decentralized_id: str | None = Field(nullable=True)
+    stx_address_testnet: str | None = Field(nullable=True)
+    stx_address_mainnet: str | None = Field(nullable=True)
+    btc_address_mainnet: str | None = Field(nullable=True)
+    btc_address_testnet: str | None = Field(nullable=True)
+    wallet_provider: str | None = Field(nullable=True)
+    public_key: str | None = Field(nullable=True)
+    gaia_hub_url: str | None = Field(nullable=True)
+    links: List["links_models.Link"] = Relationship(back_populates="user", sa_relationship_kwargs={"lazy": "selectin"})
+
+
+class User(TimestampModel, UserBase, UUIDModel, SQLModel, table=True):
+    __tablename__ = "users"
+
+
+class UserRead(UserBase, UUIDModel):
+    ...
+
+
+class UserCreate(UserBase):
+    ...
+---- The name ./router/__init__.py ----
+---- The name ./router/api_v1/__init__.py ----
+---- The name ./router/api_v1/endpoints.py ----
+from fastapi import APIRouter
+
+from app.links.api import router as links_router
+from app.users.api import router as users_router
+
+api_router = APIRouter()
+include_api = api_router.include_router
+
+routers = [
+    (links_router, "links", "links"),
+    (users_router, "users", "users")
+]
+
+for router_item in routers:
+    router, prefix, tag = router_item
+    if tag:
+        include_api(router, prefix=f"/{prefix}", tags=[tag])
+    else:
+        include_api(router, prefix=f"/{prefix}")

@@ -9,6 +9,8 @@ from dotenv import load_dotenv
 from sqlalchemy import engine_from_config, pool
 from sqlalchemy.ext.asyncio import AsyncEngine
 from sqlmodel import SQLModel
+from app.links.models import Link
+from app.users.models import User
 
 config = context.config
 
