@@ -37,6 +37,7 @@ export default function Links() {
             <div className="sticky top-0 bg-white">
               <Button
                 onClick={() => addNewLink()}
+                type="button"
                 variant={"outline"}
                 className="hS text-base-dark border-[1px] border-base-dark hover:bg-base-light py-[11px] px-7 rounded-lg w-full"
               >

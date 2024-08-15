@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { AppConfig, UserSession, showConnect } from "@stacks/connect";
+import axios from "axios";
 
 export const useWallet = () => {
   const [userData, setUserData] = useState(null);
@@ -47,8 +48,6 @@ export const useWallet = () => {
       setUserAddress(loadedUserData.profile.stxAddress.mainnet);
     }
   }, []);
-
-  console.log(userData);
 
   return {
     userData,
