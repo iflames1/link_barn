@@ -1,16 +1,9 @@
-"use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { FiLink } from "react-icons/fi";
 import { BsLink } from "react-icons/bs";
-import { CgProfile } from "react-icons/cg";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
-import { Button } from "./ui/button";
+import Tab from "./common/tab";
+import ButtonTab from "./common/button-tab";
 
 export default function Header() {
-  const pathname = usePathname();
-
-  // ALot of repetition going on here boss
   return (
     <nav className="p-4 bg-white rounded-xl flex items-center justify-between">
       <Link href="/" className="sm:flex items-center gap-2">
@@ -21,39 +14,12 @@ export default function Header() {
       </Link>
 
       <div className="flex lg:gap-4 items-center text-gray-dark">
-        <Link
-          href="links"
-          className={`hS sm:py-3 py-4 px-7 sm:flex items-center gap-2 hover:text-base-dark ${
-            pathname === "/links" && "text-base-dark bg-base-light rounded-lg"
-          }`}
-        >
-          <FiLink className="size-4" />
-          <p className="sm:inline-flex hidden">Links</p>
-        </Link>
+        <Tab path="/links" title="Links" />
 
-        <Link
-          href="profile"
-          className={`hS sm:py-3 py-4 px-7 sm:flex items-center gap-2 hover:text-base-dark ${
-            pathname === "/profile" && "text-base-dark bg-base-light rounded-lg"
-          }`}
-        >
-          <CgProfile className="size-4" />
-          <p className="sm:inline-flex hidden">Profile Details</p>
-        </Link>
+        <Tab path="/profile" title="Profile Details" />
       </div>
 
-      <Button asChild variant={"outline"}>
-        {/* USE cn instead of the ternary operator */}
-        <Link
-          href="preview"
-          className={`button px-4 border-[1px] border-base-dark text-base-dark hover:bg-base-light ${
-            pathname === "/preview" && "bg-base-light"
-          }`}
-        >
-          <p className="sm:inline-flex hS hidden">Preview</p>
-          <MdOutlineRemoveRedEye className="inline-flex sm:hidden size-4" />
-        </Link>
-      </Button>
+      <ButtonTab path="/preview" title="Preview" />
     </nav>
   );
 }
