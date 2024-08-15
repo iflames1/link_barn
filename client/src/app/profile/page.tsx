@@ -1,6 +1,6 @@
-import Header from "@/components/Header";
+import Header from "@/components/header";
 import ProfileDetails from "@/components/profileDetails/ProfileDetails";
-import Wallet from "@/components/Wallet";
+import Wallet from "@/components/wallet";
 
 export default function Home() {
   return (

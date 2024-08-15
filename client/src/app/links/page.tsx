@@ -1,5 +1,5 @@
-import Header from "@/components/Header";
-import Wallet from "@/components/Wallet";
+import Header from "@/components/header";
+import Wallet from "@/components/wallet";
 import Links from "@/components/links/links";
 
 export default function Home() {
