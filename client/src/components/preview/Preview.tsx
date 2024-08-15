@@ -1,6 +1,6 @@
 // import { cookies } from "next/headers";
 import { getUserUUID } from "@/lib/auth";
-import PreviewLinks from "./PreviewLinks";
+import PreviewLinks from "./preview-links";
 
 export default function Preview({ className }: { className?: string }) {
   // const cookieStore = cookies();
