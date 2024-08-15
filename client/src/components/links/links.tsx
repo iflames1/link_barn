@@ -18,7 +18,8 @@ export default function Links() {
     }
   }, []);
 
-  const addNewLink = () => {
+  const addNewLink = (e: any) => {
+    e.preventDefault();
     const newId = Date.now().toString();
     setLinkIds((prevIds) => [...prevIds, newId]);
   };
@@ -36,7 +37,7 @@ export default function Links() {
             </p>
             <div className="sticky top-0 bg-white">
               <Button
-                onClick={() => addNewLink()}
+                onClick={(e) => addNewLink(e)}
                 variant={"outline"}
                 className="hS text-base-dark border-[1px] border-base-dark hover:bg-base-light py-[11px] px-7 rounded-lg w-full"
               >
