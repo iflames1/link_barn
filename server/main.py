@@ -7,6 +7,7 @@ from app import settings
 from app.core.database import async_engine
 from app.router.api_v1.endpoints import api_router
 from contextlib import asynccontextmanager
+from fastapi.middleware.cors import CORSMiddleware
 from app.links.models import Link
 from app.users.models import User
 
@@ -29,6 +30,13 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title=settings.project_name, openapi_url=f"{settings.api_v1_prefix}/openapi.json", debug=settings.debug,
               version=settings.version, lifespan=lifespan)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 app.include_router(api_router, prefix=settings.api_v1_prefix)
 
 
