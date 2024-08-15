@@ -37,7 +37,8 @@ class LinksCRUD:
         link = results.scalar_one_or_none()
 
         if link is None:
-            raise HTTPException(status_code=http_status.HTTP_404_NOT_FOUND, detail="Link not found")
+            raise HTTPException(
+                status_code=http_status.HTTP_404_NOT_FOUND, detail="Link not found")
 
         return link
 
@@ -62,9 +63,11 @@ class LinksCRUD:
         link = results.scalar_one_or_none()
 
         if link is None:
-            raise HTTPException(status_code=http_status.HTTP_404_NOT_FOUND, detail="Link not found")
+            raise HTTPException(
+                status_code=http_status.HTTP_404_NOT_FOUND, detail="Link not found")
 
-        for key, value in data.model_dump().items():
+        update_data = data.model_dump(exclude_unset=True)
+        for key, value in update_data.items():
             if key != "uuid":
                 setattr(link, key, value)
 
@@ -94,4 +97,5 @@ class LinksCRUD:
 
         except SQLAlchemyError as e:
             await self.session.rollback()
-            raise HTTPException(status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+            raise HTTPException(
+                status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))

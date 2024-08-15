@@ -45,7 +45,7 @@ async def get_user_links(user_id: str, links: LinksCRUD = Depends(get_links_crud
     return links
 
 
-@router.put("/{link_id}", response_model=LinkRead, status_code=http_status.HTTP_200_OK)
+@router.patch("/{link_id}", response_model=LinkRead, status_code=http_status.HTTP_200_OK)
 async def update_link_by_id(link_id: str, data: LinkUpdate, links: LinksCRUD = Depends(get_links_crud)):
     """
     Update a link
@@ -59,7 +59,8 @@ async def update_link_by_id(link_id: str, data: LinkUpdate, links: LinksCRUD = D
     except HTTPException as e:
         return e
     except Exception as e:
-        raise HTTPException(status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+        raise HTTPException(
+            status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 
 # dcf1e5f0-fe44-4f54-8d36-eb8b03c024d9
