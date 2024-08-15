@@ -1,12 +1,9 @@
 import { useState, useEffect } from "react";
 import { AppConfig, UserSession, showConnect } from "@stacks/connect";
 import axios from "axios";
-import {
-  setAdminToken,
-  isAdmin,
-  clearAdminToken,
-  getAdminToken,
-} from "./cookie";
+import { clearUUID, getUserUUID, isAdmin, setUserUUID } from "@/lib/auth";
+import { API_BASE_URL } from "@/lib/constants";
+
 const apiUrl: string = process.env.NEXT_PUBLIC_API_URL || "";
 
 interface UserProfile {
@@ -49,15 +46,27 @@ export const useWallet = () => {
     userSession.signUserOut();
     setUserData(null);
     setUserAddress("Connect Wallet");
-    clearAdminToken();
+    clearUUID();
+    console.log("disconnected");
   };
 
   useEffect(() => {
     const postUserData = (userData: UserData) => {
-      return axios.post(apiUrl + "/api/v1/users/", {
-        auth_type: "STX Wallet",
+      return axios.post(API_BASE_URL + "/users", {
+        auth_type: "crypto",
         stx_address_mainnet: userData.profile.stxAddress.mainnet,
         wallet_provider: userData.profile.walletProvider,
+        supabase_user_id: null,
+        first_name: null,
+        last_name: null,
+        profile_picture: null,
+        email: null,
+        decentralized_id: null,
+        stx_address_testnet: null,
+        btc_address_mainnet: null,
+        btc_address_testnet: null,
+        public_key: null,
+        gaia_hub_url: null,
       });
     };
 
@@ -69,7 +78,9 @@ export const useWallet = () => {
           setUserAddress(userData.profile.stxAddress.mainnet);
 
           const response = await postUserData(userData);
-          setAdminToken(response.data.uuid);
+          console.log(response);
+          setUserUUID(response.data.uuid);
+          console.log(getUserUUID());
         } catch (error) {
           console.error(
             "Error handling pending sign-in or saving user data:",
@@ -80,11 +91,12 @@ export const useWallet = () => {
         const userData = userSession.loadUserData();
         setUserData(userData);
         setUserAddress(userData.profile.stxAddress.mainnet);
+        console.log("already signed in");
 
         if (!isAdmin()) {
           try {
             const response = await postUserData(userData);
-            setAdminToken(response.data.uuid);
+            setUserUUID(response.data.uuid);
           } catch (error) {
             console.error("Error saving user data:", error);
           }
@@ -92,7 +104,7 @@ export const useWallet = () => {
       }
     };
 
-    console.log(getAdminToken());
+    console.log(getUserUUID());
 
     handleSignIn();
   }, []);

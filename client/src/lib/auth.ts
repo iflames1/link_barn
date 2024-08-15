@@ -1,4 +1,4 @@
-import { parseCookies, setCookie } from "nookies";
+import { parseCookies, setCookie, destroyCookie } from "nookies";
 
 export const setUserUUID = (uuid: string) => {
   setCookie(null, "uuid", uuid, {
@@ -10,6 +10,14 @@ export const setUserUUID = (uuid: string) => {
 export const getUserUUID = (): string | undefined => {
   const cookies = parseCookies();
   return cookies.uuid;
+};
+
+export const isAdmin = (): boolean => {
+  return !!getUserUUID();
+};
+
+export const clearUUID = () => {
+  destroyCookie(null, "uuid");
 };
 
 // import { serialize } from 'cookie';

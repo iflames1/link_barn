@@ -4,6 +4,7 @@ import { FcGoogle } from "react-icons/fc";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import ConnectWallet from "./connect-wallet";
 
 // Move the server action outside the component
 async function signInWithGoogle() {
@@ -50,13 +51,7 @@ const Login = async () => {
           <FcGoogle /> Continue with Google
         </Button>
       </form>
-      <Button
-        variant="outline"
-        className="gap-4 w-full max-w-[300px]"
-        // Implement crypto sign-in logic
-      >
-        <CiBitcoin /> Sign in With Crypto
-      </Button>
+      <ConnectWallet />
     </main>
   );
 };
