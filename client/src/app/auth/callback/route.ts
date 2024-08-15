@@ -87,7 +87,7 @@ export async function GET(request: Request) {
           cookieStore.set({
             name: "uuid",
             value: responseData?.uuid,
-            httpOnly: true,
+            httpOnly: false,
             path: "/",
             sameSite: "strict",
           });

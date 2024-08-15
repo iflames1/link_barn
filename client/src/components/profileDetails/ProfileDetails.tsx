@@ -3,11 +3,96 @@ import React, { useState, useRef } from "react";
 import Image from "next/image";
 import Preview from "../preview/Preview";
 import { IoImageOutline } from "react-icons/io5";
+import { API_BASE_URL } from "@/lib/constants";
+import { getUserUUID } from "@/lib/auth";
+import { toast } from "sonner";
 
+// export const getClientSideCookie = (name: string): string | undefined => {
+//   const cookieValue = document.cookie
+//     .split("; ")
+//     .find((row) => row.startsWith(`${name}=`))
+//     ?.split("=")[1];
+//
+//   return cookieValue;
+// };
+//
 export default function ProfileDetails() {
   const [image, setImage] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isHovered, setIsHovered] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const uuid = getUserUUID();
+
+  const uploadStagedFile = async (stagedFile: File | Blob, uuid: string) => {
+    const form = new FormData();
+    form.set("file", stagedFile);
+    console.log(stagedFile);
+
+    try {
+      const res = await fetch("/upload", {
+        method: "POST",
+        body: form,
+        headers: {},
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to upload image");
+      }
+
+      const data = await res.json();
+      console.log("Cloudinary Response:", data.imgUrl);
+
+      // Update the user profile with the uploaded image URL
+      try {
+        const url = `${API_BASE_URL}/users/${uuid}`;
+        const response = await fetch(url, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            profile_picture: data.imgUrl,
+          }),
+        });
+
+        const responseData = await response.json();
+
+        if (!response.ok) {
+          console.log(responseData);
+          throw new Error(
+            `An error occurred while updating profile: ${responseData.detail}`,
+          );
+        }
+
+        console.log("API Response:", response, responseData);
+
+        toast.success("Profile updated successfully.", {
+          richColors: true,
+        });
+      } catch (err) {
+        console.error("Error updating profile:", err);
+
+        if (err instanceof Error) {
+          toast.error(`An error occurred: ${err.message}`, {
+            richColors: true,
+          });
+        } else {
+          toast.error("An unknown error occurred", {
+            richColors: true,
+          });
+        }
+      }
+    } catch (err) {
+      console.log("Error uploading image:", err);
+    }
+  };
+  const handleFileUpload = () => {
+    if (selectedFile) {
+      uploadStagedFile(selectedFile, uuid as string);
+    } else {
+      console.log("No file selected");
+    }
+  };
 
   return (
     <div className="lg:flex gap-6 w-full">
@@ -58,6 +143,7 @@ export default function ProfileDetails() {
                   accept="image/*"
                   onChange={(e) => {
                     const file = e.target.files?.[0];
+                    setSelectedFile(file as File);
                     if (file) {
                       const reader = new FileReader();
                       reader.onloadend = () => {
@@ -90,6 +176,7 @@ export default function ProfileDetails() {
           <hr className="h-[1px] bg-gray border-none" />
           <div className="sm:py-6 sm:px-10 p-4 flex justify-end">
             <button
+              onClick={handleFileUpload}
               className={`hS button text-white bg-base-dark sm:w-fit w-full`}
             >
               Save
