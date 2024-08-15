@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import { AppConfig, UserSession, showConnect } from "@stacks/connect";
 import axios from "axios";
-import { setAdminToken, isAdmin, clearAdminToken } from "./cookie";
+import {
+  setAdminToken,
+  isAdmin,
+  clearAdminToken,
+  getAdminToken,
+} from "./cookie";
 const apiUrl: string = process.env.NEXT_PUBLIC_API_URL || "";
 
 interface UserProfile {
@@ -86,6 +91,8 @@ export const useWallet = () => {
         }
       }
     };
+
+    console.log(getAdminToken());
 
     handleSignIn();
   }, []);

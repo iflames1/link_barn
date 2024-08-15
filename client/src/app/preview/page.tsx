@@ -1,6 +1,6 @@
-import Header from "@/components/Header";
-import Preview from "@/components/preview/Preview";
-import Wallet from "@/components/Wallet";
+import Header from "@/components/header";
+import Preview from "@/components/preview/preview";
+import Wallet from "@/components/wallet";
 
 export default function Home() {
   return (

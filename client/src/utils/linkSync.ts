@@ -1,7 +1,20 @@
 "use client";
 import { useState, useCallback } from "react";
 import axios from "axios";
-import { Link, LinkData } from "@/types/links";
+
+interface Link {
+  id: string;
+  name: string;
+  url: string;
+}
+
+interface LinkData {
+  uuid: string;
+  platform: string;
+  index: number;
+  url: string;
+  user_id: string;
+}
 
 export const useLinkSync = (initialLinks: Link[] = []) => {
   const [links, setLinks] = useState<Link[]>(initialLinks);
@@ -9,18 +22,11 @@ export const useLinkSync = (initialLinks: Link[] = []) => {
   async function getLinks(url: string = "/data.json") {
     try {
       const response = await axios.get<LinkData[]>(url);
-
-      // Assuming the data is an array with a single object
-      const linkObject = response.data[0];
-      const extractedLinks: Link[] = Object.entries(linkObject).map(
-        ([key, { Name, Link, icon }]) => ({
-          id: key,
-          name: Name,
-          url: Link,
-          icon,
-        }),
-      );
-
+      const extractedLinks: Link[] = response.data.map((item) => ({
+        id: item.uuid,
+        name: item.platform,
+        url: item.url,
+      }));
       setLinks(extractedLinks);
     } catch (error) {
       console.error(error);
@@ -35,8 +41,8 @@ export const useLinkSync = (initialLinks: Link[] = []) => {
   const updateLink = useCallback((id: string, updatedLink: Partial<Link>) => {
     setLinks((prevLinks) =>
       prevLinks.map((link) =>
-        link.id === id ? { ...link, ...updatedLink } : link,
-      ),
+        link.id === id ? { ...link, ...updatedLink } : link
+      )
     );
   }, []);
 
