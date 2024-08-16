@@ -50,6 +50,11 @@ export function SelectLink({ link, updateLink }: SelectLinkProps) {
                     setCustomLinkName(e.target.value);
                     updateLink(link.id, { name: e.target.value });
                   }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      setIsOpen(!isOpen);
+                    }
+                  }}
                   placeholder="Enter custom link name"
                   className="bM text-black outline-none"
                 />

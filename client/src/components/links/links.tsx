@@ -7,7 +7,8 @@ import LinkEditor from "./link-editor";
 
 export default function Links() {
   const [linkIsEmpty, setLinkEmpty] = useState(true);
-  const { links, addNewLink, removeLink, updateLink } = useLinkSync();
+  const { links, addNewLink, removeLink, updateLink, userProfileDetails } =
+    useLinkSync();
 
   console.log(links);
 
@@ -19,7 +20,11 @@ export default function Links() {
 
   return (
     <div className="lg:flex gap-6 w-full">
-      <Preview links={links} className="w-[40vw] lg:flex hidden" />
+      <Preview
+        links={links}
+        userProfileDetails={userProfileDetails}
+        className="w-[40vw] lg:flex hidden"
+      />
       <form
         onSubmit={(e) => e.preventDefault()}
         className="bg-white flex flex-col justify-between rounded-xl lg:w-[60%] z-0 h-[calc(100vh-152px)] overflow-auto"

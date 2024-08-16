@@ -6,6 +6,7 @@ import { IoImageOutline } from "react-icons/io5";
 import { API_BASE_URL } from "@/lib/constants";
 import { getUserUUID } from "@/lib/auth";
 import { toast } from "sonner";
+import { useLinkSync } from "@/utils/linkSync";
 
 // export const getClientSideCookie = (name: string): string | undefined => {
 //   const cookieValue = document.cookie
@@ -22,6 +23,7 @@ export default function ProfileDetails() {
   const [isHovered, setIsHovered] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const uuid = getUserUUID();
+  const { userProfileDetails, links } = useLinkSync();
 
   const uploadStagedFile = async (stagedFile: File | Blob, uuid: string) => {
     const form = new FormData();
@@ -60,7 +62,7 @@ export default function ProfileDetails() {
         if (!response.ok) {
           console.log(responseData);
           throw new Error(
-            `An error occurred while updating profile: ${responseData.detail}`,
+            `An error occurred while updating profile: ${responseData.detail}`
           );
         }
 
@@ -96,7 +98,11 @@ export default function ProfileDetails() {
 
   return (
     <div className="lg:flex gap-6 w-full">
-      <Preview className="w-[40vw] lg:flex hidden" />
+      <Preview
+        links={links}
+        userProfileDetails={userProfileDetails}
+        className="w-[40vw] lg:flex hidden"
+      />
       <div className="bg-white flex flex-col justify-between rounded-xl lg:w-[60%] h-[calc(100vh-152px)] overflow-auto">
         <div className="sm:p-10 p-6">
           <div className="pb-10">

@@ -9,25 +9,44 @@ export interface Link {
 }
 
 interface LinkData {
-  uuid: string;
-  platform: string;
-  index: number;
-  url: string;
-  user_id: string;
+  profile_picture: string;
+  first_name: string;
+  last_name: string;
+  links: {
+    uuid: string;
+    platform: string;
+    index: number;
+    url: string;
+    user_id: string;
+  }[];
+}
+
+export interface UserProfileDetails {
+  profile_picture: string;
+  first_name: string;
+  last_name: string;
 }
 
 export const useLinkSync = (initialLinks: Link[] = []) => {
   const [links, setLinks] = useState<Link[]>(initialLinks);
+  const [userProfileDetails, setUserProfileDetails] =
+    useState<UserProfileDetails | null>(null);
 
   async function getLinks(url: string = "/data.json") {
     try {
-      const response = await axios.get<LinkData[]>(url);
-      const extractedLinks: Link[] = response.data.map((item) => ({
+      const response = await axios.get<LinkData>(url);
+      const extractedLinks: Link[] = response.data.links.map((item) => ({
         id: item.uuid,
         name: item.platform,
         url: item.url,
       }));
       setLinks(extractedLinks);
+
+      setUserProfileDetails({
+        profile_picture: response.data.profile_picture,
+        first_name: response.data.first_name,
+        last_name: response.data.last_name,
+      });
     } catch (error) {
       console.error(error);
     }
@@ -56,6 +75,7 @@ export const useLinkSync = (initialLinks: Link[] = []) => {
 
   return {
     links,
+    userProfileDetails,
     setLinks,
     getLinks,
     addNewLink,
