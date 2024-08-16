@@ -8,7 +8,9 @@ export default function ConnectWallet() {
 
   return (
     <Button
-      onClick={connectWallet}
+      onClick={() => {
+        connectWallet();
+      }}
       className="gap-4 w-full max-w-[300px]"
       // Implement crypto sign-in logic
     >

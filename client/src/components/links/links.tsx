@@ -17,8 +17,7 @@ export default function Links() {
     }
   }, []);
 
-  const addNewLink = (e: any) => {
-    e.preventDefault();
+  const addNewLink = () => {
     const newId = Date.now().toString();
     setLinkIds((prevIds) => [...prevIds, newId]);
   };

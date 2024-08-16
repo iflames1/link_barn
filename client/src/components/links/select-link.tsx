@@ -1,43 +1,17 @@
 "use client";
 import { useState } from "react";
-import { FaXTwitter } from "react-icons/fa6";
-import { TbBrandGithubFilled } from "react-icons/tb";
-import { IoLogoYoutube } from "react-icons/io";
-import { FaLinkedin } from "react-icons/fa";
-import { FaFacebook } from "react-icons/fa6";
 import { CgSelect } from "react-icons/cg";
+import { linkAttributes } from "../common/links-attr";
 
 export function SelectLink() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string | null>("github");
 
-  const options = [
-    {
-      value: "github",
-      icon: <TbBrandGithubFilled className="size-4 text-gray-dark" />,
-      label: "GitHub",
-    },
-    {
-      value: "twitter",
-      icon: <FaXTwitter className="size-4 text-gray-dark" />,
-      label: "Twitter",
-    },
-    {
-      value: "youtube",
-      icon: <IoLogoYoutube className="size-4 text-gray-dark" />,
-      label: "Youtube",
-    },
-    {
-      value: "facebook",
-      icon: <FaFacebook className="size-4 text-gray-dark" />,
-      label: "Facebook",
-    },
-    {
-      value: "linkedin",
-      icon: <FaLinkedin className="size-4 text-gray-dark" />,
-      label: "LinkedIn",
-    },
-  ];
+  const options = Object.entries(linkAttributes).map(([key, value]) => ({
+    value: key,
+    icon: value.icon,
+    label: key.charAt(0).toUpperCase() + key.slice(1),
+  }));
 
   return (
     <div className="relative">
@@ -49,7 +23,7 @@ export function SelectLink() {
       >
         {selectedOption && (
           <div className="flex justify-between items-center">
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 items-center text-gray-dark">
               {options.find((opt) => opt.value === selectedOption)?.icon}
               <span className="bM text-black">
                 {options.find((opt) => opt.value === selectedOption)?.label}
@@ -65,7 +39,7 @@ export function SelectLink() {
             <div key={option.value}>
               <div
                 className={`py-3 hover:bg-gray-100 cursor-pointer flex items-center
-                gap-3 {option.value === selectedOption ? 'text-base-dark' : "text-black"}`}
+                gap-3 text-gray-dark {option.value === selectedOption ? 'text-base-dark' : "text-black"}`}
                 onClick={() => {
                   setSelectedOption(option.value);
                   setIsOpen(false);

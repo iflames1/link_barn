@@ -71,40 +71,43 @@ export const useWallet = () => {
     };
 
     const handleSignIn = async () => {
-      if (userSession.isSignInPending()) {
-        try {
-          const userData = await userSession.handlePendingSignIn();
-          setUserData(userData);
-          setUserAddress(userData.profile.stxAddress.mainnet);
-
-          const response = await postUserData(userData);
-          console.log(response);
-          setUserUUID(response.data.uuid);
-          console.log(getUserUUID());
-        } catch (error) {
-          console.error(
-            "Error handling pending sign-in or saving user data:",
-            error
-          );
-        }
-      } else if (userSession.isUserSignedIn()) {
-        const userData = userSession.loadUserData();
-        setUserData(userData);
-        setUserAddress(userData.profile.stxAddress.mainnet);
-        console.log("already signed in");
-
-        if (!isAdmin()) {
-          try {
-            const response = await postUserData(userData);
-            setUserUUID(response.data.uuid);
-          } catch (error) {
-            console.error("Error saving user data:", error);
-          }
-        }
-      }
+      //if (userSession.isSignInPending()) {
+      //  try {
+      //    const userData = await userSession.handlePendingSignIn();
+      //    setUserData(userData);
+      //    setUserAddress(userData.profile.stxAddress.mainnet);
+      //    const response = await postUserData(userData);
+      //    console.log(response);
+      //    setUserUUID(response.data.uuid);
+      //    console.log(getUserUUID());
+      //  } catch (error) {
+      //    console.error(
+      //      "Error handling pending sign-in or saving user data:",
+      //      error
+      //    );
+      //  }
+      //} else if (userSession.isUserSignedIn()) {
+      //  const userData = userSession.loadUserData();
+      //  setUserData(userData);
+      //  setUserAddress(userData.profile.stxAddress.mainnet);
+      //  console.log("already signed in");
+      //  if (!isAdmin()) {
+      //    try {
+      //      const response = await postUserData(userData);
+      //      console.log("Heyo");
+      //      console.log(response);
+      //      setUserUUID(response.data.uuid);
+      //    } catch (error) {
+      //      console.error("Error saving user data:", error);
+      //    }
+      //  }
+      //}
     };
 
     console.log(getUserUUID());
+    console.log(userSession);
+    console.log(userSession.isUserSignedIn());
+    console.log(userSession.isSignInPending());
 
     handleSignIn();
   }, []);
