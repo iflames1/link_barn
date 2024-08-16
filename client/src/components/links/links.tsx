@@ -7,7 +7,7 @@ import LinkEditor from "./link-editor";
 
 export default function Links() {
   const [linkIsEmpty, setLinkEmpty] = useState(true);
-  const { links, addNewLink, removeLink } = useLinkSync();
+  const { links, addNewLink, removeLink, updateLink } = useLinkSync();
 
   console.log(links);
 
@@ -45,6 +45,7 @@ export default function Links() {
               links.map((link, index) => (
                 <LinkEditor
                   removeLink={removeLink}
+                  updateLink={updateLink}
                   key={link.id}
                   index={index}
                   link={link}
