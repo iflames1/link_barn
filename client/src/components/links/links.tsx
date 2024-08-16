@@ -9,6 +9,11 @@ export default function Links() {
   const [linkIsEmpty, setLinkEmpty] = useState(true);
   const [linkIds, setLinkIds] = useState<string[]>([]);
   const { links, getLinks } = useLinkSync();
+  const [allLinks, setAllLinks] =
+    useState<Array<{ id: string; name: string; url: string }>>(links);
+
+  console.log(links);
+  console.log(allLinks);
 
   useEffect(() => {
     getLinks();
@@ -19,7 +24,10 @@ export default function Links() {
 
   const addNewLink = () => {
     const newId = Date.now().toString();
-    setLinkIds((prevIds) => [...prevIds, newId]);
+    setAllLinks((prevLinks) => [
+      ...prevLinks,
+      { id: newId, name: "", url: "" },
+    ]);
   };
 
   return (
@@ -47,12 +55,13 @@ export default function Links() {
             {linkIsEmpty ? (
               <GetStarted />
             ) : (
-              linkIds.map((id, index) => (
+              links.map((link, index) => (
                 <LinkEditor
-                  key={id}
+                  key={link.id}
                   index={index}
-                  id={id}
-                  setLinkIds={setLinkIds}
+                  id={link.id}
+                  link={link}
+                  setAllLinks={setAllLinks}
                 />
               ))
             )}
@@ -61,8 +70,6 @@ export default function Links() {
         <div>
           <hr className="h-[1px] bg-gray border-none" />
           <div className="sm:py-6 sm:px-10 p-4 flex justify-end">
-            {/*Just import the component from shadcn it handles all those annoying accessibility stuff */}
-            {/*Its not the number 1 for show*/}
             <button
               className={`hS button text-white bg-base-dark ${
                 linkIsEmpty && "opacity-25"

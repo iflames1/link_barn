@@ -3,9 +3,18 @@ import { useState } from "react";
 import { CgSelect } from "react-icons/cg";
 import { linkAttributes } from "../common/links-attr";
 
-export function SelectLink() {
+interface SelectLinkProps {
+  selectedPlatform: string;
+}
+
+export function SelectLink({ selectedPlatform }: SelectLinkProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<string | null>("github");
+  const [selectedOption, setSelectedOption] = useState<string | null>(
+    selectedPlatform.toLowerCase()
+  );
+
+  console.log(selectedPlatform);
+  console.log(selectedOption);
 
   const options = Object.entries(linkAttributes).map(([key, value]) => ({
     value: key,
@@ -24,9 +33,11 @@ export function SelectLink() {
         {selectedOption && (
           <div className="flex justify-between items-center">
             <div className="flex gap-2 items-center text-gray-dark">
-              {options.find((opt) => opt.value === selectedOption)?.icon}
+              {options.find((opt) => opt.value === selectedOption)?.icon ||
+                linkAttributes.link.icon}
               <span className="bM text-black">
-                {options.find((opt) => opt.value === selectedOption)?.label}
+                {options.find((opt) => opt.value === selectedOption)?.label ||
+                  selectedPlatform}
               </span>
             </div>
             <CgSelect className="size-6 text-base-dark" />

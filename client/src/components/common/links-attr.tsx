@@ -7,6 +7,11 @@ import { RiLinkM } from "react-icons/ri";
 import React from "react";
 
 export const linkAttributes = {
+  link: {
+    text: "text-black",
+    bg: "bg-white",
+    icon: <RiLinkM className="size-4" />,
+  },
   github: {
     text: "text-white",
     bg: "bg-black",
@@ -31,10 +36,5 @@ export const linkAttributes = {
     text: "text-white",
     bg: "bg-[#2D68FF]",
     icon: <FaLinkedin className="size-4" />,
-  },
-  link: {
-    text: "text-black",
-    bg: "bg-white",
-    icon: <RiLinkM className="size-4" />,
   },
 };
