@@ -1,0 +1,31 @@
+          <div
+            className={cn(
+              "border-[1px] border-gray-dark rounded-[25px] w-full h-full px-6 pt-[20px] flex flex-col items-center gap-5 overflow-y-auto",
+              theme.background.value,
+            )}
+          >
+            <div
+              className="flex flex-col items-center gap-1"
+              suppressHydrationWarning
+            >
+              {uuid}
+              <div className="bg-gray-preview size-12 rounded-full"></div>
+              <div className=" flex flex-col items-center gap-[13px]">
+                {/* Skeleton */}
+                {/* <div className="bg-gray-preview w-40 h-4 rounded-full"></div> */}
+                <p className={cn("self-center", `${theme.text.titleColor}`)}>
+                  Name
+                </p>
+                <p
+                  className={cn(
+                    "self-center",
+                    `${theme.text.descriptionColor} ${theme.text.descriptionFontSize}`,
+                  )}
+                >
+                  Email
+                </p>
+                {/* <div className="bg-gray-preview w-[72px] h-2 rounded-full"></div> */}
+              </div>
+            </div>
+            <ThemePreviewLink links={theme.links} />
+          </div>

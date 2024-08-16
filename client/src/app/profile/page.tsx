@@ -1,4 +1,4 @@
-import Header from "@/components/Header";
+import Header from "@/components/header";
 import ProfileDetails from "@/components/profile-details/profile-details";
 import Wallet from "@/components/wallet";
 

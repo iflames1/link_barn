@@ -11,10 +11,11 @@
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-tabs": "^1.1.0",
     "@stacks/connect": "^7.7.1",
     "@supabase/ssr": "^0.4.0",
     "@supabase/supabase-js": "^2.45.1",
-    "axios": "^1.7.3",
+    "axios": "^1.7.4",
     "class-variance-authority": "^0.7.0",
     "cloudinary": "2.0.0",
     "clsx": "^2.1.1",

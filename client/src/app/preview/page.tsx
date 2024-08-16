@@ -1,6 +1,5 @@
 import Header from "@/components/header";
 import Preview from "@/components/preview/preview";
-import Wallet from "@/components/wallet";
 
 export default function Home() {
   return (
