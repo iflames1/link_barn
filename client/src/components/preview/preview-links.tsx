@@ -1,4 +1,4 @@
-import { Link, useLinkSync } from "@/utils/linkSync";
+import { Link } from "@/utils/linkSync";
 import { FaArrowRight } from "react-icons/fa6";
 import { linkAttributes } from "../common/links-attr";
 

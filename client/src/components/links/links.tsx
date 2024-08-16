@@ -1,22 +1,16 @@
 "use client";
-import { useEffect, useState } from "react";
 import Preview from "../preview/preview";
 import { useLinkSync } from "@/utils/linkSync";
 import GetStarted from "./get-started";
 import LinkEditor from "./link-editor";
 
 export default function Links() {
-  const [linkIsEmpty, setLinkEmpty] = useState(true);
   const { links, addNewLink, removeLink, updateLink, userProfileDetails } =
     useLinkSync();
 
   console.log(links);
 
-  useEffect(() => {
-    if (links.length == 0) {
-      setLinkEmpty(false);
-    }
-  }, []);
+  console.log(links.length < 1);
 
   return (
     <div className="lg:flex gap-6 w-full">
@@ -47,7 +41,7 @@ export default function Links() {
             </div>
           </div>
           <div className=" flex flex-col gap-6">
-            {linkIsEmpty ? (
+            {links.length < 1 ? (
               <GetStarted />
             ) : (
               links.map((link, index) => (
@@ -55,7 +49,7 @@ export default function Links() {
                   removeLink={removeLink}
                   updateLink={updateLink}
                   key={link.id}
-                  index={index}
+                  index={link.index}
                   link={link}
                 />
               ))
@@ -67,7 +61,7 @@ export default function Links() {
           <div className="sm:py-6 sm:px-10 p-4 flex justify-end">
             <button
               className={`hS button text-white bg-base-dark ${
-                linkIsEmpty && "opacity-25"
+                links.length < 1 && "opacity-25"
               } sm:w-fit w-full`}
             >
               Save

@@ -1,10 +1,13 @@
 "use client";
 import { useState, useCallback, useEffect } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "@/lib/constants";
+import { getUserUUID } from "@/lib/auth";
 
 export interface Link {
   id: string;
   name: string;
+  index: number;
   url: string;
 }
 
@@ -29,18 +32,22 @@ export interface UserProfileDetails {
   last_name: string;
 }
 
-export const useLinkSync = (initialLinks: Link[] = []) => {
-  const [links, setLinks] = useState<Link[]>(initialLinks);
+export const useLinkSync = () => {
+  const [links, setLinks] = useState<Link[]>([]);
   const [userProfileDetails, setUserProfileDetails] =
     useState<UserProfileDetails | null>(null);
+  const UUID = getUserUUID();
 
-  async function getLinks(url: string = "/data.json") {
+  async function getLinks(
+    url: string = API_BASE_URL + "/users/?user_id=" + UUID
+  ) {
     try {
       const response = await axios.get<LinkData>(url);
       const extractedLinks: Link[] = response.data.links.map((item) => ({
         id: item.uuid,
         name: item.platform,
         url: item.url,
+        index: item.index,
       }));
       setLinks(extractedLinks);
 
@@ -56,7 +63,12 @@ export const useLinkSync = (initialLinks: Link[] = []) => {
   }
 
   const addNewLink = useCallback(() => {
-    const newLink: Link = { id: Date.now().toString(), name: "", url: "" };
+    const newLink: Link = {
+      id: Date.now().toString(),
+      name: "",
+      url: "",
+      index: links.length,
+    };
     setLinks((prevLinks) => [...prevLinks, newLink]);
   }, []);
 
