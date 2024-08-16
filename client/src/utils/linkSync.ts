@@ -34,6 +34,7 @@ export interface UserProfileDetails {
 
 export const useLinkSync = () => {
   const [links, setLinks] = useState<Link[]>([]);
+  const [prevlinks, setPrevLinks] = useState<Link[]>([]);
   const [userProfileDetails, setUserProfileDetails] =
     useState<UserProfileDetails | null>(null);
   const UUID = getUserUUID();
@@ -50,6 +51,7 @@ export const useLinkSync = () => {
         index: item.index,
       }));
       setLinks(extractedLinks);
+      setPrevLinks(extractedLinks);
 
       setUserProfileDetails({
         uuid: response.data.uuid,
@@ -62,12 +64,12 @@ export const useLinkSync = () => {
     }
   }
 
-  const addNewLink = useCallback(() => {
+  const addNewLink = useCallback((index: number) => {
     const newLink: Link = {
       id: Date.now().toString(),
       name: "",
       url: "",
-      index: links.length,
+      index: index + 1,
     };
     setLinks((prevLinks) => [...prevLinks, newLink]);
   }, []);
@@ -91,12 +93,39 @@ export const useLinkSync = () => {
   );
 
   const removeLink = useCallback((id: string) => {
-    setLinks((prevLinks) => prevLinks.filter((link) => link.id !== id));
+    setLinks((prevLinks) => {
+      const updatedLinks = prevLinks
+        .filter((link) => link.id !== id)
+        .map((link, index) => ({ ...link, index }));
+      return updatedLinks;
+    });
   }, []);
 
   useEffect(() => {
     getLinks();
   }, []);
+
+  const saveLinks = useCallback(async () => {
+    if (JSON.stringify(prevlinks) !== JSON.stringify(links)) {
+      for (const link of links) {
+        try {
+          const response = await axios.post(API_BASE_URL + "/links", {
+            platform: link.name,
+            index: link.index,
+            url: link.url,
+            user_id: UUID,
+          });
+          if (response.status === 200 || response.status === 201) {
+            console.log("successfully posted", link.name);
+            getLinks();
+          }
+        } catch (error) {
+          console.error("Error saving link:", error);
+        }
+      }
+      setPrevLinks(links);
+    }
+  }, [links, prevlinks, UUID, getLinks]);
 
   return {
     links,
@@ -107,5 +136,6 @@ export const useLinkSync = () => {
     updateLink,
     updateUserProfile,
     removeLink,
+    saveLinks,
   };
 };

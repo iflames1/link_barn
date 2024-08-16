@@ -5,12 +5,19 @@ import GetStarted from "./get-started";
 import LinkEditor from "./link-editor";
 
 export default function Links() {
-  const { links, addNewLink, removeLink, updateLink, userProfileDetails } =
-    useLinkSync();
+  const {
+    links,
+    addNewLink,
+    removeLink,
+    updateLink,
+    userProfileDetails,
+    saveLinks,
+  } = useLinkSync();
 
-  console.log(links);
-
-  console.log(links.length < 1);
+  const handleSaveLinks = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    saveLinks();
+  };
 
   return (
     <div className="lg:flex gap-6 w-full">
@@ -20,7 +27,7 @@ export default function Links() {
         className="w-[40vw] lg:flex hidden"
       />
       <form
-        onSubmit={(e) => e.preventDefault()}
+        onSubmit={(e) => handleSaveLinks(e)}
         className="bg-white flex flex-col justify-between rounded-xl lg:w-[60%] z-0 h-[calc(100vh-152px)] overflow-auto"
       >
         <div className="sm:p-10 p-6">
@@ -32,7 +39,7 @@ export default function Links() {
             </p>
             <div className="sticky top-0 bg-white">
               <button
-                onClick={() => addNewLink()}
+                onClick={() => addNewLink(links.length - 1)}
                 type="button"
                 className="hS text-base-dark border-[1px] border-base-dark hover:bg-base-light py-[11px] px-7 rounded-lg w-full"
               >
@@ -44,7 +51,7 @@ export default function Links() {
             {links.length < 1 ? (
               <GetStarted />
             ) : (
-              links.map((link, index) => (
+              links.map((link) => (
                 <LinkEditor
                   removeLink={removeLink}
                   updateLink={updateLink}
@@ -60,6 +67,7 @@ export default function Links() {
           <hr className="h-[1px] bg-gray border-none" />
           <div className="sm:py-6 sm:px-10 p-4 flex justify-end">
             <button
+              type="submit"
               className={`hS button text-white bg-base-dark ${
                 links.length < 1 && "opacity-25"
               } sm:w-fit w-full`}

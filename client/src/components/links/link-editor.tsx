@@ -9,6 +9,7 @@ interface LinkEditorProps {
     id: string;
     name: string;
     url: string;
+    index: number;
   };
   removeLink: (id: string) => void;
   updateLink: (id: string, updatedLink: Partial<Link>) => void;
@@ -20,9 +21,6 @@ export default function LinkEditor({
   removeLink,
   updateLink,
 }: LinkEditorProps) {
-  console.log(link);
-  console.log(index);
-
   const handleUpdateURL = (
     e: React.ChangeEvent<HTMLInputElement>,
     id: string
@@ -35,7 +33,7 @@ export default function LinkEditor({
       <div className="flex items-center justify-between">
         <p className="flex items-center gap-2 text-gray-dark">
           <HiMenuAlt4 className="size-4" />
-          <span className="text-base font-bold">Link #{index + 1}</span>
+          <span className="text-base font-bold">Link #{link.index + 1}</span>
         </p>
         <button
           onClick={() => {
