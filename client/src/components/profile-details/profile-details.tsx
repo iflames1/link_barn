@@ -23,7 +23,7 @@ export default function ProfileDetails() {
   const [isHovered, setIsHovered] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const uuid = getUserUUID();
-  const { userProfileDetails, links } = useLinkSync();
+  const { userProfileDetails, updateUserProfile, links } = useLinkSync();
 
   const uploadStagedFile = async (stagedFile: File | Blob, uuid: string) => {
     const form = new FormData();
@@ -165,15 +165,35 @@ export default function ProfileDetails() {
                 </p>
               </div>
             </div>
-            <div className="bM flex md:flex-row flex-col items-center md:gap-4 gap-1 p-5 bg-gray-light rounded-lg w-full">
-              <label htmlFor="name" className="text-gray-dark w-60">
-                Name*
-              </label>
-              <input
-                id="name"
-                placeholder="e.g. Flames"
-                className="py-3 px-4 w-full placeholder:text-gray-dark placeholder:text-base bM text-black border-[1px] border-gray rounded-lg outline-none focus:shadow-active"
-              />
+            <div className="w-full bM bg-gray-light rounded-lg flex flex-col gap-3 p-5">
+              <div className="flex md:flex-row flex-col items-center md:gap-4 gap-1 w-full">
+                <label htmlFor="first-name" className="text-gray-dark w-60">
+                  First name*
+                </label>
+                <input
+                  id="first-name"
+                  placeholder={"John"}
+                  value={userProfileDetails?.first_name || ""}
+                  onChange={(e) =>
+                    updateUserProfile({ first_name: e.target.value })
+                  }
+                  className="py-3 px-4 w-full placeholder:text-gray-dark placeholder:text-base bM text-black border-[1px] border-gray rounded-lg outline-none focus:shadow-active"
+                />
+              </div>
+              <div className="flex md:flex-row flex-col items-center md:gap-4 gap-1 w-full">
+                <label htmlFor="last-name" className="text-gray-dark w-60">
+                  Last name
+                </label>
+                <input
+                  id="last-name"
+                  placeholder={"Deo"}
+                  value={userProfileDetails?.last_name || ""}
+                  onChange={(e) =>
+                    updateUserProfile({ last_name: e.target.value })
+                  }
+                  className="py-3 px-4 w-full placeholder:text-gray-dark placeholder:text-base bM text-black border-[1px] border-gray rounded-lg outline-none focus:shadow-active"
+                />
+              </div>
             </div>
           </div>
         </div>

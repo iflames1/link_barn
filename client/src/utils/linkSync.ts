@@ -9,6 +9,7 @@ export interface Link {
 }
 
 interface LinkData {
+  uuid: string;
   profile_picture: string;
   first_name: string;
   last_name: string;
@@ -22,6 +23,7 @@ interface LinkData {
 }
 
 export interface UserProfileDetails {
+  uuid: string;
   profile_picture: string;
   first_name: string;
   last_name: string;
@@ -43,6 +45,7 @@ export const useLinkSync = (initialLinks: Link[] = []) => {
       setLinks(extractedLinks);
 
       setUserProfileDetails({
+        uuid: response.data.uuid,
         profile_picture: response.data.profile_picture,
         first_name: response.data.first_name,
         last_name: response.data.last_name,
@@ -65,6 +68,16 @@ export const useLinkSync = (initialLinks: Link[] = []) => {
     );
   }, []);
 
+  const updateUserProfile = useCallback(
+    (updatedProfile: Partial<UserProfileDetails>) => {
+      setUserProfileDetails((prevDetails) => {
+        if (!prevDetails) return null;
+        return { ...prevDetails, ...updatedProfile };
+      });
+    },
+    []
+  );
+
   const removeLink = useCallback((id: string) => {
     setLinks((prevLinks) => prevLinks.filter((link) => link.id !== id));
   }, []);
@@ -80,6 +93,7 @@ export const useLinkSync = (initialLinks: Link[] = []) => {
     getLinks,
     addNewLink,
     updateLink,
+    updateUserProfile,
     removeLink,
   };
 };
