@@ -1,27 +1,25 @@
 import { HiMenuAlt4 } from "react-icons/hi";
 import { FiLink } from "react-icons/fi";
 import { SelectLink } from "./select-link";
-import { RiLinkM } from "react-icons/ri";
+import { useLinkSync } from "@/utils/linkSync";
 
 interface LinkEditorProps {
-  id: string;
-  setAllLinks: React.Dispatch<React.SetStateAction<string[]>>;
   index: number;
   link: {
+    id: string;
     name: string;
     url: string;
   };
+  removeLink: (id: string) => void;
 }
 
 export default function LinkEditor({
-  id,
-  setAllLinks,
   index,
   link,
+  removeLink,
 }: LinkEditorProps) {
-  const removeLink = (idToRemove: string) => {
-    setAllLinks((prevIds) => prevIds.filter((id) => id !== idToRemove));
-  };
+  console.log(link);
+  console.log(index);
 
   return (
     <div className="p-5 bg-gray-light rounded-xl flex flex-col gap-3">
@@ -31,7 +29,10 @@ export default function LinkEditor({
           <span className="text-base font-bold">Link #{index + 1}</span>
         </p>
         <button
-          onClick={() => removeLink(id)}
+          onClick={() => {
+            removeLink(link.id);
+          }}
+          type="button"
           className="text-base font-normal text-gray-dark"
         >
           Remove
@@ -46,11 +47,11 @@ export default function LinkEditor({
         <div
           className={`flex items-center gap-3 px-4 py-3 border-[1px] border-gray rounded-lg bg-white focus-within:shadow-active`}
         >
-          <label htmlFor={id} className="cursor pointer">
+          <label htmlFor={link.id} className="cursor pointer">
             <FiLink className="size-4 text-gray-dark" />
           </label>
           <input
-            id={id}
+            id={link.id}
             type="text"
             value={link.url}
             placeholder="e.g. https://www.portfolio.com/iflames"

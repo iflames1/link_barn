@@ -1,8 +1,8 @@
 "use client";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import axios from "axios";
 
-interface Link {
+export interface Link {
   id: string;
   name: string;
   url: string;
@@ -33,9 +33,9 @@ export const useLinkSync = (initialLinks: Link[] = []) => {
     }
   }
 
-  const addLink = useCallback((newLink: Omit<Link, "id">) => {
-    const linkWithId = { ...newLink, id: Date.now().toString() };
-    setLinks((prevLinks) => [...prevLinks, linkWithId]);
+  const addNewLink = useCallback(() => {
+    const newLink: Link = { id: Date.now().toString(), name: "", url: "" };
+    setLinks((prevLinks) => [...prevLinks, newLink]);
   }, []);
 
   const updateLink = useCallback((id: string, updatedLink: Partial<Link>) => {
@@ -50,10 +50,15 @@ export const useLinkSync = (initialLinks: Link[] = []) => {
     setLinks((prevLinks) => prevLinks.filter((link) => link.id !== id));
   }, []);
 
+  useEffect(() => {
+    getLinks();
+  }, []);
+
   return {
     links,
+    setLinks,
     getLinks,
-    addLink,
+    addNewLink,
     updateLink,
     removeLink,
   };

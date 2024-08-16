@@ -1,16 +1,12 @@
-"use client";
-import { useEffect } from "react";
-import { useLinkSync } from "@/utils/linkSync";
+import { Link, useLinkSync } from "@/utils/linkSync";
 import { FaArrowRight } from "react-icons/fa6";
 import { linkAttributes } from "../common/links-attr";
 
-export default function PreviewLinks() {
-  const { links, getLinks } = useLinkSync();
+interface PreviewProps {
+  links: Link[];
+}
 
-  useEffect(() => {
-    getLinks();
-  }, [getLinks]);
-
+export default function PreviewLinks({ links }: PreviewProps) {
   return (
     <div className="flex flex-col items-center gap-5 w-full pb-11">
       {links.length === 0
