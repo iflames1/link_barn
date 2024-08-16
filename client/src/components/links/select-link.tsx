@@ -2,18 +2,25 @@
 import { useState } from "react";
 import { CgSelect } from "react-icons/cg";
 import { linkAttributes } from "../common/links-attr";
+import { Link } from "@/utils/linkSync";
 
 interface SelectLinkProps {
-  selectedPlatform: string;
+  link: {
+    id: string;
+    name: string;
+    url: string;
+  };
+  updateLink: (id: string, updatedLink: Partial<Link>) => void;
 }
 
-export function SelectLink({ selectedPlatform }: SelectLinkProps) {
+export function SelectLink({ link, updateLink }: SelectLinkProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<string | null>(
-    selectedPlatform.toLowerCase()
+  const [selectedOption, setSelectedOption] = useState<string>(
+    link.name ? link.name.toLowerCase() : "link"
   );
+  const [customLinkName, setCustomLinkName] = useState(link.name);
 
-  console.log(selectedPlatform);
+  console.log(link.name);
   console.log(selectedOption);
 
   const options = Object.entries(linkAttributes).map(([key, value]) => ({
@@ -35,10 +42,23 @@ export function SelectLink({ selectedPlatform }: SelectLinkProps) {
             <div className="flex gap-2 items-center text-gray-dark">
               {options.find((opt) => opt.value === selectedOption)?.icon ||
                 linkAttributes.link.icon}
-              <span className="bM text-black">
-                {options.find((opt) => opt.value === selectedOption)?.label ||
-                  selectedPlatform}
-              </span>
+              {selectedOption === "link" ? (
+                <input
+                  type="text"
+                  value={customLinkName}
+                  onChange={(e) => {
+                    setCustomLinkName(e.target.value);
+                    updateLink(link.id, { name: e.target.value });
+                  }}
+                  placeholder="Enter custom link name"
+                  className="bM text-black outline-none"
+                />
+              ) : (
+                <span className="bM text-black">
+                  {options.find((opt) => opt.value === selectedOption)?.label ||
+                    link.name}
+                </span>
+              )}
             </div>
             <CgSelect className="size-6 text-base-dark" />
           </div>
@@ -53,11 +73,12 @@ export function SelectLink({ selectedPlatform }: SelectLinkProps) {
                 gap-3 text-gray-dark {option.value === selectedOption ? 'text-base-dark' : "text-black"}`}
                 onClick={() => {
                   setSelectedOption(option.value);
+                  updateLink(link.id, { name: option.value });
                   setIsOpen(false);
                 }}
               >
                 {option.icon}
-                <span className="bM">{option.label}</span>
+                <span className="bM capitalize">{option.label}</span>
               </div>
               {index !== options.length - 1 && (
                 <hr className="h-px border-none bg-gray" />

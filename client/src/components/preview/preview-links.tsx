@@ -29,7 +29,7 @@ export default function PreviewLinks({ links }: PreviewProps) {
                 href={link.url}
                 target="_blank"
                 key={index}
-                className={`flex justify-between items-center py-[11px] px-4 rounded-lg w-full border-[1px] border-gray ${attributes.bg} ${attributes.text}`}
+                className={`flex justify-between items-center py-[11px] px-4 rounded-lg w-full border-[1px] border-gray capitalize ${attributes.bg} ${attributes.text}`}
               >
                 <p className="flex items-center justify-start gap-2">
                   {attributes.icon}

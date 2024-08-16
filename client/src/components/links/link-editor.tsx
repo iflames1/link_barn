@@ -49,7 +49,7 @@ export default function LinkEditor({
       </div>
       <div>
         <p className="bS text-black">Platform</p>
-        <SelectLink selectedPlatform={link.name || "link"} />
+        <SelectLink updateLink={updateLink} link={link} />
       </div>
       <div>
         <p className="bS text-black">Link</p>
