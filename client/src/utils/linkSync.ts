@@ -1,10 +1,13 @@
 "use client";
 import { useState, useCallback, useEffect } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "@/lib/constants";
+import { getUserUUID } from "@/lib/auth";
 
 export interface Link {
   id: string;
   name: string;
+  index: number;
   url: string;
 }
 
@@ -29,20 +32,26 @@ export interface UserProfileDetails {
   last_name: string;
 }
 
-export const useLinkSync = (initialLinks: Link[] = []) => {
-  const [links, setLinks] = useState<Link[]>(initialLinks);
+export const useLinkSync = () => {
+  const [links, setLinks] = useState<Link[]>([]);
+  const [prevlinks, setPrevLinks] = useState<Link[]>([]);
   const [userProfileDetails, setUserProfileDetails] =
     useState<UserProfileDetails | null>(null);
+  const UUID = getUserUUID();
 
-  async function getLinks(url: string = "/data.json") {
+  async function getLinks(
+    url: string = API_BASE_URL + "/users/?user_id=" + UUID
+  ) {
     try {
       const response = await axios.get<LinkData>(url);
       const extractedLinks: Link[] = response.data.links.map((item) => ({
         id: item.uuid,
         name: item.platform,
         url: item.url,
+        index: item.index,
       }));
       setLinks(extractedLinks);
+      setPrevLinks(extractedLinks);
 
       setUserProfileDetails({
         uuid: response.data.uuid,
@@ -55,8 +64,13 @@ export const useLinkSync = (initialLinks: Link[] = []) => {
     }
   }
 
-  const addNewLink = useCallback(() => {
-    const newLink: Link = { id: Date.now().toString(), name: "", url: "" };
+  const addNewLink = useCallback((index: number) => {
+    const newLink: Link = {
+      id: Date.now().toString(),
+      name: "",
+      url: "",
+      index: index + 1,
+    };
     setLinks((prevLinks) => [...prevLinks, newLink]);
   }, []);
 
@@ -79,12 +93,39 @@ export const useLinkSync = (initialLinks: Link[] = []) => {
   );
 
   const removeLink = useCallback((id: string) => {
-    setLinks((prevLinks) => prevLinks.filter((link) => link.id !== id));
+    setLinks((prevLinks) => {
+      const updatedLinks = prevLinks
+        .filter((link) => link.id !== id)
+        .map((link, index) => ({ ...link, index }));
+      return updatedLinks;
+    });
   }, []);
 
   useEffect(() => {
     getLinks();
   }, []);
+
+  const saveLinks = useCallback(async () => {
+    if (JSON.stringify(prevlinks) !== JSON.stringify(links)) {
+      for (const link of links) {
+        try {
+          const response = await axios.post(API_BASE_URL + "/links", {
+            platform: link.name,
+            index: link.index,
+            url: link.url,
+            user_id: UUID,
+          });
+          if (response.status === 200 || response.status === 201) {
+            console.log("successfully posted", link.name);
+            getLinks();
+          }
+        } catch (error) {
+          console.error("Error saving link:", error);
+        }
+      }
+      setPrevLinks(links);
+    }
+  }, [links, prevlinks, UUID, getLinks]);
 
   return {
     links,
@@ -95,5 +136,6 @@ export const useLinkSync = (initialLinks: Link[] = []) => {
     updateLink,
     updateUserProfile,
     removeLink,
+    saveLinks,
   };
 };

@@ -20,9 +20,6 @@ export function SelectLink({ link, updateLink }: SelectLinkProps) {
   );
   const [customLinkName, setCustomLinkName] = useState(link.name);
 
-  console.log(link.name);
-  console.log(selectedOption);
-
   const options = Object.entries(linkAttributes).map(([key, value]) => ({
     value: key,
     icon: value.icon,

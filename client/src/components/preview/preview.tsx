@@ -1,5 +1,3 @@
-// import { cookies } from "next/headers";
-import { getUserUUID } from "@/lib/auth";
 import PreviewLinks from "./preview-links";
 import PreviewProfile from "./preview-profile";
 import { Link, UserProfileDetails } from "@/utils/linkSync";
@@ -15,12 +13,6 @@ export default function Preview({
   userProfileDetails,
   className,
 }: PreviewProps) {
-  // const cookieStore = cookies();
-  // const uuid = cookieStore.get("uuid")?.value || "";
-  const uuid = getUserUUID();
-  console.log(links);
-  console.log(userProfileDetails);
-
   return (
     <div
       className={`p-6 rounded-xl bg-white flex justify-center items-center ${className}`}
