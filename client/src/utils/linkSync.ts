@@ -116,8 +116,8 @@ export const useLinkSync = () => {
             user_id: UUID,
           });
           if (response.status === 200 || response.status === 201) {
+            console.log(response.data);
             console.log("successfully posted", link.name);
-            getLinks();
           }
         } catch (error) {
           console.error("Error saving link:", error);
@@ -125,7 +125,7 @@ export const useLinkSync = () => {
       }
       setPrevLinks(links);
     }
-  }, [links, prevlinks, UUID, getLinks]);
+  }, [links, prevlinks, UUID]);
 
   return {
     links,
