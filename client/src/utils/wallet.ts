@@ -76,7 +76,6 @@ export const useWallet = () => {
           const userData = await userSession.handlePendingSignIn();
           setUserData(userData);
           setUserAddress(userData.profile.stxAddress.mainnet);
-
           const response = await postUserData(userData);
           console.log(response);
           setUserUUID(response.data.uuid);
@@ -92,10 +91,11 @@ export const useWallet = () => {
         setUserData(userData);
         setUserAddress(userData.profile.stxAddress.mainnet);
         console.log("already signed in");
-
         if (!isAdmin()) {
           try {
             const response = await postUserData(userData);
+            console.log("Heyo");
+            console.log(response);
             setUserUUID(response.data.uuid);
           } catch (error) {
             console.error("Error saving user data:", error);
@@ -105,6 +105,9 @@ export const useWallet = () => {
     };
 
     console.log(getUserUUID());
+    console.log(userSession);
+    console.log(userSession.isUserSignedIn());
+    console.log(userSession.isSignInPending());
 
     handleSignIn();
   }, []);
