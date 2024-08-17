@@ -43,7 +43,7 @@ export async function GET(request: Request) {
           const { data, error } = await supabase.auth.getUser();
           const user = data?.user;
 
-          const fullName = user.user_metadata?.full_name || "";
+          const fullName = user?.user_metadata?.full_name || "";
           const [firstName, ...lastNameParts] = fullName.split(" ");
           const lastName = lastNameParts.join(" ");
 
