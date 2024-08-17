@@ -52,12 +52,14 @@ export async function GET(request: Request) {
             console.log(error);
           }
           const url = `${API_BASE_URL}/users`;
+          console.log(url);
           const response = await fetch(url, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
+              theme: null,
               auth_type: "supabase",
               supabase_user_id: user?.id,
               first_name: firstName || null,
@@ -82,7 +84,6 @@ export async function GET(request: Request) {
             throw new Error("Failed to create user in API");
           }
           const responseData = await response.json();
-          // setUserUUID(responseData?.uuid || "HERE");
           console.log(responseData);
           cookieStore.set({
             name: "uuid",

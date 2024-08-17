@@ -1,4 +1,5 @@
 import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function updateSession(request: NextRequest) {
@@ -33,26 +34,27 @@ export async function updateSession(request: NextRequest) {
   // supabase.auth.getUser(). A simple mistake could make it very hard to debug
   // issues with users being randomly logged out.
 
+  const cookieStore = cookies();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (
-    request.nextUrl.pathname.startsWith("/login") ||
-    request.nextUrl.pathname.startsWith("/auth/callback")
-  ) {
+  const uuid = cookieStore.get("uuid")?.value;
+  // Allow access to auth callback without redirects
+  if (request.nextUrl.pathname.startsWith("/auth/callback")) {
     return supabaseResponse;
   }
 
-  if (!user) {
+  // Redirect authenticated users away from login page
+  if (uuid && request.nextUrl.pathname.startsWith("/login")) {
     const url = request.nextUrl.clone();
-    url.pathname = "/login";
+    url.pathname = "/";
     return NextResponse.redirect(url);
   }
 
-  // Redirect authenticated users away from login page
-  if (user && request.nextUrl.pathname.startsWith("/login")) {
+  // Redirect unauthenticated users to login page
+  if (!uuid && !request.nextUrl.pathname.includes("/login")) {
     const url = request.nextUrl.clone();
-    url.pathname = "/";
+    url.pathname = "/login";
     return NextResponse.redirect(url);
   }
 

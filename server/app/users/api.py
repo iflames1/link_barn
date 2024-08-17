@@ -26,7 +26,7 @@ async def get_user_by_uuid(user_id: str, users: UsersCRUD = Depends(get_users_cr
     # )
 
 
-@router.get("/check/{stx_address_mainnet}", response_model=StatusMessage, status_code=http_status.HTTP_200_OK)
+@router.get("/is_signed_up/{stx_address_mainnet}", response_model=StatusMessage, status_code=http_status.HTTP_200_OK)
 async def check_user_exists(stx_address_mainnet: str, users: UsersCRUD = Depends(get_users_crud)):
     try:
         user = await users.check_user_is_created(stx_address_mainnet)
