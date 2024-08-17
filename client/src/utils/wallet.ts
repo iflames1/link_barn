@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { AppConfig, UserSession, showConnect } from "@stacks/connect";
 import axios from "axios";
-import { clearUUID, getUserUUID, isAdmin, setUserUUID } from "@/lib/auth";
+import { clearUUID, getUserUUID, setUserUUID } from "@/lib/auth";
 import { API_BASE_URL } from "@/lib/constants";
 
 const apiUrl: string = process.env.NEXT_PUBLIC_API_URL || "";
@@ -34,7 +34,11 @@ export const useWallet = () => {
   const connectWallet = () => {
     showConnect({
       appDetails,
-      onFinish: () => window.location.reload(),
+      redirectTo: "/",
+      onFinish: () => {
+        handleConnect();
+        window.location.reload();
+      },
       onCancel: () => {
         console.log("oops, canceled");
       },
@@ -50,67 +54,106 @@ export const useWallet = () => {
     console.log("disconnected");
   };
 
-  useEffect(() => {
-    const postUserData = (userData: UserData) => {
-      return axios.post(API_BASE_URL + "/users", {
-        auth_type: "crypto",
-        stx_address_mainnet: userData.profile.stxAddress.mainnet,
-        wallet_provider: userData.profile.walletProvider,
-        supabase_user_id: null,
-        first_name: null,
-        last_name: null,
-        profile_picture: null,
-        email: null,
-        decentralized_id: null,
-        stx_address_testnet: null,
-        btc_address_mainnet: null,
-        btc_address_testnet: null,
-        public_key: null,
-        gaia_hub_url: null,
-      });
-    };
+  const postUserData = (userData: UserData) => {
+    return axios.post(API_BASE_URL + "/users", {
+      auth_type: "crypto",
+      stx_address_mainnet: userData.profile.stxAddress.mainnet,
+      wallet_provider: userData.profile.walletProvider,
+      supabase_user_id: null,
+      first_name: null,
+      last_name: null,
+      profile_picture: null,
+      email: null,
+      decentralized_id: null,
+      stx_address_testnet: null,
+      btc_address_mainnet: null,
+      btc_address_testnet: null,
+      public_key: null,
+      gaia_hub_url: null,
+    });
+  };
 
-    const handleSignIn = async () => {
+  const checkUserExists = async (
+    walletAddress: string = userAddress
+  ): Promise<{ status: boolean; message: string }> => {
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}/users/check/${walletAddress}`
+      );
+      return {
+        status: response.data.status,
+        message: response.data.message,
+      };
+    } catch (error) {
+      console.error("Error checking user existence:", error);
+      return {
+        status: false,
+        message: "Error checking user existence",
+      };
+    }
+  };
+
+  const handleConnect = async () => {
+    try {
+      let userData;
       if (userSession.isSignInPending()) {
-        try {
-          const userData = await userSession.handlePendingSignIn();
-          setUserData(userData);
-          setUserAddress(userData.profile.stxAddress.mainnet);
-          const response = await postUserData(userData);
-          console.log(response);
-          setUserUUID(response.data.uuid);
-          console.log(getUserUUID());
-        } catch (error) {
-          console.error(
-            "Error handling pending sign-in or saving user data:",
-            error
-          );
-        }
+        userData = await userSession.handlePendingSignIn();
       } else if (userSession.isUserSignedIn()) {
-        const userData = userSession.loadUserData();
-        setUserData(userData);
-        setUserAddress(userData.profile.stxAddress.mainnet);
-        console.log("already signed in");
-        if (!isAdmin()) {
-          try {
-            const response = await postUserData(userData);
-            console.log("Heyo");
-            console.log(response);
-            setUserUUID(response.data.uuid);
-          } catch (error) {
-            console.error("Error saving user data:", error);
-          }
+        userData = userSession.loadUserData();
+      } else {
+        console.log("User is not signed in or pending");
+        return;
+      }
+
+      setUserData(userData);
+      setUserAddress(userData.profile.stxAddress.mainnet);
+
+      if (!getUserUUID()) {
+        const userExists = await checkUserExists(userAddress);
+        if (!userExists.status) {
+          const response = await postUserData(userData);
+          setUserUUID(response.data.uuid);
         }
       }
-    };
+    } catch (error) {
+      console.error("Error handling connection or saving user data:", error);
+    }
+  };
 
-    console.log(getUserUUID());
-    console.log(userSession);
-    console.log(userSession.isUserSignedIn());
-    console.log(userSession.isSignInPending());
-
-    handleSignIn();
-  }, []);
+  //const handleSignIn = async () => {
+  //  if (userSession.isSignInPending()) {
+  //    try {
+  //      const userData = await userSession.handlePendingSignIn();
+  //      setUserData(userData);
+  //      setUserAddress(userData.profile.stxAddress.mainnet);
+  //      const response = await postUserData(userData);
+  //      console.log(response);
+  //      setUserUUID(response.data.uuid);
+  //      console.log(getUserUUID());
+  //    } catch (error) {
+  //      console.error(
+  //        "Error handling pending sign-in or saving user data:",
+  //        error
+  //      );
+  //    }
+  //  } else if (userSession.isUserSignedIn()) {
+  //    const userData = userSession.loadUserData();
+  //    setUserData(userData);
+  //    setUserAddress(userData.profile.stxAddress.mainnet);
+  //    console.log("already signed in");
+  //    if (!isAdmin()) {
+  //      try {
+  //        const response = await postUserData(userData);
+  //        console.log(response);
+  //        console.log(response.data.uuid);
+  //        setUserUUID(response.data.uuid);
+  //        console.log(getUserUUID());
+  //      } catch (error) {
+  //        console.error("Error saving user data:", error);
+  //      }
+  //    }
+  //  }
+  //};
 
   return {
     userData,

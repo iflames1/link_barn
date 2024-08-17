@@ -14,7 +14,7 @@ export default function ConnectWallet() {
       className="gap-4 w-full max-w-[300px]"
       // Implement crypto sign-in logic
     >
-      <LuWallet2 /> Sign in With Crypto
+      <LuWallet2 /> Sign in With Wallet
     </Button>
   );
 }

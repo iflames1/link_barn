@@ -56,7 +56,6 @@ export default function Links() {
                   removeLink={removeLink}
                   updateLink={updateLink}
                   key={link.id}
-                  index={link.index}
                   link={link}
                 />
               ))

@@ -4,7 +4,6 @@ import { SelectLink } from "./select-link";
 import { Link } from "@/utils/linkSync";
 
 interface LinkEditorProps {
-  index: number;
   link: {
     id: string;
     name: string;
@@ -16,7 +15,6 @@ interface LinkEditorProps {
 }
 
 export default function LinkEditor({
-  index,
   link,
   removeLink,
   updateLink,

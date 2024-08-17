@@ -37,30 +37,47 @@ export const useLinkSync = () => {
   const [prevlinks, setPrevLinks] = useState<Link[]>([]);
   const [userProfileDetails, setUserProfileDetails] =
     useState<UserProfileDetails | null>(null);
+  const [prevUserProfileDetails, setPrevUserProfileDetails] =
+    useState<UserProfileDetails | null>(null);
   const UUID = getUserUUID();
+  console.log("UUID:", UUID);
 
   async function getLinks(
-    url: string = API_BASE_URL + "/users/?user_id=" + UUID
-  ) {
+    url: string = `${API_BASE_URL}/users/?user_id=${UUID}`
+  ): Promise<boolean> {
     try {
       const response = await axios.get<LinkData>(url);
-      const extractedLinks: Link[] = response.data.links.map((item) => ({
-        id: item.uuid,
-        name: item.platform,
-        url: item.url,
-        index: item.index,
-      }));
-      setLinks(extractedLinks);
-      setPrevLinks(extractedLinks);
 
-      setUserProfileDetails({
-        uuid: response.data.uuid,
-        profile_picture: response.data.profile_picture,
-        first_name: response.data.first_name,
-        last_name: response.data.last_name,
-      });
+      if (response.status === 200) {
+        const extractedLinks: Link[] = response.data.links.map((item) => ({
+          id: item.uuid,
+          name: item.platform,
+          url: item.url,
+          index: item.index,
+        }));
+
+        const updatedLinks = updateLinkIndexes(extractedLinks);
+        setLinks(updatedLinks);
+        setPrevLinks(updatedLinks);
+
+        const { uuid, profile_picture, first_name, last_name } = response.data;
+        const profileDetails = { uuid, profile_picture, first_name, last_name };
+
+        setUserProfileDetails(profileDetails);
+        setPrevUserProfileDetails(profileDetails);
+
+        return true;
+      }
+
+      console.warn(`Unexpected response status: ${response.status}`);
+      return false;
     } catch (error) {
-      console.error(error);
+      if (axios.isAxiosError(error)) {
+        console.error("Axios error:", error.message);
+      } else {
+        console.error("Unexpected error:", error);
+      }
+      return false;
     }
   }
 
@@ -92,6 +109,10 @@ export const useLinkSync = () => {
     []
   );
 
+  const updateLinkIndexes = (links: Link[]): Link[] => {
+    return links.map((link, index) => ({ ...link, index }));
+  };
+
   const removeLink = useCallback((id: string) => {
     setLinks((prevLinks) => {
       const updatedLinks = prevLinks
@@ -101,31 +122,98 @@ export const useLinkSync = () => {
     });
   }, []);
 
-  useEffect(() => {
-    getLinks();
-  }, []);
-
   const saveLinks = useCallback(async () => {
-    if (JSON.stringify(prevlinks) !== JSON.stringify(links)) {
-      for (const link of links) {
-        try {
-          const response = await axios.post(API_BASE_URL + "/links", {
-            platform: link.name,
-            index: link.index,
-            url: link.url,
-            user_id: UUID,
-          });
-          if (response.status === 200 || response.status === 201) {
-            console.log("successfully posted", link.name);
-            getLinks();
-          }
-        } catch (error) {
-          console.error("Error saving link:", error);
-        }
+    const updatedLinks = [];
+    const newLinks = [];
+    const deletedLinks = prevlinks.filter(
+      (pl) => !links.some((l) => l.id === pl.id)
+    );
+
+    for (const link of links) {
+      const prevLink = prevlinks.find((pl) => pl.id === link.id);
+      if (
+        prevLink &&
+        (prevLink.name !== link.name ||
+          prevLink.index !== link.index ||
+          prevLink.url !== link.url)
+      ) {
+        updatedLinks.push(link);
+      } else if (!prevLink) {
+        newLinks.push(link);
       }
-      setPrevLinks(links);
     }
-  }, [links, prevlinks, UUID, getLinks]);
+
+    try {
+      await Promise.all([
+        ...updatedLinks.map((link) =>
+          axios
+            .patch(`${API_BASE_URL}/links/${link.id}`, {
+              platform: link.name,
+              index: link.index,
+              url: link.url,
+            })
+            .then(() => console.log(`Updated link: ${link.name}`))
+        ),
+        ...newLinks.map((link) =>
+          axios
+            .post(`${API_BASE_URL}/links`, {
+              platform: link.name,
+              index: link.index,
+              url: link.url,
+              user_id: UUID,
+            })
+            .then(() => console.log(`Added new link: ${link.name}`))
+        ),
+        ...deletedLinks.map((link) =>
+          axios
+            .delete(`${API_BASE_URL}/links/${link.id}`)
+            .then(() => console.log(`Deleted: ${link.name}`))
+        ),
+      ]);
+
+      if (
+        updatedLinks.length > 0 ||
+        newLinks.length > 0 ||
+        deletedLinks.length > 0
+      ) {
+        setPrevLinks(links);
+        console.log("Links successfully synchronized with the server");
+      } else {
+        console.log("No changes to synchronize");
+      }
+    } catch (error) {
+      console.error("Error synchronizing links:", error);
+    }
+  }, [links, prevlinks, UUID]);
+
+  const saveUserDetails = useCallback(async () => {
+    if (
+      prevUserProfileDetails &&
+      userProfileDetails &&
+      (prevUserProfileDetails.first_name !== userProfileDetails.first_name ||
+        prevUserProfileDetails.last_name !== userProfileDetails.last_name)
+    ) {
+      try {
+        await axios
+          .patch(`${API_BASE_URL}/users/?user_id=${UUID}`, {
+            first_name: userProfileDetails.first_name,
+            last_name: userProfileDetails.last_name,
+          })
+          .then(() => {
+            console.log("User details updated successfully");
+            setPrevUserProfileDetails(userProfileDetails);
+          });
+      } catch (error) {
+        console.error("Error updating user details:", error);
+      }
+    }
+  }, [prevUserProfileDetails, userProfileDetails, UUID]);
+
+  useEffect(() => {
+    if (UUID) {
+      getLinks(API_BASE_URL + "/users/?user_id=" + UUID);
+    }
+  }, []);
 
   return {
     links,
@@ -137,5 +225,6 @@ export const useLinkSync = () => {
     updateUserProfile,
     removeLink,
     saveLinks,
+    saveUserDetails,
   };
 };
