@@ -51,8 +51,8 @@ export const useLinkSync = () => {
         url: item.url,
         index: item.index,
       }));
-      setLinks(extractedLinks);
-      setPrevLinks(extractedLinks);
+      setLinks(updateLinkIndexes(extractedLinks));
+      setPrevLinks(updateLinkIndexes(extractedLinks));
 
       setUserProfileDetails({
         uuid: response.data.uuid,
@@ -92,6 +92,10 @@ export const useLinkSync = () => {
     },
     []
   );
+
+  const updateLinkIndexes = (links: Link[]): Link[] => {
+    return links.map((link, index) => ({ ...link, index }));
+  };
 
   const removeLink = useCallback((id: string) => {
     setLinks((prevLinks) => {
