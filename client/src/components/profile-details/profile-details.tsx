@@ -23,7 +23,8 @@ export default function ProfileDetails() {
   const [isHovered, setIsHovered] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const uuid = getUserUUID();
-  const { userProfileDetails, updateUserProfile, links } = useLinkSync();
+  const { userProfileDetails, updateUserProfile, links, saveUserDetails } =
+    useLinkSync();
 
   const uploadStagedFile = async (stagedFile: File | Blob, uuid: string) => {
     const form = new FormData();
@@ -95,6 +96,10 @@ export default function ProfileDetails() {
       console.log("No file selected");
     }
   };
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    saveUserDetails();
+  };
 
   return (
     <div className="lg:flex gap-6 w-full">
@@ -103,7 +108,10 @@ export default function ProfileDetails() {
         userProfileDetails={userProfileDetails}
         className="w-[40vw] lg:flex hidden"
       />
-      <div className="bg-white flex flex-col justify-between rounded-xl lg:w-[60%] h-[calc(100vh-152px)] overflow-auto">
+      <form
+        onSubmit={(e) => handleSubmit(e)}
+        className="bg-white flex flex-col justify-between rounded-xl lg:w-[60%] h-[calc(100vh-152px)] overflow-auto"
+      >
         <div className="sm:p-10 p-6">
           <div className="pb-10">
             <h2 className="pb-2 hM text-black">Profile Details</h2>
@@ -202,6 +210,7 @@ export default function ProfileDetails() {
           <hr className="h-[1px] bg-gray border-none" />
           <div className="sm:py-6 sm:px-10 p-4 flex justify-end">
             <button
+              type="submit"
               onClick={handleFileUpload}
               className={`hS button text-white bg-base-dark sm:w-fit w-full`}
             >
@@ -209,7 +218,7 @@ export default function ProfileDetails() {
             </button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

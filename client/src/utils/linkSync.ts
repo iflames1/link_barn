@@ -37,31 +37,47 @@ export const useLinkSync = () => {
   const [prevlinks, setPrevLinks] = useState<Link[]>([]);
   const [userProfileDetails, setUserProfileDetails] =
     useState<UserProfileDetails | null>(null);
+  const [prevUserProfileDetails, setPrevUserProfileDetails] =
+    useState<UserProfileDetails | null>(null);
   const UUID = getUserUUID();
-  console.log(UUID);
+  console.log("UUID:", UUID);
 
   async function getLinks(
-    url: string = API_BASE_URL + "/users/?user_id=" + UUID
-  ) {
+    url: string = `${API_BASE_URL}/users/?user_id=${UUID}`
+  ): Promise<boolean> {
     try {
       const response = await axios.get<LinkData>(url);
-      const extractedLinks: Link[] = response.data.links.map((item) => ({
-        id: item.uuid,
-        name: item.platform,
-        url: item.url,
-        index: item.index,
-      }));
-      setLinks(updateLinkIndexes(extractedLinks));
-      setPrevLinks(updateLinkIndexes(extractedLinks));
 
-      setUserProfileDetails({
-        uuid: response.data.uuid,
-        profile_picture: response.data.profile_picture,
-        first_name: response.data.first_name,
-        last_name: response.data.last_name,
-      });
+      if (response.status === 200) {
+        const extractedLinks: Link[] = response.data.links.map((item) => ({
+          id: item.uuid,
+          name: item.platform,
+          url: item.url,
+          index: item.index,
+        }));
+
+        const updatedLinks = updateLinkIndexes(extractedLinks);
+        setLinks(updatedLinks);
+        setPrevLinks(updatedLinks);
+
+        const { uuid, profile_picture, first_name, last_name } = response.data;
+        const profileDetails = { uuid, profile_picture, first_name, last_name };
+
+        setUserProfileDetails(profileDetails);
+        setPrevUserProfileDetails(profileDetails);
+
+        return true;
+      }
+
+      console.warn(`Unexpected response status: ${response.status}`);
+      return false;
     } catch (error) {
-      console.error(error);
+      if (axios.isAxiosError(error)) {
+        console.error("Axios error:", error.message);
+      } else {
+        console.error("Unexpected error:", error);
+      }
+      return false;
     }
   }
 
@@ -104,10 +120,6 @@ export const useLinkSync = () => {
         .map((link, index) => ({ ...link, index }));
       return updatedLinks;
     });
-  }, []);
-
-  useEffect(() => {
-    getLinks();
   }, []);
 
   const saveLinks = useCallback(async () => {
@@ -174,6 +186,35 @@ export const useLinkSync = () => {
     }
   }, [links, prevlinks, UUID]);
 
+  const saveUserDetails = useCallback(async () => {
+    if (
+      prevUserProfileDetails &&
+      userProfileDetails &&
+      (prevUserProfileDetails.first_name !== userProfileDetails.first_name ||
+        prevUserProfileDetails.last_name !== userProfileDetails.last_name)
+    ) {
+      try {
+        await axios
+          .patch(`${API_BASE_URL}/users/?user_id=${UUID}`, {
+            first_name: userProfileDetails.first_name,
+            last_name: userProfileDetails.last_name,
+          })
+          .then(() => {
+            console.log("User details updated successfully");
+            setPrevUserProfileDetails(userProfileDetails);
+          });
+      } catch (error) {
+        console.error("Error updating user details:", error);
+      }
+    }
+  }, [prevUserProfileDetails, userProfileDetails, UUID]);
+
+  useEffect(() => {
+    if (UUID) {
+      getLinks(API_BASE_URL + "/users/?user_id=" + UUID);
+    }
+  }, []);
+
   return {
     links,
     userProfileDetails,
@@ -184,5 +225,6 @@ export const useLinkSync = () => {
     updateUserProfile,
     removeLink,
     saveLinks,
+    saveUserDetails,
   };
 };

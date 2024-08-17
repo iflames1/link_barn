@@ -51,7 +51,7 @@ const Login = async () => {
           <FcGoogle /> Continue with Google
         </Button>
       </form>
-      {/* <ConnectWallet /> */}
+      <ConnectWallet />
     </main>
   );
 };
