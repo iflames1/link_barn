@@ -7,10 +7,9 @@ interface PreviewProps {
 }
 
 export default function PreviewLinks({ links }: PreviewProps) {
-  console.log(!(1 < 1));
   return (
-    <div className="flex flex-col items-center gap-5 w-full pb-11">
-      {!(links?.length < 1)
+    <div className="flex flex-col items-center gap-5 w-full max-w-60">
+      {links?.length < 1
         ? Array(4)
             .fill(null)
             .map((_, index) => (
