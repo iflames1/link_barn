@@ -38,6 +38,7 @@ export const useLinkSync = () => {
   const [userProfileDetails, setUserProfileDetails] =
     useState<UserProfileDetails | null>(null);
   const UUID = getUserUUID();
+  console.log(UUID);
 
   async function getLinks(
     url: string = API_BASE_URL + "/users/?user_id=" + UUID
@@ -106,24 +107,66 @@ export const useLinkSync = () => {
   }, []);
 
   const saveLinks = useCallback(async () => {
-    if (JSON.stringify(prevlinks) !== JSON.stringify(links)) {
-      for (const link of links) {
-        try {
-          const response = await axios.post(API_BASE_URL + "/links", {
-            platform: link.name,
-            index: link.index,
-            url: link.url,
-            user_id: UUID,
-          });
-          if (response.status === 200 || response.status === 201) {
-            console.log(response.data);
-            console.log("successfully posted", link.name);
-          }
-        } catch (error) {
-          console.error("Error saving link:", error);
-        }
+    const updatedLinks = [];
+    const newLinks = [];
+    const deletedLinks = prevlinks.filter(
+      (pl) => !links.some((l) => l.id === pl.id)
+    );
+
+    for (const link of links) {
+      const prevLink = prevlinks.find((pl) => pl.id === link.id);
+      if (
+        prevLink &&
+        (prevLink.name !== link.name ||
+          prevLink.index !== link.index ||
+          prevLink.url !== link.url)
+      ) {
+        updatedLinks.push(link);
+      } else if (!prevLink) {
+        newLinks.push(link);
       }
-      setPrevLinks(links);
+    }
+
+    try {
+      await Promise.all([
+        ...updatedLinks.map((link) =>
+          axios
+            .patch(`${API_BASE_URL}/links/${link.id}`, {
+              platform: link.name,
+              index: link.index,
+              url: link.url,
+            })
+            .then(() => console.log(`Updated link: ${link.name}`))
+        ),
+        ...newLinks.map((link) =>
+          axios
+            .post(`${API_BASE_URL}/links`, {
+              platform: link.name,
+              index: link.index,
+              url: link.url,
+              user_id: UUID,
+            })
+            .then(() => console.log(`Added new link: ${link.name}`))
+        ),
+        ...deletedLinks.map((link) =>
+          axios
+            .delete(`${API_BASE_URL}/links/${link.id}`)
+            .then(() => console.log(`Deleted: ${link.name}`))
+        ),
+      ]);
+
+      if (
+        updatedLinks.length > 0 ||
+        newLinks.length > 0 ||
+        deletedLinks.length > 0
+      ) {
+        setPrevLinks(links);
+        console.log("Links successfully synchronized with the server");
+      } else {
+        console.log("No changes to synchronize");
+      }
+    } catch (error) {
+      console.error("Error synchronizing links:", error);
     }
   }, [links, prevlinks, UUID]);
 
