@@ -7,9 +7,10 @@ interface PreviewProps {
 }
 
 export default function PreviewLinks({ links }: PreviewProps) {
+  console.log(!(1 < 1));
   return (
     <div className="flex flex-col items-center gap-5 w-full pb-11">
-      {links.length === 0
+      {!(links?.length < 1)
         ? Array(4)
             .fill(null)
             .map((_, index) => (
@@ -18,7 +19,7 @@ export default function PreviewLinks({ links }: PreviewProps) {
                 className="bg-gray-preview w-full h-11 rounded-lg"
               ></div>
             ))
-        : links.map((link, index) => {
+        : links?.map((link, index) => {
             const normalizedLinkName =
               link.name.toLowerCase() as keyof typeof linkAttributes;
             const attributes =

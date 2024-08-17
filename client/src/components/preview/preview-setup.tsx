@@ -8,7 +8,7 @@ interface PreviewProps {
   className: string;
 }
 
-export default function Preview({
+export default function PreviewSetup({
   links,
   userProfileDetails,
   className,

@@ -27,7 +27,7 @@ export const useWallet = () => {
   const userSession = new UserSession({ appConfig });
 
   const appDetails = {
-    name: "Stacks Gov",
+    name: "Link Barn",
     icon: "/images/logo.svg",
   };
 
@@ -119,41 +119,6 @@ export const useWallet = () => {
       console.error("Error handling connection or saving user data:", error);
     }
   };
-
-  //const handleSignIn = async () => {
-  //  if (userSession.isSignInPending()) {
-  //    try {
-  //      const userData = await userSession.handlePendingSignIn();
-  //      setUserData(userData);
-  //      setUserAddress(userData.profile.stxAddress.mainnet);
-  //      const response = await postUserData(userData);
-  //      console.log(response);
-  //      setUserUUID(response.data.uuid);
-  //      console.log(getUserUUID());
-  //    } catch (error) {
-  //      console.error(
-  //        "Error handling pending sign-in or saving user data:",
-  //        error
-  //      );
-  //    }
-  //  } else if (userSession.isUserSignedIn()) {
-  //    const userData = userSession.loadUserData();
-  //    setUserData(userData);
-  //    setUserAddress(userData.profile.stxAddress.mainnet);
-  //    console.log("already signed in");
-  //    if (!isAdmin()) {
-  //      try {
-  //        const response = await postUserData(userData);
-  //        console.log(response);
-  //        console.log(response.data.uuid);
-  //        setUserUUID(response.data.uuid);
-  //        console.log(getUserUUID());
-  //      } catch (error) {
-  //        console.error("Error saving user data:", error);
-  //      }
-  //    }
-  //  }
-  //};
 
   return {
     userData,

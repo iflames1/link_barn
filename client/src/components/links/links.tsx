@@ -1,5 +1,5 @@
 "use client";
-import Preview from "../preview/preview";
+import PreviewSetup from "../preview/preview-setup";
 import { useLinkSync } from "@/utils/linkSync";
 import GetStarted from "./get-started";
 import LinkEditor from "./link-editor";
@@ -21,7 +21,7 @@ export default function Links() {
 
   return (
     <div className="lg:flex gap-6 w-full">
-      <Preview
+      <PreviewSetup
         links={links}
         userProfileDetails={userProfileDetails}
         className="w-[40vw] lg:flex hidden"

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useRef } from "react";
 import Image from "next/image";
-import Preview from "../preview/preview";
+import PreviewSetup from "../preview/preview-setup";
 import { IoImageOutline } from "react-icons/io5";
 import { API_BASE_URL } from "@/lib/constants";
 import { getUserUUID } from "@/lib/auth";
@@ -103,7 +103,7 @@ export default function ProfileDetails() {
 
   return (
     <div className="lg:flex gap-6 w-full">
-      <Preview
+      <PreviewSetup
         links={links}
         userProfileDetails={userProfileDetails}
         className="w-[40vw] lg:flex hidden"
