@@ -46,9 +46,18 @@ class UsersCRUD:
 
         return user
 
-    async def get_all(self) -> list[UserCreate]:
+    async def get_all(self) -> list[User]:
         statement = select(User).order_by(User.created_at)
         results = await self.session.execute(statement)
         users = results.scalars().all()
 
         return users
+
+    async def check_user_is_created(self, stx_address_mainnet: str) -> bool:
+        statement = select(User).where(User.stx_address_mainnet == stx_address_mainnet)
+        results = await self.session.execute(statement)
+        user = results.scalars().first()
+        if user is None:
+            raise HTTPException(status_code=http_status.HTTP_404_NOT_FOUND, detail="User not found")
+
+        return user

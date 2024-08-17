@@ -9,13 +9,16 @@ load_dotenv(getenv("ENV_FILE"))
 settings = Settings()
 ---- The name ./links/__init__.py ----
 ---- The name ./links/crud.py ----
+"""
+Crud module for links
+"""
 from uuid import UUID
-
 from fastapi import HTTPException, status as http_status
-from sqlalchemy import select
+from sqlalchemy import select, delete
+from sqlalchemy.exc import SQLAlchemyError
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from app.links.models import LinkCreate, Link
+from app.links.models import LinkCreate, Link, LinkUpdate
 
 
 class LinksCRUD:
@@ -23,6 +26,10 @@ class LinksCRUD:
         self.session = session
 
     async def create(self, data: LinkCreate) -> Link:
+        """
+        Create a new link
+        @data: The new link to be created
+        """
         values = data.model_dump()
         link = Link(**values)
         self.session.add(link)
@@ -32,33 +39,98 @@ class LinksCRUD:
         return link
 
     async def get(self, link_id: str | UUID) -> Link:
+        """
+        Get a specific link
+        @link_id: The link to be retrieved
+        """
         statement = select(Link).where(Link.uuid == link_id)
         results = await self.session.execute(statement=statement)
         link = results.scalar_one_or_none()
 
         if link is None:
-            raise HTTPException(status_code=http_status.HTTP_404_NOT_FOUND, detail="Link not found")
+            raise HTTPException(
+                status_code=http_status.HTTP_404_NOT_FOUND, detail="Link not found")
 
         return link
 
     async def get_all(self, user_id: str | UUID) -> list[Link]:
+        """
+        Get all links by user id
+        @user_id: The links of the user to be retrieved
+        """
         statement = select(Link).where(Link.user_id == user_id)
         results = await self.session.execute(statement=statement)
         links = results.scalars().all()
 
         return links
+
+    async def put(self, link_id: str | UUID, data: LinkUpdate) -> Link:
+        """
+        Update a link
+        @link_id: The link to be updated
+        """
+        statement = select(Link).where(Link.uuid == link_id)
+        results = await self.session.execute(statement=statement)
+        link = results.scalar_one_or_none()
+
+        if link is None:
+            raise HTTPException(
+                status_code=http_status.HTTP_404_NOT_FOUND, detail="Link not found")
+
+        update_data = data.model_dump(exclude_unset=True)
+        for key, value in update_data.items():
+            if key != "uuid":
+                setattr(link, key, value)
+
+        await self.session.commit()
+        await self.session.refresh(link)
+
+        return link
+
+    async def delete(self, link_id: str | UUID) -> bool:
+        """
+        Delete a link
+        @link_id: The link to be deleted
+        """
+        try:
+            link = self.get(link_id=link_id)
+
+            statement = delete(Link).where(Link.uuid == link_id)
+
+            await self.session.execute(statement=statement)
+            await self.session.commit()
+
+            return True
+
+        except HTTPException as e:
+            if e.status_code == http_status.HTTP_404_NOT_FOUND:
+                raise e
+
+        except SQLAlchemyError as e:
+            await self.session.rollback()
+            raise HTTPException(
+                status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 ---- The name ./links/api.py ----
-from fastapi import APIRouter, status as http_status, Depends
+"""
+The api routes for the links
+"""
+from fastapi import APIRouter, status as http_status, Depends, HTTPException
 from app.links.crud import LinksCRUD
 from app.links.deps import get_links_crud
-from app.links.models import LinkRead, LinkCreate
+from app.links.models import LinkRead, LinkCreate, LinkUpdate
 from typing import List
+from app.core.models import StatusMessage
 
 router = APIRouter()
 
 
 @router.post("", response_model=LinkRead, status_code=http_status.HTTP_201_CREATED)
 async def create_link(data: LinkCreate, links: LinksCRUD = Depends(get_links_crud)):
+    """
+    Create a link
+    @data: The data to create the link
+    @links: The linksCrud object
+    """
     link = await links.create(data=data)
 
     return link
@@ -66,15 +138,56 @@ async def create_link(data: LinkCreate, links: LinksCRUD = Depends(get_links_cru
 
 @router.get("", response_model=LinkRead, status_code=http_status.HTTP_200_OK)
 async def get_link_by_uuid(link_id: str, links: LinksCRUD = Depends(get_links_crud)):
+    """
+    Get a link based on its UUID
+    @link_id: The UUID of the link
+    @links: The linksCrud object
+    """
     link = await links.get(link_id=link_id)
     return link
 
 
 @router.get("/user/{user_id}", response_model=List[LinkRead], status_code=http_status.HTTP_200_OK)
 async def get_user_links(user_id: str, links: LinksCRUD = Depends(get_links_crud)):
+    """
+    Get all links for a user
+    @user_id: The UUID of the user
+    @links: The linksCrud object
+    """
     links = await links.get_all(user_id=user_id)
-
     return links
+
+
+@router.patch("/{link_id}", response_model=LinkRead, status_code=http_status.HTTP_200_OK)
+async def update_link_by_id(link_id: str, data: LinkUpdate, links: LinksCRUD = Depends(get_links_crud)):
+    """
+    Update a link
+    @link_id: The UUID of the link
+    @data: The data to update the link
+    @links: The linksCrud object
+    """
+    try:
+        link = await links.put(link_id=link_id, data=data)
+        return link
+    except HTTPException as e:
+        return e
+    except Exception as e:
+        raise HTTPException(
+            status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+
+
+# dcf1e5f0-fe44-4f54-8d36-eb8b03c024d9
+
+@router.delete("/{link_id}", response_model=StatusMessage, status_code=http_status.HTTP_200_OK)
+async def delete_link_by_id(link_id: str, links: LinksCRUD = Depends(get_links_crud)):
+    """
+    Delete a link
+    @link_id: The UUID of the link
+    @links: The linksCrud object
+    """
+    status = await links.delete(link_id=link_id)
+
+    return {"status": status, "message": "Link has been deleted"}
 ---- The name ./links/deps.py ----
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -89,10 +202,12 @@ async def get_links_crud(
     return LinksCRUD(session=session)
 ---- The name ./links/models.py ----
 from sqlmodel import SQLModel, Field, Relationship
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 from uuid import UUID
 from app.core.models import TimestampModel, UUIDModel
-from app.users import models as user_models
+
+if TYPE_CHECKING:
+    from app.users.models import User
 
 
 class LinkBase(SQLModel):
@@ -101,11 +216,10 @@ class LinkBase(SQLModel):
     url: str = Field(nullable=False)
     user_id: Optional[UUID] = Field(default=None, foreign_key="users.uuid")
 
-    user: Optional["user_models.User"] = Relationship(back_populates="links")
 
-
-class Link(TimestampModel, LinkBase, UUIDModel, SQLModel, table=True):
+class Link(TimestampModel, LinkBase, UUIDModel, table=True):
     __tablename__ = 'links'
+    user: "User" = Relationship(back_populates="links")
 
 
 class LinkRead(LinkBase, UUIDModel):
@@ -114,27 +228,42 @@ class LinkRead(LinkBase, UUIDModel):
 
 class LinkCreate(LinkBase):
     ...
+
+
+class LinkUpdate(SQLModel):
+    platform: Optional[str] = Field(default=None)
+    index: Optional[int] = Field(default=None)
+    url: Optional[str] = Field(default=None)
 ---- The name ./core/__init__.py ----
 ---- The name ./core/database.py ----
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker
-
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
+from sqlalchemy.pool import NullPool
 from app import settings
 
 async_engine = create_async_engine(
     settings.db_async_connection_str,
     echo=True,
     future=True,
+    # pool_pre_ping=True,
+    # pool_recycle=3600,
+    poolclass=NullPool
+)
+
+AsyncSessionLocal = async_sessionmaker(
+    bind=async_engine,
+    class_=AsyncSession,
+    expire_on_commit=False,
+    autocommit=False,
+    autoflush=False,
 )
 
 
-async def get_async_session() -> AsyncSession:
-    async_session = sessionmaker(bind=async_engine, class_=AsyncSession, expire_on_commit=False)
-    async with async_session() as session:
+async def get_async_session():
+    async with AsyncSessionLocal() as session:
         try:
             yield session
         finally:
-            session.close()
+            await session.close()
 ---- The name ./core/config.py ----
 from pydantic_settings import BaseSettings
 
@@ -194,11 +323,16 @@ class TimestampModel(SQLModel):
             "onupdate": text("current_timestamp(0)")
         }
     )
+
+
+class StatusMessage(BaseModel):
+    status: bool
+    message: str
 ---- The name ./users/__init__.py ----
 ---- The name ./users/crud.py ----
 from fastapi import HTTPException, status as http_status
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.users.models import User, UserCreate
+from app.users.models import User, UserCreate, UserUpdate, UserRead
 from sqlalchemy import select
 from uuid import UUID
 
@@ -207,7 +341,7 @@ class UsersCRUD:
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def create(self, data: UserCreate) -> User:
+    async def create(self, data: UserCreate) -> UserRead:
         values = data.dict()
         user = User(**values)
         self.session.add(user)
@@ -221,31 +355,79 @@ class UsersCRUD:
         user = results.scalars().first()
 
         if user is None:
-            raise HTTPException(status_code=http_status.HTTP_404_NOT_FOUND, detail="User not found")
+            raise HTTPException(
+                status_code=http_status.HTTP_404_NOT_FOUND, detail="User not found")
 
         return user
----- The name ./users/api.py ----
-from fastapi import APIRouter, status as http_status, Depends
-from starlette import status
 
+    async def patch(self, user_id: str | UUID, data: UserUpdate) -> UserRead:
+        statement = select(User).where(User.uuid == user_id)
+        results = await self.session.execute(statement)
+        user = results.scalars().first()
+
+        if user is None:
+            raise HTTPException(
+                status_code=http_status.HTTP_404_NOT_FOUND, detail="User not found")
+
+        update_data = data.dict(exclude_unset=True)
+        for key, attr in update_data.items():
+            setattr(user, key, attr)
+
+        await self.session.commit()
+        await self.session.refresh(user)
+
+        return user
+
+    async def get_all(self) -> list[UserCreate]:
+        statement = select(User).order_by(User.created_at)
+        results = await self.session.execute(statement)
+        users = results.scalars().all()
+
+        return users
+---- The name ./users/api.py ----
+from fastapi import APIRouter, status as http_status, Depends, HTTPException
+from typing import List
 from app.users.crud import UsersCRUD
 from app.users.deps import get_users_crud
-from app.users.models import UserRead, UserCreate
+from app.links.models import LinkRead as LinkReadModel
+from app.users.models import UserRead, UserCreate, UserUpdate, User
 
 router = APIRouter()
 
 
-@router.post("/", response_model=UserRead, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=UserRead, status_code=http_status.HTTP_201_CREATED)
 async def create_user(data: UserCreate, users: UsersCRUD = Depends(get_users_crud)):
     user = await users.create(data)
 
     return user
 
 
-@router.get("/", response_model=UserRead, status_code=status.HTTP_200_OK)
+@router.get("/", response_model=UserRead, status_code=http_status.HTTP_200_OK)
 async def get_user_by_uuid(user_id: str, users: UsersCRUD = Depends(get_users_crud)):
     user = await users.get(user_id)
-    return user
+    return User(
+        **user.dict(exclude={'links'}),
+        links=[LinkReadModel.from_orm(link) for link in user.links]
+    )
+
+
+@router.get("/all", response_model=List[UserCreate], status_code=http_status.HTTP_200_OK)
+async def get_all_users(users: UsersCRUD = Depends(get_users_crud)):
+    all_users = await users.get_all()
+    return all_users
+
+
+@router.patch("/{user_id}", response_model=UserRead, status_code=http_status.HTTP_200_OK)
+async def update_user_by_uuid(user_id: str, data: UserUpdate, users: UsersCRUD = Depends(get_users_crud)):
+    """Hello"""
+    try:
+        updated_user = await users.patch(user_id, data)
+        return updated_user
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(
+            status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 ---- The name ./users/deps.py ----
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -256,21 +438,28 @@ from app.users.crud import UsersCRUD
 async def get_users_crud(session: AsyncSession = Depends(get_async_session)) -> UsersCRUD:
     return UsersCRUD(session=session)
 ---- The name ./users/models.py ----
+"""
+User Model
+"""
 from sqlmodel import SQLModel, Field, Relationship
 from sqlalchemy import event, Column, Enum
-from typing import Optional, List
+from typing import Optional, List, TYPE_CHECKING
 from app.core.models import TimestampModel, UUIDModel
-from app.links import models as links_models
+from pydantic import Field as PydanticField
 
-auth_type = Enum('crypto', 'supabase', name='auth_type_enum', create_type=False)
+if TYPE_CHECKING:
+    from app.links.models import Link
+else:
+    LinkRead = object
+
+auth_type = Enum('crypto', 'supabase',
+                 name='auth_type_enum', create_type=False)
 
 
 @event.listens_for(SQLModel.metadata, "before_create")
 def _create_enums(metadata, conn, **kw):
     auth_type.create(conn, checkfirst=True)
 
-
-#
 
 class UserBase(SQLModel):
     auth_type: str = Field(
@@ -279,8 +468,12 @@ class UserBase(SQLModel):
             auth_type,
         )
     )
-    supabase_user_id: str = Field(nullable=True)
-    email: str = Field(nullable=True)
+    theme: str | None = Field(nullable=True)
+    supabase_user_id: str | None = Field(nullable=True)
+    first_name: str | None = Field(nullable=True)
+    last_name: str | None = Field(nullable=True)
+    profile_picture: str | None = Field(nullable=True)
+    email: str | None = Field(nullable=True)
     decentralized_id: str | None = Field(nullable=True)
     stx_address_testnet: str | None = Field(nullable=True)
     stx_address_mainnet: str | None = Field(nullable=True)
@@ -289,19 +482,35 @@ class UserBase(SQLModel):
     wallet_provider: str | None = Field(nullable=True)
     public_key: str | None = Field(nullable=True)
     gaia_hub_url: str | None = Field(nullable=True)
-    links: List["links_models.Link"] = Relationship(back_populates="user", sa_relationship_kwargs={"lazy": "selectin"})
 
 
-class User(TimestampModel, UserBase, UUIDModel, SQLModel, table=True):
+class User(TimestampModel, UserBase, UUIDModel, table=True):
     __tablename__ = "users"
+    links: List["Link"] = Relationship(
+        back_populates="user", sa_relationship_kwargs={"lazy": "selectin"})
 
 
 class UserRead(UserBase, UUIDModel):
-    ...
+    links: List[LinkRead] = PydanticField(default_factory=list)
 
 
 class UserCreate(UserBase):
     ...
+
+
+class UserUpdate(SQLModel):
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    profile_picture: Optional[str] = None
+    email: Optional[str] = None
+    decentralized_id: Optional[str] = None
+    stx_address_testnet: Optional[str] = None
+    stx_address_mainnet: Optional[str] = None
+    btc_address_mainnet: Optional[str] = None
+    btc_address_testnet: Optional[str] = None
+    wallet_provider: Optional[str] = None
+    public_key: Optional[str] = None
+    gaia_hub_url: Optional[str] = None
 ---- The name ./router/__init__.py ----
 ---- The name ./router/api_v1/__init__.py ----
 ---- The name ./router/api_v1/endpoints.py ----

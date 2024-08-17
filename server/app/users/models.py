@@ -28,6 +28,7 @@ class UserBase(SQLModel):
             auth_type,
         )
     )
+    theme: str | None = Field(nullable=True)
     supabase_user_id: str | None = Field(nullable=True)
     first_name: str | None = Field(nullable=True)
     last_name: str | None = Field(nullable=True)
@@ -50,7 +51,10 @@ class User(TimestampModel, UserBase, UUIDModel, table=True):
 
 
 class UserRead(UserBase, UUIDModel):
-    links: List[LinkRead] = PydanticField(default_factory=list)
+    links: List[LinkRead] = []
+
+    class Config:
+        orm_mode = True
 
 
 class UserCreate(UserBase):
