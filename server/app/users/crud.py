@@ -65,25 +65,6 @@ class UsersCRUD:
 
         return user
 
-        # async def check_user_is_created(self, stx_address_mainnet: str) -> bool:
-
-    #     statement = select(User).where(User.stx_address_mainnet == stx_address_mainnet)
-    #     results = await self.session.execute(statement)
-    #     user = results.scalars().first()
-    #     if user is None:
-    #         raise HTTPException(status_code=http_status.HTTP_404_NOT_FOUND, detail="User not found")
-    #
-    #     return user
-    #
-    # async def check_username(self, username: str) -> bool:
-    #     statement = select(User).where(User.username == username)
-    #     results = await self.session.execute(statement)
-    #     user = results.scalars().first()
-    #     if user is None:
-    #         raise HTTPException(status_code=http_status.HTTP_404_NOT_FOUND, detail="Username not found")
-    #
-    #     return user
-
     async def check_field_exists(self, field: str, value: str) -> bool:
         valid_fields = ['stx_address_mainnet', "username", "supabase_user_id", "email"]
         if field not in valid_fields:
@@ -97,3 +78,12 @@ class UsersCRUD:
         except Exception as e:
             raise HTTPException(status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR,
                                 detail=f"An error occurred while checking the field: {str(e)}")
+
+    async def get_user_uuid(self, supabase_user_id: str) -> UUID | str:
+        statement = select(User).where(User.supabase_user_id == supabase_user_id)
+        result = await self.session.execute(statement)
+        user = result.scalars().first()
+        if user is None:
+            raise HTTPException(status_code=http_status.HTTP_404_NOT_FOUND, detail="User not found")
+
+        return user.uuid

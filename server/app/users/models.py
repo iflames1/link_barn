@@ -1,5 +1,5 @@
 from sqlmodel import SQLModel, Field, Relationship
-from sqlalchemy import event, Column, Enum
+from sqlalchemy import event, Column, Enum, text
 from typing import Optional, List, TYPE_CHECKING
 from app.core.models import TimestampModel, UUIDModel
 
@@ -13,6 +13,7 @@ auth_type = Enum('crypto', 'supabase', name='auth_type_enum', create_type=False)
 
 @event.listens_for(SQLModel.metadata, "before_create")
 def _create_enums(metadata, conn, **kw):
+    # Create the enum
     auth_type.create(conn, checkfirst=True)
 
 
