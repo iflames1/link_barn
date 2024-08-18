@@ -2,7 +2,7 @@ import Header from "@/components/header";
 import ProfileDetails from "@/components/profile-details/profile-details";
 import Wallet from "@/components/wallet";
 
-export default function Home() {
+export default function ProfilePage() {
   return (
     <div className="bg-gray-light sm:p-6 w-full max-w-[1440px] mx-auto relative">
       <Header />
