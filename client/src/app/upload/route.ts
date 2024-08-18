@@ -58,7 +58,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           message: "Cloudinary upload failed",
-          error: res.error,
+          //error: res.error,
+          error: "error" in res ? res.error : "Unknown error",
         },
         { status: 500 }
       );
