@@ -47,60 +47,67 @@ export const useLinkSync = () => {
     useState<UserProfileDetails | null>(null);
   const [UUID, setUUID] = useState<string | undefined>(undefined);
 
-  async function getLinks(
-    url: string = `${API_BASE_URL}/users/?user_id=${UUID}`
-  ): Promise<boolean> {
-    try {
-      const response = await axios.get<LinkData>(url);
+  const getLinks = useCallback(
+    async (
+      url: string = `${API_BASE_URL}/users/?user_id=${UUID}`
+    ): Promise<boolean> => {
+      try {
+        const response = await axios.get<LinkData>(url);
 
-      if (response.status === 200) {
-        const extractedLinks: Link[] = response.data.links.map((item) => ({
-          id: item.uuid,
-          name: item.platform,
-          url: item.url,
-          index: item.index,
-        }));
+        if (response.status === 200) {
+          const extractedLinks: Link[] = response.data.links.map((item) => ({
+            id: item.uuid,
+            name: item.platform,
+            url: item.url,
+            index: item.index,
+          }));
 
-        const updatedLinks = updateLinkIndexes(extractedLinks);
-        setLinks(updatedLinks);
-        setPrevLinks(updatedLinks);
+          const updateLinkIndexes = (links: Link[]): Link[] => {
+            return links.map((link, index) => ({ ...link, index }));
+          };
 
-        const {
-          uuid,
-          profile_picture,
-          first_name,
-          last_name,
-          username,
-          email,
-          stx_address_mainnet,
-        } = response.data;
-        const profileDetails = {
-          uuid,
-          profile_picture,
-          first_name,
-          last_name,
-          username,
-          email,
-          stx_address_mainnet,
-        };
+          const updatedLinks = updateLinkIndexes(extractedLinks);
+          setLinks(updatedLinks);
+          setPrevLinks(updatedLinks);
 
-        setUserProfileDetails(profileDetails);
-        setPrevUserProfileDetails(profileDetails);
+          const {
+            uuid,
+            profile_picture,
+            first_name,
+            last_name,
+            username,
+            email,
+            stx_address_mainnet,
+          } = response.data;
+          const profileDetails = {
+            uuid,
+            profile_picture,
+            first_name,
+            last_name,
+            username,
+            email,
+            stx_address_mainnet,
+          };
 
-        return true;
+          setUserProfileDetails(profileDetails);
+          setPrevUserProfileDetails(profileDetails);
+
+          return true;
+        }
+
+        console.warn(`Unexpected response status: ${response.status}`);
+        return false;
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.error("Axios error:", error.message);
+        } else {
+          console.error("Unexpected error:", error);
+        }
+        return false;
       }
-
-      console.warn(`Unexpected response status: ${response.status}`);
-      return false;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error("Axios error:", error.message);
-      } else {
-        console.error("Unexpected error:", error);
-      }
-      return false;
-    }
-  }
+    },
+    [UUID]
+  );
 
   const addNewLink = useCallback((index: number) => {
     const newLink: Link = {
@@ -129,10 +136,6 @@ export const useLinkSync = () => {
     },
     []
   );
-
-  const updateLinkIndexes = (links: Link[]): Link[] => {
-    return links.map((link, index) => ({ ...link, index }));
-  };
 
   const removeLink = useCallback((id: string) => {
     setLinks((prevLinks) => {
@@ -252,7 +255,7 @@ export const useLinkSync = () => {
       console.log("UUID", UUID);
       getLinks(API_BASE_URL + "/users/?user_id=" + UUID);
     }
-  }, [UUID]);
+  }, [UUID, getLinks]);
 
   return {
     links,

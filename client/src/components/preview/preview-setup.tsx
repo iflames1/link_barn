@@ -4,7 +4,7 @@ import { Link, UserProfileDetails } from "@/utils/linkSync";
 
 interface PreviewProps {
   links: Link[];
-  userProfileDetails: UserProfileDetails;
+  userProfileDetails: UserProfileDetails | null;
   className: string;
 }
 

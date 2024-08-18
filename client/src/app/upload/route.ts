@@ -8,7 +8,7 @@ type UploadResponse =
 
 const uploadToCloudinary = async (
   fileUri: string,
-  fileName: string,
+  fileName: string
 ): Promise<UploadResponse> => {
   try {
     const result = await cloudinary.uploader.upload(fileUri, {
@@ -22,7 +22,7 @@ const uploadToCloudinary = async (
     return { success: true, result };
   } catch (error) {
     console.error("Cloudinary upload error:", error);
-    return { success: false, error };
+    return { success: false, error: error as UploadApiErrorResponse };
   }
 };
 
@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
     if (!file) {
       return NextResponse.json(
         { message: "No file provided" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -58,16 +58,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           message: "Cloudinary upload failed",
-          error: res.error,
+          //error: res.error,
+          error: "error" in res ? res.error : "Unknown error",
         },
-        { status: 500 },
+        { status: 500 }
       );
     }
   } catch (err) {
     console.error("API POST error:", err);
     return NextResponse.json(
       { message: "Internal server error" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
