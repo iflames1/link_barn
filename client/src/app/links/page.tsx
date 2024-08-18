@@ -1,7 +1,7 @@
 import Header from "@/components/header";
 import Links from "@/components/links/links";
 
-export default function Home() {
+export default function LinksPage() {
   return (
     <div className="min-h-screen sm:p-6 w-full max-w-[1440px] mx-auto relative">
       <Header />

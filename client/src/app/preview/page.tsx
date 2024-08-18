@@ -1,7 +1,7 @@
 import Preview from "@/components/preview/preview";
 import Link from "next/link";
 
-export default function Home() {
+export default function PreviewPage() {
   return (
     <div className="w-full">
       <div className="w-full md:p-6">
