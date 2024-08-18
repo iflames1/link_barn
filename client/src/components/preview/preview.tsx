@@ -1,30 +1,14 @@
+"use client";
 import PreviewLinks from "./preview-links";
 import PreviewProfile from "./preview-profile";
-import { Link, UserProfileDetails } from "@/utils/linkSync";
+import { useLinkSync } from "@/utils/linkSync";
 
-interface PreviewProps {
-  links: Link[];
-  userProfileDetails: UserProfileDetails;
-  className: string;
-}
-
-export default function Preview({
-  links,
-  userProfileDetails,
-  className,
-}: PreviewProps) {
+export default function Preview() {
+  const { links, userProfileDetails } = useLinkSync();
   return (
-    <div
-      className={`p-6 rounded-xl bg-white flex justify-center items-center ${className}`}
-    >
-      <div className="lg:max-h-[calc(100vh-192px)] overflow-y-auto overflow-x-hidden">
-        <div className="border-[1px] border-gray-dark rounded-[56px] max-w-[100vw] sm:w-[307px] h-[631px] p-[11px] relative">
-          <div className="border-[1px] border-gray-dark rounded-[45px] w-full h-full px-6 pt-[53px] flex flex-col items-center gap-14 overflow-y-auto">
-            <PreviewProfile userProfileDetails={userProfileDetails} />
-            <PreviewLinks links={links} />
-          </div>
-        </div>
-      </div>
+    <div className="w-full h-full px-[18%] pt-[53px] flex flex-col items-center gap-14">
+      <PreviewProfile userProfileDetails={userProfileDetails} />
+      <PreviewLinks links={links} />
     </div>
   );
 }

@@ -10,7 +10,7 @@ interface UserProfile {
   stxAddress: {
     mainnet: string;
   };
-  walletProvider: string;
+  //walletProvider: string;
 }
 
 interface UserData {
@@ -27,7 +27,7 @@ export const useWallet = () => {
   const userSession = new UserSession({ appConfig });
 
   const appDetails = {
-    name: "Stacks Gov",
+    name: "Link Barn",
     icon: "/images/logo.svg",
   };
 
@@ -58,12 +58,15 @@ export const useWallet = () => {
     return axios.post(API_BASE_URL + "/users", {
       auth_type: "crypto",
       stx_address_mainnet: userData.profile.stxAddress.mainnet,
-      wallet_provider: userData.profile.walletProvider,
-      supabase_user_id: null,
+      wallet_provider: null,
+      //wallet_provider: userData.profile.walletProvider,
       first_name: null,
       last_name: null,
+      theme: null,
       profile_picture: null,
       email: null,
+      username: userData.profile.stxAddress.mainnet,
+      supabase_user_id: null,
       decentralized_id: null,
       stx_address_testnet: null,
       btc_address_mainnet: null,
@@ -119,41 +122,6 @@ export const useWallet = () => {
       console.error("Error handling connection or saving user data:", error);
     }
   };
-
-  //const handleSignIn = async () => {
-  //  if (userSession.isSignInPending()) {
-  //    try {
-  //      const userData = await userSession.handlePendingSignIn();
-  //      setUserData(userData);
-  //      setUserAddress(userData.profile.stxAddress.mainnet);
-  //      const response = await postUserData(userData);
-  //      console.log(response);
-  //      setUserUUID(response.data.uuid);
-  //      console.log(getUserUUID());
-  //    } catch (error) {
-  //      console.error(
-  //        "Error handling pending sign-in or saving user data:",
-  //        error
-  //      );
-  //    }
-  //  } else if (userSession.isUserSignedIn()) {
-  //    const userData = userSession.loadUserData();
-  //    setUserData(userData);
-  //    setUserAddress(userData.profile.stxAddress.mainnet);
-  //    console.log("already signed in");
-  //    if (!isAdmin()) {
-  //      try {
-  //        const response = await postUserData(userData);
-  //        console.log(response);
-  //        console.log(response.data.uuid);
-  //        setUserUUID(response.data.uuid);
-  //        console.log(getUserUUID());
-  //      } catch (error) {
-  //        console.error("Error saving user data:", error);
-  //      }
-  //    }
-  //  }
-  //};
 
   return {
     userData,

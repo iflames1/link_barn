@@ -1,12 +1,15 @@
+"use client";
 import Image from "next/image";
 import { UserProfileDetails } from "@/utils/linkSync";
+import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
 
 interface PreviewProps {
   userProfileDetails: UserProfileDetails;
-  className: string;
 }
 
 export default function PreviewProfile({ userProfileDetails }: PreviewProps) {
+  const pathname = usePathname();
   return (
     <div className="flex flex-col items-center gap-[25px]">
       {userProfileDetails ? (
@@ -15,16 +18,24 @@ export default function PreviewProfile({ userProfileDetails }: PreviewProps) {
             <Image
               src={userProfileDetails?.profile_picture}
               alt={userProfileDetails?.first_name}
-              width={96}
-              height={96}
-              className="rounded-full border-4 border-base-dark"
+              width={104}
+              height={104}
+              className={cn("rounded-full border-4 size-24 border-base-dark", {
+                "size-28": pathname === "/preview",
+              })}
             />
           ) : (
-            <div className="bg-gray-preview size-24 rounded-full"></div>
+            <div
+              className={cn(`bg-gray-preview size-24 rounded-full`, {
+                "size-28": pathname === "/preview",
+              })}
+            ></div>
           )}
           {userProfileDetails?.first_name || userProfileDetails?.last_name ? (
             <div className="flex flex-col items-center gap-[13px]">
-              <p className="hS text-black">
+              <p
+                className={cn("hS text-black", { hM: pathname === "/preview" })}
+              >
                 {userProfileDetails?.first_name} {userProfileDetails?.last_name}
               </p>
             </div>

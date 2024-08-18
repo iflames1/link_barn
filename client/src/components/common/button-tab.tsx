@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { IconType } from "react-icons";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
+import { IoEyeOutline } from "react-icons/io5";
 
 interface TabProps {
   path: string;
@@ -13,7 +13,7 @@ interface TabProps {
 export default function ButtonTab({ path, title }: TabProps) {
   const pathname = usePathname();
   const IconMap: { [key: string]: IconType } = {
-    "/preview": MdOutlineRemoveRedEye,
+    "/preview": IoEyeOutline,
   };
   const Icon = IconMap[path];
 
@@ -26,7 +26,7 @@ export default function ButtonTab({ path, title }: TabProps) {
       )}
     >
       <p className="sm:inline-flex hS hidden">{title}</p>
-      {Icon && <Icon className="inline-flex sm:hidden size-4" />}
+      {Icon && <Icon className="flex sm:hidden size-4" />}
     </Link>
   );
 }
