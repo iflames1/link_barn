@@ -16,6 +16,9 @@ interface LinkData {
   profile_picture: string;
   first_name: string;
   last_name: string;
+  username: string;
+  email: string;
+  stx_address_mainnet: string;
   links: {
     uuid: string;
     platform: string;
@@ -30,6 +33,9 @@ export interface UserProfileDetails {
   profile_picture: string;
   first_name: string;
   last_name: string;
+  username: string;
+  email: string;
+  stx_address_mainnet: string;
 }
 
 export const useLinkSync = () => {
@@ -39,7 +45,9 @@ export const useLinkSync = () => {
     useState<UserProfileDetails | null>(null);
   const [prevUserProfileDetails, setPrevUserProfileDetails] =
     useState<UserProfileDetails | null>(null);
-  const UUID = getUserUUID();
+  const [userDetailsSaved, setUserDetailsSaved] = useState(false);
+  const [linksUpdated, setLinksUpdated] = useState(false);
+  const [UUID, setUUID] = useState<string | null>(null);
   console.log("UUID:", UUID);
 
   async function getLinks(
@@ -60,8 +68,24 @@ export const useLinkSync = () => {
         setLinks(updatedLinks);
         setPrevLinks(updatedLinks);
 
-        const { uuid, profile_picture, first_name, last_name } = response.data;
-        const profileDetails = { uuid, profile_picture, first_name, last_name };
+        const {
+          uuid,
+          profile_picture,
+          first_name,
+          last_name,
+          username,
+          email,
+          stx_address_mainnet,
+        } = response.data;
+        const profileDetails = {
+          uuid,
+          profile_picture,
+          first_name,
+          last_name,
+          username,
+          email,
+          stx_address_mainnet,
+        };
 
         setUserProfileDetails(profileDetails);
         setPrevUserProfileDetails(profileDetails);
@@ -177,6 +201,7 @@ export const useLinkSync = () => {
         deletedLinks.length > 0
       ) {
         setPrevLinks(links);
+        setLinksUpdated(true);
         console.log("Links successfully synchronized with the server");
       } else {
         console.log("No changes to synchronize");
@@ -198,10 +223,22 @@ export const useLinkSync = () => {
           .patch(`${API_BASE_URL}/users/?user_id=${UUID}`, {
             first_name: userProfileDetails.first_name,
             last_name: userProfileDetails.last_name,
+            profile_picture: userProfileDetails.profile_picture,
+            username: userProfileDetails.username,
+            email: userProfileDetails.email,
+            stx_address_mainnet: userProfileDetails.stx_address_mainnet,
+            decentralized_id: null,
+            stx_address_testnet: null,
+            btc_address_mainnet: null,
+            btc_address_testnet: null,
+            wallet_provider: null,
+            public_key: null,
+            gaia_hub_url: null,
           })
           .then(() => {
             console.log("User details updated successfully");
             setPrevUserProfileDetails(userProfileDetails);
+            setUserDetailsSaved(true);
           });
       } catch (error) {
         console.error("Error updating user details:", error);
@@ -210,8 +247,10 @@ export const useLinkSync = () => {
   }, [prevUserProfileDetails, userProfileDetails, UUID]);
 
   useEffect(() => {
-    if (UUID) {
-      getLinks(API_BASE_URL + "/users/?user_id=" + UUID);
+    const userUUID = getUserUUID();
+    if (userUUID) {
+      setUUID(userUUID);
+      getLinks(API_BASE_URL + "/users/?user_id=" + userUUID);
     }
   }, []);
 
@@ -226,5 +265,9 @@ export const useLinkSync = () => {
     removeLink,
     saveLinks,
     saveUserDetails,
+    userDetailsSaved,
+    setUserDetailsSaved,
+    linksUpdated,
+    setLinksUpdated,
   };
 };
