@@ -45,10 +45,7 @@ export const useLinkSync = () => {
     useState<UserProfileDetails | null>(null);
   const [prevUserProfileDetails, setPrevUserProfileDetails] =
     useState<UserProfileDetails | null>(null);
-  const [userDetailsSaved, setUserDetailsSaved] = useState(false);
-  const [linksUpdated, setLinksUpdated] = useState(false);
-  const [UUID, setUUID] = useState<string | null>(null);
-  console.log("UUID:", UUID);
+  const [UUID, setUUID] = useState<string | undefined>(undefined);
 
   async function getLinks(
     url: string = `${API_BASE_URL}/users/?user_id=${UUID}`
@@ -201,17 +198,19 @@ export const useLinkSync = () => {
         deletedLinks.length > 0
       ) {
         setPrevLinks(links);
-        setLinksUpdated(true);
         console.log("Links successfully synchronized with the server");
+        return true;
       } else {
         console.log("No changes to synchronize");
+        return true;
       }
     } catch (error) {
       console.error("Error synchronizing links:", error);
+      return false;
     }
   }, [links, prevlinks, UUID]);
 
-  const saveUserDetails = useCallback(async () => {
+  const saveUserDetails = useCallback(async (): Promise<boolean> => {
     if (
       prevUserProfileDetails &&
       userProfileDetails &&
@@ -219,40 +218,41 @@ export const useLinkSync = () => {
         prevUserProfileDetails.last_name !== userProfileDetails.last_name)
     ) {
       try {
-        await axios
-          .patch(`${API_BASE_URL}/users/?user_id=${UUID}`, {
-            first_name: userProfileDetails.first_name,
-            last_name: userProfileDetails.last_name,
-            profile_picture: userProfileDetails.profile_picture,
-            username: userProfileDetails.username,
-            email: userProfileDetails.email,
-            stx_address_mainnet: userProfileDetails.stx_address_mainnet,
-            decentralized_id: null,
-            stx_address_testnet: null,
-            btc_address_mainnet: null,
-            btc_address_testnet: null,
-            wallet_provider: null,
-            public_key: null,
-            gaia_hub_url: null,
-          })
-          .then(() => {
-            console.log("User details updated successfully");
-            setPrevUserProfileDetails(userProfileDetails);
-            setUserDetailsSaved(true);
-          });
+        await axios.patch(`${API_BASE_URL}/users/?user_id=${UUID}`, {
+          first_name: userProfileDetails.first_name,
+          last_name: userProfileDetails.last_name,
+          profile_picture: userProfileDetails.profile_picture,
+          username: userProfileDetails.username,
+          email: userProfileDetails.email,
+          stx_address_mainnet: userProfileDetails.stx_address_mainnet,
+          decentralized_id: null,
+          stx_address_testnet: null,
+          btc_address_mainnet: null,
+          btc_address_testnet: null,
+          wallet_provider: null,
+          public_key: null,
+          gaia_hub_url: null,
+        });
+
+        console.log("User details updated successfully");
+        setPrevUserProfileDetails(userProfileDetails);
+        return true;
       } catch (error) {
         console.error("Error updating user details:", error);
+        return false;
       }
     }
+    return false;
   }, [prevUserProfileDetails, userProfileDetails, UUID]);
 
   useEffect(() => {
-    const userUUID = getUserUUID();
-    if (userUUID) {
-      setUUID(userUUID);
-      getLinks(API_BASE_URL + "/users/?user_id=" + userUUID);
+    const userID = getUserUUID();
+    setUUID(userID);
+    if (UUID) {
+      console.log("UUID", UUID);
+      getLinks(API_BASE_URL + "/users/?user_id=" + UUID);
     }
-  }, []);
+  }, [UUID]);
 
   return {
     links,
@@ -265,9 +265,5 @@ export const useLinkSync = () => {
     removeLink,
     saveLinks,
     saveUserDetails,
-    userDetailsSaved,
-    setUserDetailsSaved,
-    linksUpdated,
-    setLinksUpdated,
   };
 };

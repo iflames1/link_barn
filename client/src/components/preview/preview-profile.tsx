@@ -20,21 +20,21 @@ export default function PreviewProfile({ userProfileDetails }: PreviewProps) {
               alt={userProfileDetails?.first_name}
               width={104}
               height={104}
-              className={cn("rounded-full border-4 border-base-dark", {
-                "size-24": pathname === "/profile",
+              className={cn("rounded-full border-4 size-24 border-base-dark", {
+                "size-28": pathname === "/preview",
               })}
             />
           ) : (
             <div
-              className={cn(`bg-gray-preview size-28 rounded-full`, {
-                "size-24": pathname === "/profile",
+              className={cn(`bg-gray-preview size-24 rounded-full`, {
+                "size-28": pathname === "/preview",
               })}
             ></div>
           )}
           {userProfileDetails?.first_name || userProfileDetails?.last_name ? (
             <div className="flex flex-col items-center gap-[13px]">
               <p
-                className={cn("hM text-black", { hs: pathname === "/profile" })}
+                className={cn("hS text-black", { hM: pathname === "/preview" })}
               >
                 {userProfileDetails?.first_name} {userProfileDetails?.last_name}
               </p>

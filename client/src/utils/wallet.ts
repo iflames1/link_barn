@@ -10,7 +10,7 @@ interface UserProfile {
   stxAddress: {
     mainnet: string;
   };
-  walletProvider: string;
+  //walletProvider: string;
 }
 
 interface UserData {
@@ -58,7 +58,8 @@ export const useWallet = () => {
     return axios.post(API_BASE_URL + "/users", {
       auth_type: "crypto",
       stx_address_mainnet: userData.profile.stxAddress.mainnet,
-      wallet_provider: userData.profile.walletProvider,
+      wallet_provider: null,
+      //wallet_provider: userData.profile.walletProvider,
       first_name: null,
       last_name: null,
       theme: null,
