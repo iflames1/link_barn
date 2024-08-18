@@ -3,7 +3,8 @@ from typing import List
 from app.users.crud import UsersCRUD
 from app.users.deps import get_users_crud
 from app.links.models import LinkRead as LinkReadModel
-from app.core.models import StatusMessage
+from uuid import UUID
+from app.core.models import StatusMessage, UUIDModel
 from app.users.models import UserRead, UserCreate, UserUpdate, User, CheckRequest, UserProfile, Preview
 
 router = APIRouter()
@@ -61,6 +62,12 @@ async def get_user_profile(username: str, users: UsersCRUD = Depends(get_users_c
 async def get_all_users(users: UsersCRUD = Depends(get_users_crud)):
     all_users = await users.get_all()
     return all_users
+
+
+@router.get("/supabase/{supabase_user_id}", response_model=UUIDModel, status_code=http_status.HTTP_200_OK)
+async def get_user_uuid_by_supabase_user_id(supabase_user_id: str, users: UsersCRUD = Depends(get_users_crud)):
+    user = await users.get_user_uuid(supabase_user_id)
+    return UUIDModel(uuid=user)
 
 
 @router.patch("/{user_id}", response_model=UserRead, status_code=http_status.HTTP_200_OK)
