@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 
 interface PreviewProps {
-  userProfileDetails: UserProfileDetails;
+  userProfileDetails: UserProfileDetails | null;
 }
 
 export default function PreviewProfile({ userProfileDetails }: PreviewProps) {
