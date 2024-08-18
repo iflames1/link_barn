@@ -58,8 +58,6 @@ export const useWallet = () => {
     return axios.post(API_BASE_URL + "/users", {
       auth_type: "crypto",
       stx_address_mainnet: userData.profile.stxAddress.mainnet,
-      wallet_provider: null,
-      //wallet_provider: userData.profile.walletProvider,
       first_name: null,
       last_name: null,
       theme: null,
@@ -67,6 +65,8 @@ export const useWallet = () => {
       email: null,
       username: userData.profile.stxAddress.mainnet,
       supabase_user_id: null,
+      wallet_provider: null,
+      //wallet_provider: userData.profile.walletProvider,
       decentralized_id: null,
       stx_address_testnet: null,
       btc_address_mainnet: null,

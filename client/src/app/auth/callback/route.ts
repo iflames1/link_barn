@@ -28,7 +28,7 @@ export async function GET(request: Request) {
             cookieStore.delete({ name, ...options });
           },
         },
-      },
+      }
     );
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
@@ -64,19 +64,20 @@ export async function GET(request: Request) {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                theme: null,
                 auth_type: "supabase",
-                supabase_user_id: user?.id,
+                email: user?.user_metadata?.email,
                 first_name: firstName || null,
                 last_name: lastName || null,
+                theme: null,
                 profile_picture: user?.user_metadata?.avatar_url,
-                email: user?.user_metadata?.email,
+                stx_address_mainnet: null,
+                username: user?.user_metadata?.email.split("@"[0]) || null,
+                supabase_user_id: user?.id,
+                wallet_provider: null,
                 decentralized_id: null,
                 stx_address_testnet: null,
-                stx_address_mainnet: null,
                 btc_address_mainnet: null,
                 btc_address_testnet: null,
-                wallet_provider: null,
                 public_key: null,
                 gaia_hub_url: null,
               }),
@@ -99,10 +100,10 @@ export async function GET(request: Request) {
             });
           } else {
             console.log("I AM HIM");
-            console.log(`${API_BASE_URL}/users/supabase/${user.id}`);
-            console.log(user.id);
+            console.log(`${API_BASE_URL}/users/supabase/${user?.id}`);
+            console.log(user?.id);
             const response = await fetch(
-              `${API_BASE_URL}/users/supabase/${user.id}`,
+              `${API_BASE_URL}/users/supabase/${user?.id}`
             );
             if (!response.ok) {
               console.log("OVE HERE");
