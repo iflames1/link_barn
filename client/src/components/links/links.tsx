@@ -29,6 +29,20 @@ export default function Links() {
     }
   }, [response]);
 
+  const handleAddNewLink = () => {
+    const newID = addNewLink(links.length - 1);
+    setTimeout(() => {
+      const element = document.getElementById(newID);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+        const input = element.querySelector("input");
+        if (input) {
+          input.focus();
+        }
+      }
+    }, 0);
+  };
+
   const handleSaveLinks = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -59,7 +73,7 @@ export default function Links() {
               </p>
               <div className="sticky top-0 bg-white">
                 <button
-                  onClick={() => addNewLink(links.length - 1)}
+                  onClick={handleAddNewLink}
                   type="button"
                   className="hS text-base-dark border-[1px] border-base-dark hover:bg-base-light py-[11px] px-7 rounded-lg w-full"
                 >

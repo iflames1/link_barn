@@ -1,15 +1,19 @@
 import { Link } from "@/utils/linkSync";
 import { FaArrowRight } from "react-icons/fa6";
 import { linkAttributes } from "../common/links-attr";
+import { usePathname } from "next/navigation";
 
 interface PreviewProps {
   links: Link[];
 }
 
 export default function PreviewLinks({ links }: PreviewProps) {
+  const pathname = usePathname();
+  const paths = ["/links", "/profile"];
+
   return (
     <div className="flex flex-col items-center gap-5 w-full max-w-60">
-      {links?.length < 1
+      {links?.length < 1 && paths.includes(pathname)
         ? Array(4)
             .fill(null)
             .map((_, index) => (
