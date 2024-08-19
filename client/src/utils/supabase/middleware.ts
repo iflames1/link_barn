@@ -40,48 +40,38 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
   const uuid = cookieStore.get("uuid")?.value;
   // Allow access to auth callback without redirects
-  // if (request.nextUrl.pathname.startsWith("/auth/callback")) {
-  //   return supabaseResponse;
-  // }
-  //
-  // // Redirect authenticated users away from login page
-  // if (uuid && request.nextUrl.pathname.startsWith("/login")) {
-  //   const url = request.nextUrl.clone();
-  //   url.pathname = "/";
-  //   return NextResponse.redirect(url);
-  // }
-  //
-  // // Redirect unauthenticated users to login page
-  // if (!uuid && !request.nextUrl.pathname.includes("/login")) {
-  //   const url = request.nextUrl.clone();
-  //   url.pathname = "/login";
-  //   return NextResponse.redirect(url);
-  // }
-
-  const protectedRoutes = ["/links", "/profile", "/preview"];
-
-  // Allow access to auth callback without redirects
   if (request.nextUrl.pathname.startsWith("/auth/callback")) {
     return supabaseResponse;
   }
 
-  // Redirect authenticated users away from the login page
+  // Redirect authenticated users away from login page
   if (uuid && request.nextUrl.pathname.startsWith("/login")) {
     const url = request.nextUrl.clone();
     url.pathname = "/";
     return NextResponse.redirect(url);
   }
 
-  // Redirect unauthenticated users to the login page if they try to access a protected route
-  const isProtectedRoute = protectedRoutes.some((route) =>
-    request.nextUrl.pathname.startsWith(route),
-  );
-  if (!uuid && isProtectedRoute) {
+  // Redirect unauthenticated users to login page
+  if (!uuid && !request.nextUrl.pathname.includes("/login")) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);
   }
 
+  // const protectedRoutes = ["/links", "/profile", "/preview"];
+  //
+  // // Allow access to auth callback without redirects
+  // if (request.nextUrl.pathname.startsWith("/auth/callback")) {
+  //   return supabaseResponse;
+  // }
+  //
+  // // Redirect authenticated users away from the login page
+  // if (uuid && request.nextUrl.pathname.startsWith("/login")) {
+  //   const url = request.nextUrl.clone();
+  //   url.pathname = "/";
+  //   return NextResponse.redirect(url);
+  // }
+  //
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
   // creating a new response object with NextResponse.next() make sure to:
   // 1. Pass the request in it, like so:

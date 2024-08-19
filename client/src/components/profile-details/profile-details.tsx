@@ -26,20 +26,39 @@ export default function ProfileDetails() {
   const [isHovered, setIsHovered] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const uuid = getUserUUID();
-  const { userProfileDetails, updateUserProfile, links, saveUserDetails } =
-    useLinkSync();
+  const {
+    getLinks,
+    userProfileDetails,
+    updateUserProfile,
+    links,
+    saveUserDetails,
+  } = useLinkSync();
   const [showPopup, setShowPopup] = useState(false);
   const [message, setMessage] = useState("");
   const [response, setResponse] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    const fetchUser = async () => {
+      const userID = getUserUUID();
+      if (userID) {
+        console.log("UUID", userID);
+        const res = await getLinks(API_BASE_URL + "/users/?user_id=" + userID);
+        if (res) {
+          console.log("Successfully fetched user details");
+        } else {
+          console.log("failed to get user");
+        }
+      }
+    };
+
+    fetchUser();
     if (response) {
       setMessage("Profile updated successfully.");
     } else {
       setMessage("Failed to save profile details, Please try again");
     }
-  }, [response]);
+  }, [response, getLinks]);
 
   const uploadStagedFile = async (stagedFile: File | Blob, uuid: string) => {
     const form = new FormData();
@@ -78,7 +97,7 @@ export default function ProfileDetails() {
         if (!response.ok) {
           console.log(responseData);
           throw new Error(
-            `An error occurred while updating profile: ${responseData.detail}`,
+            `An error occurred while updating profile: ${responseData.detail}`
           );
         }
 
