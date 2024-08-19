@@ -17,17 +17,17 @@ export async function updateSession(request: NextRequest) {
         },
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value, options }) =>
-            request.cookies.set(name, value),
+            request.cookies.set(name, value)
           );
           supabaseResponse = NextResponse.next({
             request,
           });
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options),
+            supabaseResponse.cookies.set(name, value, options)
           );
         },
       },
-    },
+    }
   );
 
   // IMPORTANT: Avoid writing any logic between createServerClient and
@@ -52,7 +52,11 @@ export async function updateSession(request: NextRequest) {
   }
 
   // Redirect unauthenticated users to login page
-  if (!uuid && !request.nextUrl.pathname.includes("/login")) {
+  const protectedRoutes = ["/links", "/profile", "/preview"];
+  if (
+    !uuid &&
+    protectedRoutes.some((route) => request.nextUrl.pathname.startsWith(route))
+  ) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);

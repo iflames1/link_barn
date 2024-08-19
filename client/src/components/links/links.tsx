@@ -6,9 +6,13 @@ import LinkEditor from "./link-editor";
 import { useEffect, useState } from "react";
 import Popup from "../popup";
 import Loading from "@/app/loading";
+import { getUserUUID } from "@/lib/auth";
+import { API_BASE_URL } from "@/lib/constants";
+import { Link } from "@/utils/linkSync";
 
 export default function Links() {
   const {
+    getLinks,
     links,
     addNewLink,
     removeLink,
@@ -22,12 +26,41 @@ export default function Links() {
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
+    const fetchUser = async () => {
+      const userID = getUserUUID();
+      if (userID) {
+        console.log("UUID", userID);
+        const res = await getLinks(API_BASE_URL + "/users/?user_id=" + userID);
+        if (res) {
+          console.log("Successfully fetched user details");
+        } else {
+          console.log("failed to get user");
+        }
+      }
+    };
+
+    fetchUser();
+
     if (response) {
       setMessage("Successfully updated links");
     } else {
       setMessage("Failed to update links, Please try again");
     }
-  }, [response]);
+  }, [response, getLinks]);
+
+  const handleAddNewLink = () => {
+    const newID = addNewLink(links.length - 1);
+    setTimeout(() => {
+      const element = document.getElementById(newID);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+        const input = element.querySelector("input");
+        if (input) {
+          input.focus();
+        }
+      }
+    }, 0);
+  };
 
   const handleSaveLinks = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -57,21 +90,19 @@ export default function Links() {
                 Add/edit/remove links below and then share all your profiles
                 with the world!
               </p>
-              <div className="sticky top-0 bg-white">
-                <button
-                  onClick={() => addNewLink(links.length - 1)}
-                  type="button"
-                  className="hS text-base-dark border-[1px] border-base-dark hover:bg-base-light py-[11px] px-7 rounded-lg w-full"
-                >
-                  + Add new link
-                </button>
-              </div>
+              <button
+                onClick={handleAddNewLink}
+                type="button"
+                className="hS text-base-dark border-[1px] border-base-dark hover:bg-base-light py-[11px] px-7 rounded-lg w-full"
+              >
+                + Add new link
+              </button>
             </div>
             <div className=" flex flex-col gap-6">
               {links.length < 1 ? (
                 <GetStarted />
               ) : (
-                links.map((link) => (
+                links.map((link: Link) => (
                   <LinkEditor
                     removeLink={removeLink}
                     updateLink={updateLink}

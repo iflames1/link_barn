@@ -1,8 +1,7 @@
 "use client";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import axios from "axios";
 import { API_BASE_URL } from "@/lib/constants";
-import { getUserUUID } from "@/lib/auth";
 
 export interface Link {
   id: string;
@@ -49,7 +48,7 @@ export const useLinkSync = () => {
 
   const getLinks = useCallback(
     async (
-      url: string = `${API_BASE_URL}/users/?user_id=${UUID}`,
+      url: string = `${API_BASE_URL}/users/?user_id=${UUID}`
     ): Promise<boolean> => {
       try {
         const response = await axios.get<LinkData>(url);
@@ -106,24 +105,26 @@ export const useLinkSync = () => {
         return false;
       }
     },
-    [UUID],
+    [UUID]
   );
 
   const addNewLink = useCallback((index: number) => {
+    const newID = Date.now().toString();
     const newLink: Link = {
-      id: Date.now().toString(),
+      id: newID,
       name: "",
       url: "",
       index: index + 1,
     };
     setLinks((prevLinks) => [...prevLinks, newLink]);
+    return newID;
   }, []);
 
   const updateLink = useCallback((id: string, updatedLink: Partial<Link>) => {
     setLinks((prevLinks) =>
       prevLinks.map((link) =>
-        link.id === id ? { ...link, ...updatedLink } : link,
-      ),
+        link.id === id ? { ...link, ...updatedLink } : link
+      )
     );
   }, []);
 
@@ -134,7 +135,7 @@ export const useLinkSync = () => {
         return { ...prevDetails, ...updatedProfile };
       });
     },
-    [],
+    []
   );
 
   const removeLink = useCallback((id: string) => {
@@ -150,7 +151,7 @@ export const useLinkSync = () => {
     const updatedLinks = [];
     const newLinks = [];
     const deletedLinks = prevlinks.filter(
-      (pl) => !links.some((l) => l.id === pl.id),
+      (pl) => !links.some((l) => l.id === pl.id)
     );
 
     for (const link of links) {
@@ -176,7 +177,7 @@ export const useLinkSync = () => {
               index: link.index,
               url: link.url,
             })
-            .then(() => console.log(`Updated link: ${link.name}`)),
+            .then(() => console.log(`Updated link: ${link.name}`))
         ),
         ...newLinks.map((link) =>
           axios
@@ -186,12 +187,12 @@ export const useLinkSync = () => {
               url: link.url,
               user_id: UUID,
             })
-            .then(() => console.log(`Added new link: ${link.name}`)),
+            .then(() => console.log(`Added new link: ${link.name}`))
         ),
         ...deletedLinks.map((link) =>
           axios
             .delete(`${API_BASE_URL}/links/${link.id}`)
-            .then(() => console.log(`Deleted: ${link.name}`)),
+            .then(() => console.log(`Deleted: ${link.name}`))
         ),
       ]);
 
@@ -247,15 +248,6 @@ export const useLinkSync = () => {
     }
     return false;
   }, [prevUserProfileDetails, userProfileDetails, UUID]);
-
-  useEffect(() => {
-    const userID = getUserUUID();
-    setUUID(userID);
-    if (UUID) {
-      console.log("UUID", UUID);
-      getLinks(API_BASE_URL + "/users/?user_id=" + UUID);
-    }
-  }, [UUID, getLinks]);
 
   return {
     links,
