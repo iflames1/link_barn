@@ -9,11 +9,10 @@ interface PreviewProps {
 
 export default function PreviewLinks({ links }: PreviewProps) {
   const pathname = usePathname();
-  const paths = ["/links", "/profile"];
 
   return (
     <div className="flex flex-col items-center gap-5 w-full max-w-60">
-      {links?.length < 1 && paths.includes(pathname)
+      {links?.length < 1 && pathname !== "/preview"
         ? Array(4)
             .fill(null)
             .map((_, index) => (

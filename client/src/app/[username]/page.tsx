@@ -6,7 +6,6 @@ import { useLinkSync } from "@/utils/linkSync";
 import { useWallet } from "@/utils/wallet";
 import { useEffect, useState } from "react";
 import Loading from "../loading";
-import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
 
 interface PageProps {
@@ -17,24 +16,25 @@ export default function Page({ params }: PageProps) {
   const { username } = params;
   const { getLinks, links, userProfileDetails } = useLinkSync();
   const { checkUserExists } = useWallet();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     const checkUser = async () => {
       const res = await checkUserExists(username);
+      console.log(res);
       if (res.status) {
         console.log("User exists");
         getLinks(`${API_BASE_URL}/users/?user_id=${username}`);
       } else {
-        console.log("first");
+        console.log("User does not exist");
         router.push("/");
       }
     };
     setLoading(true);
     checkUser();
     setLoading(false);
-  }, [checkUserExists, getLinks, username]);
+  }, [checkUserExists, getLinks, router, username]);
 
   return (
     <>
