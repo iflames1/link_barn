@@ -28,7 +28,7 @@ export async function GET(request: Request) {
             cookieStore.delete({ name, ...options });
           },
         },
-      }
+      },
     );
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
@@ -71,7 +71,8 @@ export async function GET(request: Request) {
                 theme: null,
                 profile_picture: user?.user_metadata?.avatar_url,
                 stx_address_mainnet: null,
-                username: user?.user_metadata?.email.split("@"[0]) || null,
+                // username: user?.user_metadata?.email.split("@"[0]) || null,
+                username: null,
                 supabase_user_id: user?.id,
                 wallet_provider: null,
                 decentralized_id: null,
@@ -103,7 +104,7 @@ export async function GET(request: Request) {
             console.log(`${API_BASE_URL}/users/supabase/${user?.id}`);
             console.log(user?.id);
             const response = await fetch(
-              `${API_BASE_URL}/users/supabase/${user?.id}`
+              `${API_BASE_URL}/users/supabase/${user?.id}`,
             );
             if (!response.ok) {
               console.log("OVE HERE");

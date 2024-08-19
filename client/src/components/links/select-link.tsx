@@ -12,19 +12,17 @@ interface SelectLinkProps {
   };
   updateLink: (id: string, updatedLink: Partial<Link>) => void;
 }
-
+export const options = Object.entries(linkAttributes).map(([key, value]) => ({
+  value: key,
+  icon: value.icon,
+  label: key.charAt(0).toUpperCase() + key.slice(1),
+}));
 export function SelectLink({ link, updateLink }: SelectLinkProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string>(
-    link.name ? link.name.toLowerCase() : "link"
+    link.name ? link.name.toLowerCase() : "link",
   );
   const [customLinkName, setCustomLinkName] = useState(link.name);
-
-  const options = Object.entries(linkAttributes).map(([key, value]) => ({
-    value: key,
-    icon: value.icon,
-    label: key.charAt(0).toUpperCase() + key.slice(1),
-  }));
 
   return (
     <div className="relative">

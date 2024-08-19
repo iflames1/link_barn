@@ -20,9 +20,12 @@ export default function PreviewProfile({ userProfileDetails }: PreviewProps) {
               alt={userProfileDetails?.first_name}
               width={104}
               height={104}
-              className={cn("rounded-full border-4 size-24 border-base-dark", {
-                "size-28": pathname === "/preview",
-              })}
+              className={cn(
+                "rounded-full border-4 size-24 border-base-dark object-cover",
+                {
+                  "size-28": pathname === "/preview",
+                },
+              )}
             />
           ) : (
             <div

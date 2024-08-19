@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { useLinkSync } from "@/utils/linkSync";
 import Popup from "../popup";
 import Loading from "@/app/loading";
+import { Button } from "../ui/button";
 
 // export const getClientSideCookie = (name: string): string | undefined => {
 //   const cookieValue = document.cookie
@@ -77,7 +78,7 @@ export default function ProfileDetails() {
         if (!response.ok) {
           console.log(responseData);
           throw new Error(
-            `An error occurred while updating profile: ${responseData.detail}`
+            `An error occurred while updating profile: ${responseData.detail}`,
           );
         }
 
@@ -114,10 +115,10 @@ export default function ProfileDetails() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+    handleFileUpload();
     setResponse(await saveUserDetails());
     setLoading(false);
     setShowPopup(true);
-    //handleFileUpload();
   };
 
   return (
@@ -230,12 +231,12 @@ export default function ProfileDetails() {
           <div>
             <hr className="h-[1px] bg-gray border-none" />
             <div className="sm:py-6 sm:px-10 p-4 flex justify-end">
-              <button
+              <Button
                 type="submit"
                 className={`hS button text-white bg-base-dark hover:opacity-90 sm:w-fit w-full`}
               >
                 Save
-              </button>
+              </Button>
             </div>
           </div>
         </form>
