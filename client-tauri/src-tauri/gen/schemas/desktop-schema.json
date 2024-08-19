@@ -2109,6 +2109,12 @@
           "enum": [
             "core:window:deny-unminimize"
           ]
+        },
+        {
+          "type": "string",
+          "enum": [
+            "devtools:default"
+          ]
         }
       ]
     },
