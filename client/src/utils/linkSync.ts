@@ -1,8 +1,7 @@
 "use client";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import axios from "axios";
 import { API_BASE_URL } from "@/lib/constants";
-import { getUserUUID } from "@/lib/auth";
 
 export interface Link {
   id: string;
@@ -249,15 +248,6 @@ export const useLinkSync = () => {
     }
     return false;
   }, [prevUserProfileDetails, userProfileDetails, UUID]);
-
-  useEffect(() => {
-    const userID = getUserUUID();
-    setUUID(userID);
-    if (UUID) {
-      console.log("UUID", UUID);
-      getLinks(API_BASE_URL + "/users/?user_id=" + UUID);
-    }
-  }, [UUID, getLinks]);
 
   return {
     links,

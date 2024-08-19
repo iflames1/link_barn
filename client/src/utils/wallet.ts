@@ -77,11 +77,11 @@ export const useWallet = () => {
   };
 
   const checkUserExists = async (
-    walletAddress: string = userAddress
+    username: string = userAddress
   ): Promise<{ status: boolean; message: string }> => {
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/users/check/${walletAddress}`
+        `${API_BASE_URL}/users/check/${username}`
       );
       return {
         status: response.data.status,
@@ -128,5 +128,6 @@ export const useWallet = () => {
     userAddress,
     connectWallet,
     disconnectWallet,
+    checkUserExists,
   };
 };
