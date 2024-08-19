@@ -3,7 +3,8 @@ import PreviewProfile from "./preview-profile";
 import { Link, UserProfileDetails } from "@/utils/linkSync";
 
 interface PreviewProps {
-  links: Link[];
+  links: any;
+  type: "new" | "old";
   userProfileDetails: UserProfileDetails | null;
   className?: string;
 }
@@ -12,6 +13,7 @@ export default function PreviewSetup({
   links,
   userProfileDetails,
   className,
+  type,
 }: PreviewProps) {
   return (
     <div
@@ -21,7 +23,7 @@ export default function PreviewSetup({
         <div className="border-[1px] border-gray-dark rounded-[56px] max-w-[100vw] sm:w-[307px] h-[631px] p-[11px] relative">
           <div className="border-[1px] border-gray-dark rounded-[45px] w-full h-full px-6 pt-[53px] flex flex-col items-center gap-14 overflow-y-auto">
             <PreviewProfile userProfileDetails={userProfileDetails} />
-            <PreviewLinks links={links} />
+            <PreviewLinks links={links} type={type} />
           </div>
         </div>
       </div>

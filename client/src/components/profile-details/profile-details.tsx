@@ -11,15 +11,6 @@ import Popup from "../popup";
 import Loading from "@/app/loading";
 import { Button } from "../ui/button";
 
-// export const getClientSideCookie = (name: string): string | undefined => {
-//   const cookieValue = document.cookie
-//     .split("; ")
-//     .find((row) => row.startsWith(`${name}=`))
-//     ?.split("=")[1];
-//
-//   return cookieValue;
-// };
-//
 export default function ProfileDetails() {
   const [image, setImage] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -97,7 +88,7 @@ export default function ProfileDetails() {
         if (!response.ok) {
           console.log(responseData);
           throw new Error(
-            `An error occurred while updating profile: ${responseData.detail}`
+            `An error occurred while updating profile: ${responseData.detail}`,
           );
         }
 
@@ -147,6 +138,7 @@ export default function ProfileDetails() {
         <PreviewSetup
           links={links}
           userProfileDetails={userProfileDetails}
+          type="old"
           className="w-[40vw] lg:flex hidden"
         />
         <form

@@ -40,17 +40,18 @@ const formSchema = z.object({
     z.object({
       platform: z.string().min(2).max(50),
       url: z.string().url().min(2).max(50),
+      index: z.number(),
     }),
   ),
 });
 
-export const NewLinks = () => {
+export const NewLinks = ({ userProfile }: { userProfile: any }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [currentLinks, setCurrentLinks] = useState([]);
+  const [currentLinks, setCurrentLinks] = useState<any>([]);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      links: [{ platform: "", url: "" }],
+      links: [{ platform: "", url: "", index: 0 }],
     },
   });
 
@@ -95,25 +96,50 @@ export const NewLinks = () => {
 
   const links = form.watch("links");
 
-  useEffect(() => {
-    console.log(links);
-    setCurrentLinks(links);
-  }, [links]);
+  // useEffect(() => {
+  //   console.log(links);
+  //   setCurrentLinks(links);
+  // }, [links]);
 
   const { fields, append, move, remove } = useFieldArray({
     control: form.control,
     name: "links",
   });
 
+  const onMove = ({
+    activeIndex,
+    overIndex,
+  }: {
+    activeIndex: number;
+    overIndex: number;
+  }) => {
+    move(activeIndex, overIndex);
+
+    // Update the indices without resetting the form
+    form.setValue(
+      "links",
+      fields.map((field, index) => ({
+        ...field,
+        index,
+      })),
+    );
+  };
+
   return (
-    <main>
-      <PreviewSetup links={currentLinks} userProfileDetails={} />
+    <main className="grid grid-cols-2 gap-4">
+      <PreviewSetup
+        links={currentLinks}
+        userProfileDetails={userProfile}
+        type="new"
+      />
       <div className="py-8 px-7 bg-white">
         <Button
           type="button"
           variant={"outline"}
           className="w-full mb-4"
-          onClick={() => append({ platform: "", url: "" })}
+          onClick={() =>
+            append({ platform: "", url: "", index: fields.length })
+          }
         >
           Add Link
         </Button>
@@ -136,6 +162,7 @@ export const NewLinks = () => {
               onMove={({ activeIndex, overIndex }) =>
                 move(activeIndex, overIndex)
               }
+              // onMove={onMove}
               overlay={
                 <div className="flex flex-col items-center gap-2 bg-[#fafafa] p-4 rounded-lg">
                   <div className="flex items-center justify-between w-full gap-4 mb-4">

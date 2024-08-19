@@ -1,4 +1,3 @@
-"use client";
 import Image from "next/image";
 import { UserProfileDetails } from "@/utils/linkSync";
 import { cn } from "@/lib/utils";
