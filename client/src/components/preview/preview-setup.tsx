@@ -5,7 +5,7 @@ import { Link, UserProfileDetails } from "@/utils/linkSync";
 interface PreviewProps {
   links: Link[];
   userProfileDetails: UserProfileDetails | null;
-  className: string;
+  className?: string;
 }
 
 export default function PreviewSetup({

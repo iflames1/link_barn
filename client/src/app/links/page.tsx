@@ -1,4 +1,5 @@
 import Header from "@/components/header";
+import Links from "@/components/links/links";
 import { NewLinks } from "@/components/links/new-links-content";
 
 export default async function LinksPage() {

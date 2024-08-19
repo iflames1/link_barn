@@ -21,11 +21,19 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { options } from "@/components/links/select-link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { API_BASE_URL } from "@/lib/constants";
 import { getUserUUID } from "@/lib/auth";
 import { toast } from "sonner";
 import { LoaderCircle } from "lucide-react";
+import { DragHandleDots2Icon, TrashIcon } from "@radix-ui/react-icons";
+
+import {
+  Sortable,
+  SortableDragHandle,
+  SortableItem,
+} from "@/components/ui/sortable";
+import PreviewSetup from "../preview/preview-setup";
 
 const formSchema = z.object({
   links: z.array(
@@ -38,6 +46,7 @@ const formSchema = z.object({
 
 export const NewLinks = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [currentLinks, setCurrentLinks] = useState([]);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -84,101 +93,165 @@ export const NewLinks = () => {
     }
   }
 
-  const { fields, append, remove } = useFieldArray({
+  const links = form.watch("links");
+
+  useEffect(() => {
+    console.log(links);
+    setCurrentLinks(links);
+  }, [links]);
+
+  const { fields, append, move, remove } = useFieldArray({
     control: form.control,
     name: "links",
   });
 
   return (
-    <div className="py-8 px-7 bg-white">
-      <Button
-        type="button"
-        variant={"outline"}
-        className="w-full mb-4"
-        onClick={() => append({ platform: "", url: "" })}
-      >
-        Add Link
-      </Button>
-
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="bg-white flex flex-col gap-4"
+    <main>
+      <PreviewSetup links={currentLinks} userProfileDetails={} />
+      <div className="py-8 px-7 bg-white">
+        <Button
+          type="button"
+          variant={"outline"}
+          className="w-full mb-4"
+          onClick={() => append({ platform: "", url: "" })}
         >
-          {fields.map((field, index) => (
-            <div
-              key={field.id}
-              className="space-y-4 bg-gray-light p-5 rounded-xl"
+          Add Link
+        </Button>
+        {/* <div className="flex flex-col items-center gap-2 bg-[#fafafa] p-4 rounded-lg"> */}
+        {/*   <div className="flex items-center justify-between w-full gap-4 mb-4"> */}
+        {/*     <div className="h-8 w-32 shrink-0 rounded-sm bg-primary/10" /> */}
+        {/*     <div className="size-8 shrink-0 rounded-sm bg-primary/10" /> */}
+        {/*   </div> */}
+        {/*   <div className="h-8 w-full rounded-sm bg-primary/10" /> */}
+        {/*   <div className="h-8 w-full rounded-sm bg-primary/10" /> */}
+        {/* </div> */}
+
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="bg-white flex flex-col gap-4"
+          >
+            <Sortable
+              value={fields}
+              onMove={({ activeIndex, overIndex }) =>
+                move(activeIndex, overIndex)
+              }
+              overlay={
+                <div className="flex flex-col items-center gap-2 bg-[#fafafa] p-4 rounded-lg">
+                  <div className="flex items-center justify-between w-full gap-4 mb-4">
+                    <div className="h-8 w-32 shrink-0 rounded-sm bg-primary/10" />
+                    <div className="size-8 shrink-0 rounded-sm bg-primary/10" />
+                  </div>
+                  <div className="h-8 w-full rounded-sm bg-primary/10" />
+                  <div className="h-8 w-full rounded-sm bg-primary/10" />
+                </div>
+              }
             >
-              <div className="flex items-center justify-between">
-                <p className="text-gray-dark font-semibold">
-                  {" "}
-                  Link #{index + 1}
-                </p>
-                {fields.length > 1 && (
-                  <Button
-                    type="button"
-                    className="text-gray-dark"
-                    variant={"ghost"}
-                    onClick={() => remove(index)}
-                  >
-                    Remove
-                  </Button>
-                )}
-              </div>
-              <FormField
-                control={form.control}
-                name={`links.${index}.platform`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Platform</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
+              <div className="flex w-full flex-col gap-2">
+                {fields.map((field, index) => (
+                  <SortableItem key={field.id} value={field.id} asChild>
+                    <div
+                      key={field.id}
+                      className="space-y-4 bg-gray-light p-5 rounded-xl"
                     >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a platform" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {options.map((item, optionIndex) => (
-                          <SelectItem key={optionIndex} value={item.value}>
-                            {item.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`links.${index}.url`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-light text-sm">Link</FormLabel>
-                    <FormControl>
-                      <Input placeholder="https://example.com" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      Enter the URL for your link.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <SortableDragHandle
+                            variant="outline"
+                            size="icon"
+                            className="size-8 shrink-0"
+                          >
+                            <DragHandleDots2Icon
+                              className="size-4"
+                              aria-hidden="true"
+                            />
+                          </SortableDragHandle>
+                          <p className="text-gray-dark font-semibold">
+                            Link #{index + 1}
+                          </p>
+                        </div>
+                        {fields.length > 1 && (
+                          <Button
+                            type="button"
+                            className="text-gray-dark"
+                            variant={"ghost"}
+                            onClick={() => remove(index)}
+                          >
+                            Remove
+                          </Button>
+                        )}
+                      </div>
+                      <FormField
+                        control={form.control}
+                        name={`links.${index}.platform`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Platform</FormLabel>
+                            <Select
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                            >
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select a platform" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {options.map((item, optionIndex) => (
+                                  <SelectItem
+                                    key={optionIndex}
+                                    value={item.value}
+                                  >
+                                    {item.label}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`links.${index}.url`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="font-light text-sm">
+                              Link
+                            </FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="https://example.com"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormDescription>
+                              Enter the URL for your link.
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </SortableItem>
+                ))}
+              </div>
+            </Sortable>
+            <div className="flex w-full items-end">
+              <Button className="self-end  gap-3" type="submit">
+                {isLoading && (
+                  <LoaderCircle className="animate-spin" size={17} />
+                )}{" "}
+                Save
+              </Button>
             </div>
-          ))}
-          <div className="flex w-full items-end">
-            <Button className="self-end  gap-3" type="submit">
-              {isLoading && <LoaderCircle className="animate-spin" size={17} />}{" "}
-              Save
-            </Button>
-          </div>
-        </form>
-      </Form>
-    </div>
+          </form>
+        </Form>
+      </div>
+    </main>
   );
+};
+
+const Preview = ({ links }: { links: any }) => {
+  return <div></div>;
 };
