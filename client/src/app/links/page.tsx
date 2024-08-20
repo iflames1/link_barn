@@ -7,14 +7,14 @@ import { cookies } from "next/headers";
 export default async function LinksPage() {
   const uuid = cookies().get("uuid")?.value;
   const userProfile = await getUserProfile(uuid || "");
+  const links = userProfile.links;
   console.log(userProfile);
 
   return (
     <div className="min-h-screen sm:p-6 w-full max-w-[1440px] mx-auto relative">
       <Header />
       <div className="sm:p-0 sm:pt-6 p-4">
-        {/* <NewLinks userProfile={userProfile} /> */}
-        <Links />
+        <NewLinks userProfile={userProfile} defaultLinks={links} />
       </div>
     </div>
   );
