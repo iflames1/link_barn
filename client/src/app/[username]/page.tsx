@@ -44,7 +44,7 @@ export default function Page({ params }: PageProps) {
         className="w-full h-full px-[18%] pt-[53px] flex flex-col items-center gap-14"
       >
         <PreviewProfile userProfileDetails={userProfileDetails} />
-        <PreviewLinks links={links} />
+        <PreviewLinks links={links} type="old" />
       </div>
     </>
   );

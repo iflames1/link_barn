@@ -75,6 +75,7 @@ export default function Links() {
       {loading && <Loading />}
       <div className="lg:flex gap-6 w-full">
         <PreviewSetup
+          type="old"
           links={links}
           userProfileDetails={userProfileDetails}
           className="w-[40vw] lg:flex hidden"

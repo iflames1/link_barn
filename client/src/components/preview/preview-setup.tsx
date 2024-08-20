@@ -15,6 +15,7 @@ export default function PreviewSetup({
   className,
   type,
 }: PreviewProps) {
+  console.log(links, "FROMM SETTUP");
   return (
     <div
       className={`p-6 rounded-xl bg-white flex justify-center items-center ${className}`}
