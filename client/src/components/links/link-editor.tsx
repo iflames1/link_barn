@@ -2,23 +2,9 @@ import { HiMenuAlt4 } from "react-icons/hi";
 import { FiLink } from "react-icons/fi";
 import { SelectLink } from "./select-link";
 import { Link } from "@/utils/linkSync";
+import { useAppContext } from "@/context";
 
-interface LinkEditorProps {
-  link: {
-    id: string;
-    name: string;
-    url: string;
-    index: number;
-  };
-  removeLink: (id: string) => void;
-  updateLink: (id: string, updatedLink: Partial<Link>) => void;
-}
-
-export default function LinkEditor({
-  link,
-  removeLink,
-  updateLink,
-}: LinkEditorProps) {
+export default function LinkEditor() {
   const handleUpdateURL = (
     e: React.ChangeEvent<HTMLInputElement>,
     id: string
@@ -26,8 +12,13 @@ export default function LinkEditor({
     updateLink(id, { url: e.target.value });
   };
 
-  return (
-    <div className="p-5 bg-gray-light rounded-xl flex flex-col gap-3">
+  const { links, removeLink, updateLink } = useAppContext();
+
+  return links.map((link: Link) => (
+    <div
+      key={link.id}
+      className="p-5 bg-gray-light rounded-xl flex flex-col gap-3"
+    >
       <div className="flex items-center justify-between">
         <p className="flex items-center gap-2 text-gray-dark">
           <HiMenuAlt4 className="size-4" />
@@ -68,5 +59,5 @@ export default function LinkEditor({
         </div>
       </div>
     </div>
-  );
+  ));
 }
