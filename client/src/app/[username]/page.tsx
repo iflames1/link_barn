@@ -23,7 +23,7 @@ export default function Page({ params }: PageProps) {
       console.log(res);
       if (res.status) {
         console.log("User exists");
-        getData(`${API_BASE_URL}/users/?user_id=${username}`);
+        getData(`${API_BASE_URL}/users/profile/${username}`);
       } else {
         console.log("User does not exist");
         router.push("/");
