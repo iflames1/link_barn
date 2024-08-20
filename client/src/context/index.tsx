@@ -1,14 +1,15 @@
 "use client";
-import { useState, useCallback } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  useEffect,
+} from "react";
 import axios from "axios";
 import { API_BASE_URL } from "@/lib/constants";
-
-export interface Link {
-  id: string;
-  name: string;
-  index: number;
-  url: string;
-}
+import { getUserUUID } from "@/lib/auth";
+import { toast } from "sonner";
 
 interface LinkData {
   uuid: string;
@@ -27,6 +28,13 @@ interface LinkData {
   }[];
 }
 
+export interface Link {
+  id: string;
+  name: string;
+  index: number;
+  url: string;
+}
+
 export interface UserProfileDetails {
   uuid: string;
   profile_picture: string;
@@ -37,7 +45,21 @@ export interface UserProfileDetails {
   stx_address_mainnet: string;
 }
 
-export const useLinkSync = () => {
+interface AppContextType {
+  links: Link[];
+  userProfileDetails: UserProfileDetails | null;
+  getData: (url?: string) => Promise<boolean>;
+  addNewLink: (index: number) => string;
+  updateLink: (id: string, updatedLink: Partial<Link>) => void;
+  removeLink: (id: string) => void;
+  saveLinks: () => Promise<boolean>;
+  updateUserProfile: (updatedProfile: Partial<UserProfileDetails>) => void;
+  saveUserDetails: () => Promise<boolean>;
+}
+
+const AppContext = createContext<AppContextType | undefined>(undefined);
+
+export function AppWrapper({ children }: { children: React.ReactNode }) {
   const [links, setLinks] = useState<Link[]>([]);
   const [prevlinks, setPrevLinks] = useState<Link[]>([]);
   const [userProfileDetails, setUserProfileDetails] =
@@ -46,7 +68,11 @@ export const useLinkSync = () => {
     useState<UserProfileDetails | null>(null);
   const [UUID, setUUID] = useState<string | undefined>(undefined);
 
-  const getLinks = useCallback(
+  useEffect(() => {
+    setUUID(getUserUUID());
+  }, []);
+
+  const getData = useCallback(
     async (
       url: string = `${API_BASE_URL}/users/?user_id=${UUID}`
     ): Promise<boolean> => {
@@ -203,13 +229,16 @@ export const useLinkSync = () => {
       ) {
         setPrevLinks(links);
         console.log("Links successfully synchronized with the server");
+        toast.success("Your links have been updated", { richColors: true });
         return true;
       } else {
         console.log("No changes to synchronize");
+        toast.info("No changes to save", { richColors: true });
         return true;
       }
     } catch (error) {
       console.error("Error synchronizing links:", error);
+      toast.error("Failed to save your links", { richColors: true });
       return false;
     }
   }, [links, prevlinks, UUID]);
@@ -239,20 +268,27 @@ export const useLinkSync = () => {
         });
 
         console.log("User details updated successfully");
+        toast.success("Profile updated successfully.", { richColors: true });
         setPrevUserProfileDetails(userProfileDetails);
         return true;
       } catch (error) {
         console.error("Error updating user details:", error);
+        toast.error("Failed to save profile details, Please try again", {
+          richColors: true,
+        });
         return false;
       }
+    } else {
+      console.log("No changes to save");
+      toast.info("No changes to save", { richColors: true });
+      return true;
     }
-    return false;
   }, [prevUserProfileDetails, userProfileDetails, UUID]);
 
-  return {
+  const contextValue: AppContextType = {
     links,
     userProfileDetails,
-    getLinks,
+    getData,
     addNewLink,
     updateLink,
     removeLink,
@@ -260,4 +296,16 @@ export const useLinkSync = () => {
     updateUserProfile,
     saveUserDetails,
   };
-};
+
+  return (
+    <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>
+  );
+}
+
+export function useAppContext() {
+  const context = useContext(AppContext);
+  if (context === undefined) {
+    throw new Error("useAppContext must be used within an AppWrapper");
+  }
+  return context;
+}
