@@ -1,14 +1,12 @@
-import { Link } from "@/utils/linkSync";
+"use client";
 import { FaArrowRight } from "react-icons/fa6";
 import { linkAttributes } from "../common/links-attr";
 import { usePathname } from "next/navigation";
+import { useAppContext } from "@/context";
 
-interface PreviewProps {
-  links: Link[];
-}
-
-export default function PreviewLinks({ links }: PreviewProps) {
+export default function PreviewLinks() {
   const pathname = usePathname();
+  const { links } = useAppContext();
 
   return (
     <div className="flex flex-col items-center gap-5 w-full max-w-60">

@@ -268,14 +268,21 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         });
 
         console.log("User details updated successfully");
+        toast.success("Profile updated successfully.", { richColors: true });
         setPrevUserProfileDetails(userProfileDetails);
         return true;
       } catch (error) {
         console.error("Error updating user details:", error);
+        toast.error("Failed to save profile details, Please try again", {
+          richColors: true,
+        });
         return false;
       }
+    } else {
+      console.log("No changes to save");
+      toast.info("No changes to save", { richColors: true });
+      return true;
     }
-    return false;
   }, [prevUserProfileDetails, userProfileDetails, UUID]);
 
   const contextValue: AppContextType = {

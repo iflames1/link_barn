@@ -1,15 +1,12 @@
 "use client";
 import Image from "next/image";
-import { UserProfileDetails } from "@/utils/linkSync";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
+import { useAppContext } from "@/context";
 
-interface PreviewProps {
-  userProfileDetails: UserProfileDetails | null;
-}
-
-export default function PreviewProfile({ userProfileDetails }: PreviewProps) {
+export default function PreviewProfile() {
   const pathname = usePathname();
+  const { userProfileDetails } = useAppContext();
   return (
     <div className="flex flex-col items-center gap-[25px]">
       {userProfileDetails ? (
@@ -24,7 +21,7 @@ export default function PreviewProfile({ userProfileDetails }: PreviewProps) {
                 "rounded-full border-4 size-24 border-base-dark object-cover",
                 {
                   "size-28": pathname === "/preview",
-                },
+                }
               )}
             />
           ) : (
