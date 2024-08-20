@@ -24,7 +24,7 @@ export default function PreviewProfile() {
                   "rounded-full border-4 size-24 border-base-dark object-cover",
                   {
                     "size-28": pathname === "/preview",
-                  }
+                  },
                 )}
               />
             ) : (
