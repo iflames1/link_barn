@@ -1,9 +1,6 @@
 import { getUserProfile } from "@/lib/queries";
-import PreviewLinks from "./preview-links";
-import PreviewProfile from "./preview-profile";
 import { cookies } from "next/headers";
 import { Suspense } from "react";
-import LoadingProfile from "./loading-profile";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Loader } from "lucide-react";
