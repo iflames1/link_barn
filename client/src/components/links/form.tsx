@@ -2,7 +2,8 @@
 import { useAppContext } from "@/context";
 import GetStarted from "./get-started";
 import LinkEditor from "./link-editor";
-import { useEffect } from "react";
+import LoadingForm from "./loading";
+import { Suspense, useEffect } from "react";
 import { getUserUUID } from "@/lib/auth";
 import { API_BASE_URL } from "@/lib/constants";
 
@@ -65,9 +66,9 @@ export default function Form() {
             + Add new link
           </button>
         </div>
-        <div className=" flex flex-col gap-6">
+        <Suspense fallback={<LoadingForm />}>
           {links.length < 1 ? <GetStarted /> : <LinkEditor />}
-        </div>
+        </Suspense>
       </div>
       <div>
         <hr className="h-[1px] bg-gray border-none" />

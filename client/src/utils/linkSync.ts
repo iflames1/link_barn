@@ -252,13 +252,12 @@ export const useLinkSync = () => {
   return {
     links,
     userProfileDetails,
-    setLinks,
     getLinks,
     addNewLink,
     updateLink,
-    updateUserProfile,
     removeLink,
     saveLinks,
+    updateUserProfile,
     saveUserDetails,
   };
 };
