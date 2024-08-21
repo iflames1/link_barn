@@ -7,6 +7,14 @@ import { Loader } from "lucide-react";
 import { FaArrowRight } from "react-icons/fa6";
 import { linkAttributes } from "../common/links-attr";
 
+interface LinkSchema {
+  uuid: string;
+  platform: string;
+  index: number;
+  url: string;
+  user_id: string;
+}
+
 export default async function Preview() {
   const userProfileDetails = await getUserProfile(
     cookies().get("uuid")?.value || "",
@@ -68,7 +76,7 @@ export default async function Preview() {
           {links?.length < 1 ? (
             <div>You have not added any links</div>
           ) : (
-            links?.map((link, index) => {
+            links?.map((link: LinkSchema, index: number) => {
               const normalizedLinkName =
                 link.platform.toLowerCase() as keyof typeof linkAttributes;
               const attributes =
