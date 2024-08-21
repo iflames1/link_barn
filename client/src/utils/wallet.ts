@@ -36,7 +36,6 @@ export const useWallet = () => {
   const connectWallet = () => {
     showConnect({
       appDetails,
-      redirectTo: "/",
       onFinish: () => {
         handleConnect();
         window.location.reload();
