@@ -18,11 +18,10 @@ export const NewPreview = ({
   links: LinkSchema[];
   userProfileDetails: any;
 }) => {
-  console.log("LINKS FROM HERE", links);
   return (
     <div>
       <div
-        className={`lg:flex p-6 rounded-xl bg-white justify-center items-center`}
+        className={`lg:flex p-6 rounded-xl bg-white justify-center items-center h-[calc(100vh-152px)] `}
       >
         <div className="lg:max-h-[calc(100vh-192px)] overflow-y-auto overflow-x-hidden">
           <div className="border-[1px] border-gray-dark rounded-[56px] max-w-[100vw] sm:w-[307px] h-[631px] p-[11px] relative">
@@ -47,9 +46,10 @@ const NewPreviewLinks = ({ links }: { links: LinkSchema[] }) => {
           </div>
         }
       >
-        {links?.length < 1 ? (
-          <div>You haven't created any links</div>
+        {links && links?.length < 1 ? (
+          <div>Add links 🥲</div>
         ) : (
+          links &&
           links?.map((link, index) => {
             const normalizedLinkName =
               link.platform.toLowerCase() as keyof typeof linkAttributes;

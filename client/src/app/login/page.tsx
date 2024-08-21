@@ -8,7 +8,7 @@ const Login = () => {
       <form action={signInWithGoogle} className="w-full max-w-[300px]">
         <Submit />
       </form>
-      <ConnectWallet />
+      {/* <ConnectWallet /> */}
     </div>
   );
 };
