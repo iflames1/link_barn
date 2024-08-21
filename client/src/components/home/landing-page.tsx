@@ -3,6 +3,7 @@ import React from "react";
 import { Boxes } from "@/components/ui/background-boxes";
 import { Features } from "./features";
 import Hero from "./hero";
+import { Preview } from "./preview";
 
 export function LandingPage() {
   return (
@@ -13,6 +14,8 @@ export function LandingPage() {
       <div className="overflow-auto relative z-20">
         <Hero />
         <Features />
+        {/*preview scroll is not working as expected*/}
+        {/*<Preview />*/}
       </div>
     </div>
   );
