@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { getUserUUID } from "@/lib/auth";
 import { API_BASE_URL } from "@/lib/constants";
 import { useLinkSync } from "@/utils/linkSync";
+import { LandingPage } from "@/components/landing-page";
 
 export default function Home() {
   //const cookieStore = cookies();
@@ -27,11 +28,11 @@ export default function Home() {
   }, [getLinks]);
 
   return (
-    <div className="bg-gray-light sm:p-6 w-full max-w-[1440px] mx-auto">
+    <div className="bg-gray-light sm:p-6 w-full h-screen max-w-[1440px] mx-auto flex flex-col gap-6">
       <Header />
-      <div className="sm:p-0 p-4 bg-white">Yooo</div>
-      {/*<div>{cookieStore.get("uuid")?.value} | Hello</div>*/}
-      <div>username {userProfileDetails?.username}</div>
+      <LandingPage />
+      {/*<div className="sm:p-0 p-4 bg-white">Yooo</div>
+      <div>username {userProfileDetails?.username}</div>*/}
     </div>
   );
 }
