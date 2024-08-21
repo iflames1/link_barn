@@ -1,11 +1,9 @@
-import { useState, useEffect } from "react";
-import { AppConfig, UserSession, showConnect } from "@stacks/connect";
 import axios from "axios";
 import { clearUUID, getUserUUID, setUserUUID } from "@/lib/auth";
 import { API_BASE_URL } from "@/lib/constants";
 import { useAppContext } from "@/context";
-
-const apiUrl: string = process.env.NEXT_PUBLIC_API_URL || "";
+import { AppConfig, UserSession, showConnect } from "@stacks/connect";
+import { useState } from "react";
 
 interface UserProfile {
   stxAddress: {
@@ -21,7 +19,7 @@ interface UserData {
 export const useWallet = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [userAddress, setUserAddress] = useState<string | "Connect Wallet">(
-    "Connect Wallet"
+    "Connect Wallet",
   );
   const { userProfileDetails } = useAppContext();
 
@@ -79,7 +77,7 @@ export const useWallet = () => {
 
   const checkUserExists = async (
     field: string = "username",
-    value: string = userProfileDetails?.username ?? ""
+    value: string = userProfileDetails?.username ?? "",
   ): Promise<{ status: boolean; message: string }> => {
     try {
       const response = await axios.post(`${API_BASE_URL}/users/check`, {
@@ -117,7 +115,7 @@ export const useWallet = () => {
       if (!getUserUUID()) {
         const userExists = await checkUserExists(
           "stx_address_mainnet",
-          userAddress
+          userAddress,
         );
         if (!userExists.status) {
           const response = await postUserData(userData);

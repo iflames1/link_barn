@@ -7,6 +7,7 @@ import { getUserUUID } from "@/lib/auth";
 import { toast } from "sonner";
 import { useAppContext } from "@/context";
 import ImageInput from "./image-input";
+import { revalidateTagServer } from "@/app/actions";
 
 export default function Form() {
   const [image, setImage] = useState<string | null>(null);
@@ -71,15 +72,16 @@ export default function Form() {
         if (!response.ok) {
           console.log(responseData);
           throw new Error(
-            `An error occurred while updating profile: ${responseData.detail}`
+            `An error occurred while updating profile: ${responseData.detail}`,
           );
         }
 
         console.log("API Response:", response, responseData);
 
-        toast.success("Profile updated successfully.", {
+        toast.success("Image updated successfully", {
           richColors: true,
         });
+        await revalidateTagServer("userProfile");
       } catch (err) {
         console.error("Error updating profile:", err);
 
