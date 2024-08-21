@@ -34,7 +34,7 @@ import {
   SortableItem,
 } from "@/components/ui/sortable";
 import { NewPreview } from "./new-preview";
-import { revalidatePathServer, revalidateTagServer } from "@/app/actions";
+import { revalidatePathServer } from "@/app/actions";
 import GetStarted from "./get-started";
 import LoadingForm from "./loading";
 import { Skeleton } from "../ui/skeleton";
@@ -97,17 +97,11 @@ export const NewLinks = ({
               url: item.url,
               user_id: getUserUUID(),
             }),
-            next: {
-              tags: ["userProfile"],
-            },
           });
 
           if (!response.ok) {
             const errorData = await response.json();
             const errorMessage = errorData.message || errorData.detail;
-            console.log(errorData);
-            console.log(response);
-
             toast.error(errorMessage, {
               richColors: true,
             });
@@ -130,9 +124,6 @@ export const NewLinks = ({
               platform: item.platform,
               url: item.url,
             }),
-            next: {
-              tags: ["userProfile"],
-            },
           });
 
           if (!response.ok) {
@@ -147,20 +138,14 @@ export const NewLinks = ({
       });
 
       const deletePromises = deletedEntries.map(async (uuid) => {
-        console.log("DELETING", uuid);
         const url = `${API_BASE_URL}/links/${uuid}`;
         const response = await fetch(url, {
           method: "DELETE",
-          next: {
-            tags: ["userProfile"],
-          },
         });
 
         if (!response.ok) {
           const errorData = await response.json();
           const errorMessage = errorData.message || errorData.detail;
-          console.log(errorData);
-          console.log(response);
           toast.error(errorMessage, {
             richColors: true,
           });
@@ -176,6 +161,7 @@ export const NewLinks = ({
       toast.success("Links updated successfully", {
         richColors: true,
       });
+      await revalidatePathServer("user");
     } catch (err) {
       if (err instanceof Error) {
         console.log(err);
@@ -185,7 +171,6 @@ export const NewLinks = ({
         toast.error("An unknown error occurred.");
       }
     } finally {
-      await revalidateTagServer("userProfile");
       setIsLoading(false);
     }
   }
