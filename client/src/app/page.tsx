@@ -6,7 +6,8 @@ import { useEffect } from "react";
 import { getUserUUID } from "@/lib/auth";
 import { API_BASE_URL } from "@/lib/constants";
 import { useLinkSync } from "@/utils/linkSync";
-import { LandingPage } from "@/components/landing-page";
+import { LandingPage } from "@/components/home/landing-page";
+import { Features } from "@/components/home/features";
 
 export default function Home() {
   //const cookieStore = cookies();
@@ -30,6 +31,7 @@ export default function Home() {
   return (
     <div className="bg-gray-light sm:p-6 w-full h-screen max-w-[1440px] mx-auto flex flex-col gap-6">
       <Header />
+      {/*<Features />*/}
       <LandingPage />
       {/*<div className="sm:p-0 p-4 bg-white">Yooo</div>
       <div>username {userProfileDetails?.username}</div>*/}
