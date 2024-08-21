@@ -18,11 +18,6 @@ export function LandingPage() {
           <Boxes />
           <div className="overflow-auto relative z-20">
             <Hero />
-            {/* <Features /> */}
-            {/* <HeroScrollDemo /> */}
-
-            {/*preview scroll is not working as expected*/}
-            {/*<Preview />*/}
           </div>
         </div>
         <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl">
