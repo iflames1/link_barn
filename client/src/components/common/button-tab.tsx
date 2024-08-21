@@ -13,7 +13,7 @@ interface TabProps {
 export default function ButtonTab({ path, title }: TabProps) {
   const pathname = usePathname();
   const IconMap: { [key: string]: IconType } = {
-    "/preview": IoEyeOutline,
+    "/user/preview": IoEyeOutline,
   };
   const Icon = IconMap[path];
 

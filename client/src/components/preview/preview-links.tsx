@@ -21,7 +21,7 @@
 //   if (type === "new") {
 //     return (
 //       <div className="flex flex-col items-center gap-5 w-full max-w-60">
-//         {links?.length < 1 && pathname !== "/preview"
+//         {links?.length < 1 && pathname !== "/user/preview"
 //           ? Array(4)
 //               .fill(null)
 //               .map((_, index) => (
@@ -71,7 +71,7 @@
 //     <div className="flex flex-col items-center gap-5 w-full max-w-60">
 //       <Suspense fallback={<LoadingLinks />}>
 // >>>>>>> 8042861cb718817e311fb4764e61146dee72ee1b
-//         {links?.length < 1 && pathname !== "/preview"
+//         {links?.length < 1 && pathname !== "/user/preview"
 //           ? Array(4)
 //               .fill(null)
 //               .map((_, index) => (
@@ -129,7 +129,7 @@ export default function PreviewLinks() {
   return (
     <div className="flex flex-col items-center gap-5 w-full max-w-60">
       <Suspense fallback={<LoadingLinks />}>
-        {links?.length < 1 && pathname !== "/preview"
+        {links?.length < 1 && pathname !== "/user/preview"
           ? Array(4)
               .fill(null)
               .map((_, index) => (

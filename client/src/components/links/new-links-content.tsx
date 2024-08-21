@@ -45,7 +45,7 @@ const formSchema = z.object({
       platform: z.string().min(2).max(50),
       url: z.string().url().min(2).max(50),
       index: z.number(),
-    }),
+    })
   ),
 });
 
