@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <div className="w-full flex flex-col items-center justify-center py-10">
+    <div className="w-full flex flex-col items-center justify-center py-6">
       <h1 className={"hM"}>Welcome to Link Barn</h1>
       <p className="text-center pt-2 pb-8 max-w-md">
         Your one-stop destination for all your important links. Simplify your
