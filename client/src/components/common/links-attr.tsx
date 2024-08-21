@@ -43,7 +43,7 @@ const randomColors = [
 export const linkAttributes = {
   link: {
     text: "text-black",
-    bg: () => randomColors[Math.floor(Math.random() * randomColors.length)],
+    bg: "bg-white",
     icon: <RiLinkM className="size-4" />,
   },
   github: {

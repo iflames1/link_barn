@@ -19,7 +19,7 @@ export default function Page({ params }: PageProps) {
 
   useEffect(() => {
     const checkUser = async () => {
-      const res = await checkUserExists(username);
+      const res = await checkUserExists("username", username);
       console.log(res);
       if (res.status) {
         console.log("User exists");
@@ -29,6 +29,7 @@ export default function Page({ params }: PageProps) {
         router.push("/");
       }
     };
+
     checkUser();
   }, [checkUserExists, getData, router, username]);
 
