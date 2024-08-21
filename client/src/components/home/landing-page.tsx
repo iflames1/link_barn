@@ -4,6 +4,7 @@ import { Boxes } from "@/components/ui/background-boxes";
 import { Features } from "./features";
 import Hero from "./hero";
 import { Preview } from "./preview";
+import { TestimonialLamp } from "./lamp-testimonial";
 
 export function LandingPage() {
   return (
@@ -13,6 +14,7 @@ export function LandingPage() {
       <Boxes />
       <div className="overflow-auto relative z-20">
         <Hero />
+        {/*<TestimonialLamp />*/}
         <Features />
         {/*preview scroll is not working as expected*/}
         {/*<Preview />*/}
