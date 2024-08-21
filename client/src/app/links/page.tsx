@@ -7,7 +7,7 @@ import { cookies } from "next/headers";
 export default async function LinksPage() {
   const uuid = cookies().get("uuid")?.value;
   const userProfile = await getUserProfile(uuid || "");
-  const links = userProfile.links;
+  const links = userProfile?.links ?? [];
   console.log(userProfile);
 
   return (
