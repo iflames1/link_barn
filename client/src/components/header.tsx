@@ -14,12 +14,12 @@ export default function Header() {
       </Link>
 
       <div className="flex lg:gap-4 items-center text-gray-dark">
-        <Tab path="/links" title="Links" />
+        <Tab path="/user/links" title="Links" />
 
-        <Tab path="/profile" title="Profile Details" />
+        <Tab path="/user/profile" title="Profile Details" />
       </div>
 
-      <ButtonTab path="/preview" title="Preview" />
+      <ButtonTab path="/user/preview" title="Preview" />
     </nav>
   );
 }

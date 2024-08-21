@@ -14,8 +14,8 @@ interface TabProps {
 export default function Tab({ path, title }: TabProps) {
   const pathname = usePathname();
   const IconMap: { [key: string]: IconType } = {
-    "/links": FiLink,
-    "/profile": CgProfile,
+    "/user/links": FiLink,
+    "/user/profile": CgProfile,
   };
   const Icon = IconMap[path];
 

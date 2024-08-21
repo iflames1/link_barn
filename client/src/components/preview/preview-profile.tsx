@@ -23,14 +23,14 @@ export default function PreviewProfile() {
                 className={cn(
                   "rounded-full border-4 size-24 border-base-dark object-cover",
                   {
-                    "size-28": pathname === "/preview",
-                  },
+                    "size-28": pathname === "/user/preview",
+                  }
                 )}
               />
             ) : (
               <div
                 className={cn(`bg-gray-preview size-24 rounded-full`, {
-                  "size-28": pathname === "/preview",
+                  "size-28": pathname === "/user/preview",
                 })}
               ></div>
             )}
@@ -38,7 +38,7 @@ export default function PreviewProfile() {
               <div className="flex flex-col items-center gap-[13px]">
                 <p
                   className={cn("hS text-black", {
-                    hM: pathname === "/preview",
+                    hM: pathname === "/user/preview",
                   })}
                 >
                   {userProfileDetails?.first_name}{" "}
