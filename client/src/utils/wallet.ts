@@ -129,5 +129,6 @@ export const useWallet = () => {
     connectWallet,
     disconnectWallet,
     checkUserExists,
+    handleConnect,
   };
 };
