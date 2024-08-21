@@ -251,7 +251,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         prevUserProfileDetails.last_name !== userProfileDetails.last_name)
     ) {
       try {
-        await axios.patch(`${API_BASE_URL}/users/?user_id=${UUID}`, {
+        await axios.patch(`${API_BASE_URL}/users/${UUID}`, {
           first_name: userProfileDetails.first_name,
           last_name: userProfileDetails.last_name,
           profile_picture: userProfileDetails.profile_picture,
