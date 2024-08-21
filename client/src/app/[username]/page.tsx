@@ -19,16 +19,17 @@ export default function Page({ params }: PageProps) {
 
   useEffect(() => {
     const checkUser = async () => {
-      const res = await checkUserExists(username);
+      const res = await checkUserExists("username", username);
       console.log(res);
       if (res.status) {
         console.log("User exists");
-        getData(`${API_BASE_URL}/users/?user_id=${username}`);
+        getData(`${API_BASE_URL}/users/profile/${username}`);
       } else {
         console.log("User does not exist");
         router.push("/");
       }
     };
+
     checkUser();
   }, [checkUserExists, getData, router, username]);
 

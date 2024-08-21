@@ -3,6 +3,7 @@ import { AppConfig, UserSession, showConnect } from "@stacks/connect";
 import axios from "axios";
 import { clearUUID, getUserUUID, setUserUUID } from "@/lib/auth";
 import { API_BASE_URL } from "@/lib/constants";
+import { useAppContext } from "@/context";
 
 const apiUrl: string = process.env.NEXT_PUBLIC_API_URL || "";
 
@@ -22,6 +23,7 @@ export const useWallet = () => {
   const [userAddress, setUserAddress] = useState<string | "Connect Wallet">(
     "Connect Wallet"
   );
+  const { userProfileDetails } = useAppContext();
 
   const appConfig = new AppConfig(["store_write", "publish_data"]);
   const userSession = new UserSession({ appConfig });
@@ -77,12 +79,14 @@ export const useWallet = () => {
   };
 
   const checkUserExists = async (
-    username: string = userAddress
+    field: string = "username",
+    value: string = userProfileDetails?.username ?? ""
   ): Promise<{ status: boolean; message: string }> => {
     try {
-      const response = await axios.get(
-        `${API_BASE_URL}/users/check/${username}`
-      );
+      const response = await axios.post(`${API_BASE_URL}/users/check`, {
+        field,
+        value,
+      });
       return {
         status: response.data.status,
         message: response.data.message,
@@ -112,7 +116,10 @@ export const useWallet = () => {
       setUserAddress(userData.profile.stxAddress.mainnet);
 
       if (!getUserUUID()) {
-        const userExists = await checkUserExists(userAddress);
+        const userExists = await checkUserExists(
+          "stx_address_mainnet",
+          userAddress
+        );
         if (!userExists.status) {
           const response = await postUserData(userData);
           setUserUUID(response.data.uuid);
