@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { getUserUUID } from "@/lib/auth";
 import { API_BASE_URL } from "@/lib/constants";
 import { useLinkSync } from "@/utils/linkSync";
-import { LandingPage } from "@/components/landing-page";
+import { LandingPage } from "@/components/home/landing-page";
 
 export default function Home() {
   //const cookieStore = cookies();
