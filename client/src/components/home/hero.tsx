@@ -1,6 +1,7 @@
 import { BsLightningFill } from "react-icons/bs";
 import Link from "next/link";
 import { Boxes } from "@/components/ui/background-boxes";
+import { BorderBeam } from "../ui/border-beam";
 
 export default function Hero() {
   return (
@@ -33,6 +34,12 @@ export default function Hero() {
               <p>Make it match your brand</p>
             </div>
           </div>
+        </div>
+        <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl">
+          <span className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center text-8xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10">
+            Border Beam
+          </span>
+          <BorderBeam size={250} duration={12} delay={9} />
         </div>
       </div>
     </div>
