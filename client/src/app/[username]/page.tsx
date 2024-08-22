@@ -18,7 +18,7 @@ interface PageProps {
   params: { username: string };
 }
 
-export async function generateMeta(
+export async function generateMetadata(
   { params }: PageProps,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {

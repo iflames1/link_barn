@@ -345,7 +345,7 @@ export const NewLinks = ({
                                   <FormControl>
                                     <Input
                                       className="focus:shadow-active py-5 placeholder:text-black"
-                                      // type="hidden"
+                                      type="hidden"
                                       {...field}
                                       value={index}
                                       onChange={(e) => {
