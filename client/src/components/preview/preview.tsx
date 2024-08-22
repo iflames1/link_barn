@@ -72,30 +72,33 @@ export default async function Preview() {
             </>
           )}
         </div>
-        <div className="flex flex-col items-center gap-5 w-full max-w-60">
+        <div className="flex flex-col items-center gap-3 w-full max-w-60">
           {links?.length < 1 ? (
             <div>You have not added any links</div>
           ) : (
-            links?.map((link: LinkSchema, index: number) => {
-              const normalizedLinkName =
-                link.platform.toLowerCase() as keyof typeof linkAttributes;
-              const attributes =
-                linkAttributes[normalizedLinkName] || linkAttributes.link;
-              return (
-                <a
-                  href={link.url}
-                  target="_blank"
-                  key={index}
-                  className={`flex justify-between items-center py-[11px] px-4 rounded-lg w-full border-[1px] border-gray capitalize ${attributes.bg} ${attributes.text}`}
-                >
-                  <p className="flex items-center justify-start gap-2">
-                    {attributes.icon}
-                    <span>{link.platform}</span>
-                  </p>
-                  <FaArrowRight className="size-4" />
-                </a>
-              );
-            })
+            links
+              ?.slice()
+              .sort((a: LinkSchema, b: LinkSchema) => a.index - b.index)
+              .map((link: LinkSchema, index: number) => {
+                const normalizedLinkName =
+                  link.platform.toLowerCase() as keyof typeof linkAttributes;
+                const attributes =
+                  linkAttributes[normalizedLinkName] || linkAttributes.link;
+                return (
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    key={index}
+                    className={`flex justify-between items-center py-[11px] px-4 rounded-lg w-full border-[1px] border-gray capitalize ${attributes.bg} ${attributes.text}`}
+                  >
+                    <p className="flex items-center justify-start gap-2">
+                      {attributes.icon}
+                      <span>{link.platform}</span>
+                    </p>
+                    <FaArrowRight className="size-4" />
+                  </a>
+                );
+              })
           )}
         </div>
       </Suspense>
