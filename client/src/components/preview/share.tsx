@@ -20,6 +20,7 @@ import { getUserUUID } from "@/lib/auth";
 import { API_BASE_URL } from "@/lib/constants";
 import { useWallet } from "@/utils/wallet";
 import { toast } from "sonner";
+import { IoCheckmarkSharp } from "react-icons/io5";
 
 export function ShareLink() {
   const { getData, userProfileDetails, updateUserProfile, saveUserDetails } =
@@ -27,6 +28,7 @@ export function ShareLink() {
   const { checkUserExists } = useWallet();
   const [isEditing, setIsEditing] = useState(false);
   const [username, setUsername] = useState("");
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -37,6 +39,7 @@ export function ShareLink() {
         if (res) {
           console.log("Successfully fetched user details");
           setUsername(userProfileDetails?.username || "");
+          console.log(username);
         } else {
           console.log("failed to get user");
         }
@@ -57,17 +60,32 @@ export function ShareLink() {
         console.log("User with that username already exist");
         toast.error("User with that username already exist, try another");
       } else if (res.status && userProfileDetails?.username === username) {
+        toast.success("Username updated successfully");
         console.log("Successfully updated username");
+        setIsEditing(false);
       } else {
         saveUserDetails();
+        setIsEditing(false);
       }
     };
-    setIsEditing(false);
     validate();
   };
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateUserProfile({ username: e.target.value });
+  };
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(
+      `https://linkbarn.tech/${userProfileDetails?.username}`
+    );
+    console.log("Link copied to clipboard!");
+    setCopied(true);
+    toast.success("Link copied to clipboard!");
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
   };
 
   return (
@@ -78,31 +96,45 @@ export function ShareLink() {
         </button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <DialogHeader>
             <DialogTitle>Share link</DialogTitle>
             <DialogDescription>
               Anyone who has this link will be able to view your link barn.
             </DialogDescription>
           </DialogHeader>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center gap-2">
             <div className="grid flex-1 gap-2">
               <Label htmlFor="link" className="sr-only">
                 Link
               </Label>
-              <Input
-                id="link"
-                defaultValue={`https://linkbarn.tech/${userProfileDetails?.username}`}
-                readOnly={!isEditing}
-                onChange={handleUsernameChange}
-              />
+              <div className="flex items-center border border-base-dark rounded-lg px-2 py-[11px]">
+                <span className="text-gray-dark">linkbarn.tech/</span>
+                <Input
+                  id="link"
+                  type="text"
+                  defaultValue={userProfileDetails?.username}
+                  readOnly={!isEditing}
+                  onChange={handleUsernameChange}
+                  className="border-none outline-none flex-grow text-black p-0 h-fit focus-within:ring-0 focus-within:ring-offset-0"
+                />
+              </div>
             </div>
             <button
               type="button"
-              className="p-3 text-white bg-base-dark hover:bg-opacity-90 rounded-lg h-full"
+              onClick={() => {
+                isEditing
+                  ? toast.info("Save Changes to copy link")
+                  : handleCopyLink();
+              }}
+              className="text-white bg-base-dark hover:bg-opacity-90 rounded-lg h-full p-4"
             >
               <span className="sr-only">Copy</span>
-              <Copy className="h-4 w-4" />
+              {copied ? (
+                <IoCheckmarkSharp className="size-4" />
+              ) : (
+                <Copy className="size-4" />
+              )}
             </button>
           </div>
           <DialogFooter className="sm:justify-start">
@@ -117,7 +149,10 @@ export function ShareLink() {
               <button
                 className="button py-[11px] sm:px-7 px-4 border-[1px] border-base-dark text-base-dark  hover:bg-base-light"
                 type="button"
-                onClick={() => setIsEditing(true)}
+                onClick={(e) => {
+                  setIsEditing(true);
+                  e.preventDefault();
+                }}
               >
                 {userProfileDetails?.username
                   ? "Change Username"
