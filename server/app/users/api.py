@@ -55,7 +55,7 @@ async def check(data: CheckRequest, users: UsersCRUD = Depends(get_users_crud)):
 @router.get("/profile/{username}", response_model=Preview, status_code=http_status.HTTP_200_OK)
 async def get_user_profile(username: str, users: UsersCRUD = Depends(get_users_crud)):
     user = await users.get_user_profile(username)
-    return UserProfile.from_orm(user)
+    return Preview.from_orm(user)
 
 
 @router.get("/all", response_model=List[User], status_code=http_status.HTTP_200_OK)
