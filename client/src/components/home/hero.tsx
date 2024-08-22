@@ -5,7 +5,7 @@ import { BorderBeam } from "../ui/border-beam";
 
 export default function Hero() {
   return (
-    <div className="h-full relative w-full overflow-hidden bg-white text-black bM flex flex-col items-center justify-center rounded-xl p-4">
+    <div className="relative w-full overflow-hidden bg-white text-black bM flex flex-col items-center justify-center rounded-xl p-4">
       <div className="absolute inset-0 w-full h-full bg-white z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
       <Boxes />
       <div className="overflow-auto relative z-20">
