@@ -1,4 +1,5 @@
 import Preview from "@/components/preview/preview";
+import { ShareLink } from "@/components/preview/share";
 import Link from "next/link";
 
 export default function PreviewPage() {
@@ -12,9 +13,10 @@ export default function PreviewPage() {
           >
             Back to Editor
           </Link>
-          <div className="hS py-[11px] px-[27px] bg-base-dark text-white hover:bg-opacity-90 rounded-lg cursor-pointer">
+          {/*<div className="hS py-[11px] px-[27px] bg-base-dark text-white hover:bg-opacity-90 rounded-lg cursor-pointer">
             Share Link
-          </div>
+          </div>*/}
+          <ShareLink />
         </div>
       </div>
       <div className="w-full min-h-screen mx-auto relative">

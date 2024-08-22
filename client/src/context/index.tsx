@@ -75,7 +75,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
 
   const getData = useCallback(
     async (
-      url: string = `${API_BASE_URL}/users/?user_id=${UUID}`,
+      url: string = `${API_BASE_URL}/users/?user_id=${UUID}`
     ): Promise<boolean> => {
       try {
         const response = await axios.get<LinkData>(url);
@@ -132,7 +132,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         return false;
       }
     },
-    [UUID],
+    [UUID]
   );
 
   const addNewLink = useCallback((index: number) => {
@@ -150,8 +150,8 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
   const updateLink = useCallback((id: string, updatedLink: Partial<Link>) => {
     setLinks((prevLinks) =>
       prevLinks.map((link) =>
-        link.id === id ? { ...link, ...updatedLink } : link,
-      ),
+        link.id === id ? { ...link, ...updatedLink } : link
+      )
     );
   }, []);
 
@@ -162,7 +162,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         return { ...prevDetails, ...updatedProfile };
       });
     },
-    [],
+    []
   );
 
   const removeLink = useCallback((id: string) => {
@@ -178,7 +178,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
     const updatedLinks = [];
     const newLinks = [];
     const deletedLinks = prevlinks.filter(
-      (pl) => !links.some((l) => l.id === pl.id),
+      (pl) => !links.some((l) => l.id === pl.id)
     );
 
     for (const link of links) {
@@ -204,7 +204,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
               index: link.index,
               url: link.url,
             })
-            .then(() => console.log(`Updated link: ${link.name}`)),
+            .then(() => console.log(`Updated link: ${link.name}`))
         ),
         ...newLinks.map((link) =>
           axios
@@ -214,12 +214,12 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
               url: link.url,
               user_id: UUID,
             })
-            .then(() => console.log(`Added new link: ${link.name}`)),
+            .then(() => console.log(`Added new link: ${link.name}`))
         ),
         ...deletedLinks.map((link) =>
           axios
             .delete(`${API_BASE_URL}/links/${link.id}`)
-            .then(() => console.log(`Deleted: ${link.name}`)),
+            .then(() => console.log(`Deleted: ${link.name}`))
         ),
       ]);
 
@@ -249,7 +249,8 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
       prevUserProfileDetails &&
       userProfileDetails &&
       (prevUserProfileDetails.first_name !== userProfileDetails.first_name ||
-        prevUserProfileDetails.last_name !== userProfileDetails.last_name)
+        prevUserProfileDetails.last_name !== userProfileDetails.last_name ||
+        prevUserProfileDetails.username !== userProfileDetails.username)
     ) {
       try {
         await axios.patch(`${API_BASE_URL}/users/${UUID}`, {
@@ -269,14 +270,14 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         });
 
         console.log("User details updated successfully");
-        toast.success("Profile updated successfully.", { richColors: true });
+        toast.success("Updated successfully.", { richColors: true });
 
         await revalidateTagServer("userProfile");
         setPrevUserProfileDetails(userProfileDetails);
         return true;
       } catch (error) {
         console.error("Error updating user details:", error);
-        toast.error("Failed to save profile details, Please try again", {
+        toast.error("Failed to save details, Please try again", {
           richColors: true,
         });
         return false;
