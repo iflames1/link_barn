@@ -45,16 +45,16 @@ export async function updateSession(request: NextRequest) {
   }
 
   // Redirect authenticated users away from login page
-  if (uuid && request.nextUrl.pathname.startsWith("/login")) {
+  if (uuid && request.nextUrl.pathname.startsWith("/auth/login")) {
     const url = request.nextUrl.clone();
-    url.pathname = "/";
+    url.pathname = "/users/links";
     return NextResponse.redirect(url);
   }
 
   // Redirect unauthenticated users to login page
-  if (!uuid && !request.nextUrl.pathname.includes("/login")) {
+  if (!uuid && request.nextUrl.pathname.includes("/users/")) {
     const url = request.nextUrl.clone();
-    url.pathname = "/login";
+    url.pathname = "/auth/login";
     return NextResponse.redirect(url);
   }
 

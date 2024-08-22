@@ -15,8 +15,9 @@ export default function Home() {
       <Header />
       <Button>HELLOOOOO Working now? lol</Button>
       <Button asChild>
-        {/* <Link href={"/login"}>Back to Login Hmm ibterestin</Link> */}
+        <Link href={"/login"}>Back to Login Hmm ibterestin</Link>
       </Button>
+      Hi
       {/* <div>{cookieStore.get("uuid")?.value} | Hello</div> */}
     </div>
   );

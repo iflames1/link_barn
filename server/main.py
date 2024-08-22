@@ -32,7 +32,11 @@ app = FastAPI(title=settings.project_name, openapi_url=f"{settings.api_v1_prefix
               version=settings.version, lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://link-barn.vercel.app"],
+    allow_origins=["http://localhost:3000",
+                   "https://link-barn.vercel.app",
+                   "https://linkbarn.vercel.app",
+                   "https://link-barn-pi.vercel.app"
+                   ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -121,6 +121,7 @@ export const NewLinks = ({
           console.log("EDITING");
           const linkId = defaultLinks[index].uuid;
           const url = `${API_BASE_URL}/links/${linkId}`;
+          console.log(item);
           const response = await fetch(url, {
             method: "PATCH",
             headers: {
@@ -129,6 +130,7 @@ export const NewLinks = ({
             body: JSON.stringify({
               platform: item.platform,
               url: item.url,
+              index: item.index,
             }),
             next: {
               tags: ["userProfile"],
@@ -209,10 +211,26 @@ export const NewLinks = ({
     setNewLinks((prev) => [...prev, fields.length]);
   };
 
+  // const handleChange = (index: number) => {
+  //   if (!newLinks.includes(index) && !editedLinks.includes(index)) {
+  //     setEditedLinks((prev) => [...prev, index]);
+  //   }
+  // };
+
   const handleChange = (index: number) => {
-    if (!newLinks.includes(index) && !editedLinks.includes(index)) {
-      setEditedLinks((prev) => [...prev, index]);
-    }
+    // setEditedLinks((prev) => {
+    //   if (!prev.includes(index) && !newLinks.includes(index)) {
+    //     return [...prev, index];
+    //   }
+    //   return prev;
+    // });
+    form.setValue(`links.${index}.index`, index);
+    setEditedLinks((prev) => {
+      if (!prev.includes(index) && !newLinks.includes(index)) {
+        return [...prev, index];
+      }
+      return prev;
+    });
   };
 
   const handleRemove = (index: number) => {
@@ -261,9 +279,15 @@ export const NewLinks = ({
                 >
                   <Sortable
                     value={fields}
-                    onMove={({ activeIndex, overIndex }) =>
-                      move(activeIndex, overIndex)
-                    }
+                    onMove={({ activeIndex, overIndex }) => {
+                      move(activeIndex, overIndex);
+
+                      const start = Math.min(activeIndex, overIndex);
+                      const end = Math.max(activeIndex, overIndex);
+                      for (let i = start; i <= end; i++) {
+                        handleChange(i);
+                      }
+                    }}
                     overlay={
                       <div className="flex flex-col items-center gap-2 bg-[#fafafa] p-4 rounded-lg">
                         <div className="flex items-center justify-between w-full gap-4 mb-4">
@@ -313,6 +337,26 @@ export const NewLinks = ({
                                 Remove
                               </Button>
                             </div>
+                            <FormField
+                              control={form.control}
+                              name={`links.${index}.index`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormControl>
+                                    <Input
+                                      className="focus:shadow-active py-5 placeholder:text-black"
+                                      type="hidden"
+                                      {...field}
+                                      value={index}
+                                      onChange={(e) => {
+                                        field.onChange(e);
+                                        handleChange(index);
+                                      }}
+                                    />
+                                  </FormControl>
+                                </FormItem>
+                              )}
+                            />
                             <FormField
                               control={form.control}
                               name={`links.${index}.platform`}

@@ -1,4 +1,6 @@
+import { signOut } from "@/app/actions";
 import Preview from "@/components/preview/preview";
+import { Button } from "@/components/ui/button";
 import { ShareLink } from "@/components/preview/share";
 import Link from "next/link";
 
@@ -22,12 +24,19 @@ export default function PreviewPage() {
       <div className="w-full min-h-screen mx-auto relative">
         <Preview />
       </div>
-      <Link
-        href="/themes"
-        className="hS py-[11px] px-[27px] bg-base-dark text-white hover:bg-opacity-90 rounded-lg cursor-pointer sticky bottom-6 left-6"
-      >
-        Change Appearance
-      </Link>
+      <div className="flex items-center justify-between mx-6 mb-5">
+        <Link
+          href="/user/themes"
+          className="hS py-2 px-[27px] bg-base-dark text-white hover:bg-opacity-90 rounded-md cursor-pointer sticky"
+        >
+          Change Appearance
+        </Link>
+        <form action={signOut}>
+          <Button className="bg-base-dark hover:bg-opacity-90 rounded-lg items-center justify-between">
+            Sign Out
+          </Button>
+        </form>
+      </div>
     </div>
   );
 }
