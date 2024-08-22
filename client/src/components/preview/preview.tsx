@@ -7,7 +7,7 @@ import { Loader } from "lucide-react";
 import { FaArrowRight } from "react-icons/fa6";
 import { linkAttributes } from "../common/links-attr";
 
-interface LinkSchema {
+export interface LinkSchema {
   uuid: string;
   platform: string;
   index: number;
