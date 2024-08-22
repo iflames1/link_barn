@@ -8,7 +8,8 @@ if TYPE_CHECKING:
 else:
     LinkRead = object
 
-auth_type = Enum('crypto', 'supabase', name='auth_type_enum', create_type=False)
+auth_type = Enum('crypto', 'supabase',
+                 name='auth_type_enum', create_type=False)
 
 
 @event.listens_for(SQLModel.metadata, "before_create")
