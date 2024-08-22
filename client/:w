@@ -25,8 +25,6 @@ import { checkUserExists } from "@/lib/queries";
 import axios from "axios";
 import { revalidateTag } from "next/cache";
 import { revalidateTagServer } from "@/app/actions";
-import { ConfettiButton } from "../ui/confetti";
-import { ConfettiSideCannons } from "../ui/confetti-side";
 
 export function ShareLink({ userProfileDetails }: { userProfileDetails: any }) {
   // const { getData, userProfileDetails, updateUserProfile, saveUserDetails } =
@@ -64,7 +62,6 @@ export function ShareLink({ userProfileDetails }: { userProfileDetails: any }) {
       if (res.status && userProfileDetails?.username !== username) {
         console.log("User with that username already exist");
         toast.error("User with that username already exist, try another");
-        setIsLoading(false);
       } else {
         // saveUserDetails();
         try {
@@ -118,7 +115,7 @@ export function ShareLink({ userProfileDetails }: { userProfileDetails: any }) {
           Share Link
         </button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md relative">
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <DialogHeader>
             <DialogTitle>Share link</DialogTitle>
@@ -155,7 +152,9 @@ export function ShareLink({ userProfileDetails }: { userProfileDetails: any }) {
                 </Button>
               </div>
             </div>
-            <ConfettiSideCannons
+            <Button
+              type="button"
+              variant={"secondary"}
               onClick={() => {
                 isEditing
                   ? toast.info("Save Changes to copy link")
@@ -169,7 +168,7 @@ export function ShareLink({ userProfileDetails }: { userProfileDetails: any }) {
               ) : (
                 <Copy className="size-4" />
               )}
-            </ConfettiSideCannons>
+            </Button>
           </div>
           <DialogFooter className="justify-end">
             {/* {isEditing ? ( */}
@@ -195,7 +194,7 @@ export function ShareLink({ userProfileDetails }: { userProfileDetails: any }) {
             {/*       : "Add Username"} */}
             {/*   </Button> */}
             {/* )} */}
-            {userProfileDetails?.username !== username && (
+            {userProfileDetails.username !== username && (
               <Button
                 type="submit"
                 variant={"outline"}

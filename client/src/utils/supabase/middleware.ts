@@ -47,12 +47,13 @@ export async function updateSession(request: NextRequest) {
   // Redirect authenticated users away from login page
   if (uuid && request.nextUrl.pathname.startsWith("/auth/login")) {
     const url = request.nextUrl.clone();
-    url.pathname = "/users/links";
+    url.pathname = "/user/links";
     return NextResponse.redirect(url);
   }
 
+  console.log(request.nextUrl.pathname, "PATHNAME");
   // Redirect unauthenticated users to login page
-  if (!uuid && request.nextUrl.pathname.includes("/users/")) {
+  if (!uuid && request.nextUrl.pathname.includes("/user/")) {
     const url = request.nextUrl.clone();
     url.pathname = "/auth/login";
     return NextResponse.redirect(url);

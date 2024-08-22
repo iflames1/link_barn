@@ -18,25 +18,25 @@ interface PageProps {
   params: { username: string };
 }
 
-export async function generateMetadata(
-  { params }: PageProps,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  const { username } = params;
-  const userProfile = await getUserProfileByUsername(username);
-
-  const previousImages = (await parent).openGraph?.images || [];
-  const openGraphTitle =
-    userProfile?.openGraph?.title || `LinkBarn | ${username}`;
-
-  return {
-    title: openGraphTitle,
-    openGraph: {
-      title: openGraphTitle,
-      images: ["/public/images/logo.svg", ...previousImages],
-    },
-  };
-}
+// export async function generateMetadata(
+//   { params }: PageProps,
+//   parent: ResolvingMetadata,
+// ): Promise<Metadata> {
+//   const { username } = params;
+//   const userProfile = await getUserProfileByUsername(username);
+//
+//   const previousImages = (await parent).openGraph?.images || [];
+//   const openGraphTitle =
+//     userProfile?.openGraph?.title || `LinkBarn | ${username}`;
+//
+//   return {
+//     title: openGraphTitle,
+//     openGraph: {
+//       title: openGraphTitle,
+//       images: ["/public/images/logo.svg", ...previousImages],
+//     },
+//   };
+// }
 
 export default async function Page({ params }: PageProps) {
   const { username } = params;
@@ -47,7 +47,7 @@ export default async function Page({ params }: PageProps) {
 
   if (user_exists.status) {
     userProfile = await getUserProfileByUsername(username);
-    links = userProfile.links;
+    links = userProfile && userProfile?.links;
   } else {
     console.log("HERERE");
     notFound();
@@ -96,7 +96,7 @@ export default async function Page({ params }: PageProps) {
                   width={104}
                   height={104}
                   className={cn(
-                    "rounded-full border-4 size-28 border-base-dark object-cover"
+                    "rounded-full border-4 size-28 border-base-dark object-cover",
                   )}
                 />
               ) : (

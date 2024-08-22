@@ -6,9 +6,6 @@ export const getUserProfile = async (uuid: string) => {
   try {
     const url = `${API_BASE_URL}/users?user_id=${uuid}`;
     const response = await fetch(url, {
-      // next: {
-      //   revalidate: 3600,
-      // },
       next: {
         tags: ["userProfile"],
       },

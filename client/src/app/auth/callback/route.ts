@@ -126,7 +126,8 @@ export async function GET(request: Request) {
             });
           }
 
-          return NextResponse.redirect(`${origin}${next}`);
+          console.log(`${origin}${next}users/links`);
+          return NextResponse.redirect(`${origin}${next}user/links`);
         } catch (err) {
           console.log(err);
           return NextResponse.redirect(`${origin}/auth/auth-code-error`);

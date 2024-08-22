@@ -3,8 +3,16 @@ import Preview from "@/components/preview/preview";
 import { Button } from "@/components/ui/button";
 import { ShareLink } from "@/components/preview/share";
 import Link from "next/link";
+import { getUserProfile } from "@/lib/queries";
+import { cookies } from "next/headers";
 
-export default function PreviewPage() {
+export default async function PreviewPage() {
+  const userProfileDetails = await getUserProfile(
+    cookies().get("uuid")?.value || "",
+  );
+  const links = await userProfileDetails?.links;
+  console.log(links, userProfileDetails);
+
   return (
     <div className="w-full">
       <div className="w-full md:p-6">
@@ -18,11 +26,14 @@ export default function PreviewPage() {
           {/*<div className="hS py-[11px] px-[27px] bg-base-dark text-white hover:bg-opacity-90 rounded-lg cursor-pointer">
             Share Link
           </div>*/}
-          <ShareLink />
+          <ShareLink userProfileDetails={userProfileDetails} />
         </div>
       </div>
       <div className="w-full min-h-screen mx-auto relative">
-        <Preview />
+        <Preview
+          userProfileDetails={userProfileDetails}
+          links={userProfileDetails && userProfileDetails.links}
+        />
       </div>
       <div className="flex items-center justify-between mx-6 mb-5">
         <Link

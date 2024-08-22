@@ -8,11 +8,12 @@ export async function revalidatePathServer(path: string) {
 }
 
 export async function revalidateTagServer(tag: string) {
-  console.log("CALLED");
   revalidateTag(tag);
 }
 
 export async function signOut() {
-  cookies().delete("uuid");
-  redirect("/login");
+  if (cookies().get("uuid")?.value) {
+    cookies().delete("uuid");
+    redirect("/auth/login");
+  }
 }

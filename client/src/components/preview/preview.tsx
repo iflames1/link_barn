@@ -15,12 +15,13 @@ export interface LinkSchema {
   user_id: string;
 }
 
-export default async function Preview() {
-  const userProfileDetails = await getUserProfile(
-    cookies().get("uuid")?.value || ""
-  );
-  const links = await userProfileDetails?.links;
-  console.log(links, userProfileDetails);
+export default async function Preview({
+  userProfileDetails,
+  links,
+}: {
+  userProfileDetails: any;
+  links: LinkSchema[];
+}) {
   return (
     <div className="w-full h-full px-[18%] pt-[53px] flex flex-col items-center gap-14">
       <Suspense
@@ -40,7 +41,7 @@ export default async function Preview() {
                   width={104}
                   height={104}
                   className={cn(
-                    "rounded-full border-4 size-28 border-base-dark object-cover"
+                    "rounded-full border-4 size-28 border-base-dark object-cover",
                   )}
                 />
               ) : (

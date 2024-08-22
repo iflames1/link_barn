@@ -425,6 +425,7 @@ export const NewLinks = ({
                     <Button
                       className="self-end gap-3 hS button text-white bg-base-dark hover:bg-opacity-90"
                       type="submit"
+                      disabled={isLoading}
                     >
                       {isLoading && (
                         <LoaderCircle className="animate-spin" size={17} />
