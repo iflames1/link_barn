@@ -8,11 +8,14 @@ import { toast } from "sonner";
 import { useAppContext } from "@/context";
 import ImageInput from "./image-input";
 import { revalidateTagServer } from "@/app/actions";
+import { LoaderCircle } from "lucide-react";
+import { Button } from "../ui/button";
 
 export default function Form() {
   const [image, setImage] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isHovered, setIsHovered] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const uuid = getUserUUID();
   const { getData, userProfileDetails, updateUserProfile, saveUserDetails } =
@@ -72,7 +75,7 @@ export default function Form() {
         if (!response.ok) {
           console.log(responseData);
           throw new Error(
-            `An error occurred while updating profile: ${responseData.detail}`,
+            `An error occurred while updating profile: ${responseData.detail}`
           );
         }
 
@@ -110,8 +113,15 @@ export default function Form() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    handleFileUpload();
-    saveUserDetails();
+    setIsLoading(true);
+    try {
+      await handleFileUpload();
+      await saveUserDetails();
+    } catch (error) {
+      console.error("Error during submission:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -192,6 +202,7 @@ export default function Form() {
               </label>
               <input
                 id="first-name"
+                required
                 placeholder={"John"}
                 value={userProfileDetails?.first_name || ""}
                 onChange={(e) =>
@@ -221,12 +232,14 @@ export default function Form() {
       <div>
         <hr className="h-[1px] bg-gray border-none" />
         <div className="sm:py-6 sm:px-10 p-4 flex justify-end">
-          <button
+          <Button
             type="submit"
-            className={`hS button text-white bg-base-dark hover:opacity-90 sm:w-fit w-full`}
+            className={`hS button text-white bg-base-dark hover:bg-opacity-90 sm:w-fit w-full space-x-2`}
+            disabled={isLoading}
           >
+            {isLoading && <LoaderCircle className="animate-spin size-[18px]" />}
             Save
-          </button>
+          </Button>
         </div>
       </div>
     </form>
