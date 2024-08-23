@@ -103,6 +103,7 @@ export const NewLinks = ({
             next: {
               tags: ["userProfile"],
             },
+            // credentials: "include",
           });
 
           if (!response.ok) {
@@ -200,9 +201,6 @@ export const NewLinks = ({
   useEffect(() => {
     setCurrentLinks(links);
   }, [links]);
-  useEffect(() => {
-    console.log(defaultLinksLen);
-  }, [defaultLinksLen]);
 
   const { fields, append, move, remove } = useFieldArray({
     control: form.control,
