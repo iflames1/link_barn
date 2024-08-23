@@ -18,7 +18,7 @@ export default async function PreviewPage() {
       <div className="w-full md:p-6">
         <div className="flex justify-between items-center gap-4 px-6 py-4 md:p-6">
           <Link
-            href={"/links"}
+            href={"/user/links"}
             className="hS py-[11px] px-[27px] border-[1px] hover:bg-base-light text-base-dark border-base-dark rounded-lg"
           >
             Back to Editor

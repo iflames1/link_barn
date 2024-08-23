@@ -53,7 +53,7 @@ export async function updateSession(request: NextRequest) {
 
   console.log(request.nextUrl.pathname, "PATHNAME");
   // Redirect unauthenticated users to login page
-  if (!uuid && request.nextUrl.pathname.includes("/user/")) {
+  if (!uuid && request.nextUrl.pathname.startsWith("/user/")) {
     const url = request.nextUrl.clone();
     url.pathname = "/auth/login";
     return NextResponse.redirect(url);

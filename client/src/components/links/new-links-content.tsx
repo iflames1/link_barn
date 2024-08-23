@@ -38,6 +38,7 @@ import { revalidatePathServer, revalidateTagServer } from "@/app/actions";
 import GetStarted from "./get-started";
 import LoadingForm from "./loading";
 import { Skeleton } from "../ui/skeleton";
+import { LinkSchema } from "../preview/preview";
 
 const formSchema = z.object({
   links: z.array(
@@ -69,11 +70,13 @@ export const NewLinks = ({
       links:
         defaultLinks &&
         defaultLinks.length > 0 && // @ts-ignore
-        defaultLinks.map((link) => ({
-          platform: link.platform,
-          url: link.url,
-          index: link.index,
-        })),
+        defaultLinks
+          .sort((a: LinkSchema, b: LinkSchema) => a.index - b.index)
+          .map((link: LinkSchema) => ({
+            platform: link.platform,
+            url: link.url,
+            index: link.index,
+          })),
     },
   });
 

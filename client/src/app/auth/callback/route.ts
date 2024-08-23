@@ -126,7 +126,7 @@ export async function GET(request: Request) {
             });
           }
 
-          console.log(`${origin}${next}users/links`);
+          console.log(`${origin}${next}user/links`);
           return NextResponse.redirect(`${origin}${next}user/links`);
         } catch (err) {
           console.log(err);

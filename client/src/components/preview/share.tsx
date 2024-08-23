@@ -4,7 +4,6 @@ import { Copy, FileEdit, LoaderCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -14,18 +13,13 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAppContext } from "@/context";
-import { useEffect, useState } from "react";
-import { getUserUUID } from "@/lib/auth";
-import { API_BASE_URL } from "@/lib/constants";
-import { useWallet } from "@/utils/wallet";
+import { useRef, useState } from "react";
+import { API_BASE_URL, DEV } from "@/lib/constants";
 import { toast } from "sonner";
 import { IoCheckmarkSharp } from "react-icons/io5";
 import { checkUserExists } from "@/lib/queries";
 import axios from "axios";
-import { revalidateTag } from "next/cache";
 import { revalidateTagServer } from "@/app/actions";
-import { ConfettiButton } from "../ui/confetti";
 import { ConfettiSideCannons } from "../ui/confetti-side";
 
 export function ShareLink({ userProfileDetails }: { userProfileDetails: any }) {
@@ -36,6 +30,7 @@ export function ShareLink({ userProfileDetails }: { userProfileDetails: any }) {
   const [isLoading, setIsLoading] = useState(false);
   const [username, setUsername] = useState(userProfileDetails?.username);
   const [copied, setCopied] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // useEffect(() => {
   //   const fetchUser = async () => {
@@ -67,6 +62,13 @@ export function ShareLink({ userProfileDetails }: { userProfileDetails: any }) {
         setIsLoading(false);
       } else {
         // saveUserDetails();
+        if (username.trim() === "") {
+          toast.warning("Username can't be empty", {
+            richColors: true,
+          });
+          setIsLoading(false);
+          return;
+        }
         try {
           // const response = await fetch(`${API_BASE_URL}/users?user_id=${userProfileDetails?.uuid}`, {
           //             method: "PATCH",
@@ -101,7 +103,7 @@ export function ShareLink({ userProfileDetails }: { userProfileDetails: any }) {
   };
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(`https://linkbarn.tech/${username}`);
+    navigator.clipboard.writeText(`https://linkbarn.vercel.app/${username}`);
     console.log("Link copied to clipboard!");
     setCopied(true);
     toast.success("Link copied to clipboard!");
@@ -136,7 +138,7 @@ export function ShareLink({ userProfileDetails }: { userProfileDetails: any }) {
                   <span className="text-gray-dark">linkbarn.tech/</span>
                   <Input
                     id="link"
-                    type="text"
+                    ref={inputRef}
                     defaultValue={userProfileDetails?.username}
                     readOnly={!isEditing}
                     onChange={handleUsernameChange}
@@ -146,6 +148,9 @@ export function ShareLink({ userProfileDetails }: { userProfileDetails: any }) {
                 <Button
                   onClick={() => {
                     setIsEditing(true);
+                    if (inputRef.current) {
+                      inputRef.current.focus();
+                    }
                   }}
                   type="button"
                   variant={"ghost"}
