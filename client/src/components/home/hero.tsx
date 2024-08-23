@@ -9,6 +9,7 @@ import { CustomCursor } from "./cursor";
 import AnimatedShinyText from "../ui/animated-shiny-text";
 import { cn } from "@/lib/utils";
 import { ArrowRightIcon } from "lucide-react";
+import { Button } from "../ui/button";
 
 export default function Hero() {
   return (
@@ -20,7 +21,7 @@ export default function Hero() {
           <div className="z-10 flex my-3 items-center justify-center">
             <div
               className={cn(
-                "group rounded-full border border-black/5 bg-neutral-100 text-base text-white transition-all ease-in hover:cursor-pointer hover:bg-neutral-200 dark:border-white/5 dark:bg-neutral-900 dark:hover:bg-neutral-800",
+                "group rounded-full border border-black/5 bg-neutral-100 text-base text-white transition-all ease-in hover:cursor-pointer hover:bg-neutral-200 dark:border-white/5 dark:bg-neutral-900 dark:hover:bg-neutral-800"
               )}
             >
               <AnimatedShinyText className="inline-flex items-center justify-center px-4 py-1 transition ease-out hover:text-neutral-600 hover:duration-300 hover:dark:text-neutral-400">
@@ -45,12 +46,14 @@ export default function Hero() {
               your online presence and share what matters most.
             </p>
           </InView>
-          <Link
-            href={"/user/links"}
-            className="hS button text-white bg-base-dark hover:bg-opacity-90"
-          >
-            Get Started
-          </Link>
+          <Button variant="outline">
+            <Link
+              href={"/user/links"}
+              className="hS button text-white bg-base-dark hover:bg-opacity-90"
+            >
+              Get Started
+            </Link>
+          </Button>
           <div className="pt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="text-center">
               <h3 className="hS">Easy to Use</h3>

@@ -4,6 +4,7 @@ import { API_BASE_URL } from "@/lib/constants";
 import { useAppContext } from "@/context";
 import { AppConfig, UserSession, showConnect } from "@stacks/connect";
 import { useState } from "react";
+import { error } from "console";
 
 interface UserProfile {
   stxAddress: {
@@ -22,6 +23,7 @@ export const useWallet = () => {
     "Connect Wallet"
   );
   const { userProfileDetails } = useAppContext();
+  const [pending, setPending] = useState(false);
 
   const appConfig = new AppConfig(["store_write", "publish_data"]);
   const userSession = new UserSession({ appConfig });
@@ -98,6 +100,7 @@ export const useWallet = () => {
   };
 
   const handleConnect = async () => {
+    setPending(true);
     try {
       let userData;
       if (userSession.isSignInPending()) {
@@ -106,6 +109,7 @@ export const useWallet = () => {
         userData = userSession.loadUserData();
       } else {
         console.log("User is not signed in or pending");
+        setPending(false);
         return;
       }
 
@@ -118,12 +122,20 @@ export const useWallet = () => {
           userAddress
         );
         if (!userExists.status) {
-          const response = await postUserData(userData);
-          setUserUUID(response.data.uuid);
+          try {
+            const response = await postUserData(userData);
+            setUserUUID(response.data.uuid);
+          } catch (error) {
+            console.error("Error creating new user", error);
+          } finally {
+            setPending(false);
+          }
         }
       }
     } catch (error) {
       console.error("Error handling connection or saving user data:", error);
+    } finally {
+      setPending(false);
     }
   };
 
@@ -134,5 +146,6 @@ export const useWallet = () => {
     disconnectWallet,
     checkUserExists,
     handleConnect,
+    pending,
   };
 };
