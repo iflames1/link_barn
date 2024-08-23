@@ -12,7 +12,7 @@ import {
 } from "react-icons/fa6";
 import { IoLogoYoutube } from "react-icons/io";
 import { FaFacebook } from "react-icons/fa6";
-import { FaLinkedin, FaSnapchat } from "react-icons/fa";
+import { FaLinkedin, FaSnapchat, FaTelegram } from "react-icons/fa";
 import { RiLinkM } from "react-icons/ri";
 import {
   SiBehance,
@@ -46,20 +46,35 @@ export const linkAttributes = {
     bg: "bg-white",
     icon: <RiLinkM className="size-4" />,
   },
-  github: {
-    text: "text-white",
-    bg: "bg-black",
-    icon: <TbBrandGithubFilled className="size-4" />,
-  },
   twitter: {
     text: "text-white",
     bg: "bg-[#43B7E9]",
     icon: <FaXTwitter className="size-4" />,
   },
+  discord: {
+    text: "text-white",
+    bg: "bg-[#5865F2]",
+    icon: <FaDiscord className="size-4" />,
+  },
+  telegram: {
+    text: "text-white",
+    bg: "bg-[#0088cc]",
+    icon: <FaTelegram className="size-4" />,
+  },
   youtube: {
     text: "text-white",
     bg: "bg-[#EE3939]",
     icon: <IoLogoYoutube className="size-4" />,
+  },
+  github: {
+    text: "text-white",
+    bg: "bg-black",
+    icon: <TbBrandGithubFilled className="size-4" />,
+  },
+  medium: {
+    text: "text-white",
+    bg: "bg-[#00AB6C]",
+    icon: <SiMedium className="size-4" />,
   },
   facebook: {
     text: "text-white",
@@ -80,11 +95,6 @@ export const linkAttributes = {
     text: "text-white",
     bg: "bg-[#000000]",
     icon: <FaTiktok className="size-4" />,
-  },
-  medium: {
-    text: "text-white",
-    bg: "bg-[#00AB6C]",
-    icon: <SiMedium className="size-4" />,
   },
   substack: {
     text: "text-white",
@@ -110,11 +120,6 @@ export const linkAttributes = {
     text: "text-white",
     bg: "bg-[#FF4500]",
     icon: <FaReddit className="size-4" />,
-  },
-  discord: {
-    text: "text-white",
-    bg: "bg-[#5865F2]",
-    icon: <FaDiscord className="size-4" />,
   },
   behance: {
     text: "text-white",
