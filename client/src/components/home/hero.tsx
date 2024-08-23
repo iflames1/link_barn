@@ -46,14 +46,14 @@ export default function Hero() {
               your online presence and share what matters most.
             </p>
           </InView>
-          <Button variant="outline">
-            <Link
-              href={"/user/links"}
+          <Link href={"/user/links"} className="">
+            <Button
+              variant="outline"
               className="hS button text-white bg-base-dark hover:bg-opacity-90"
             >
               Get Started
-            </Link>
-          </Button>
+            </Button>
+          </Link>
           <div className="pt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="text-center">
               <h3 className="hS">Easy to Use</h3>
