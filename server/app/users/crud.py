@@ -66,11 +66,14 @@ class UsersCRUD:
         return user
 
     async def check_field_exists(self, field: str, value: str) -> bool:
-        valid_fields = ['stx_address_mainnet', "username", "supabase_user_id", "email"]
+        valid_fields = ['stx_address_mainnet',
+                        "username", "supabase_user_id", "email"]
         if field not in valid_fields:
-            raise HTTPException(status_code=http_status.HTTP_400_BAD_REQUEST, detail="Invalid field")
+            raise HTTPException(
+                status_code=http_status.HTTP_400_BAD_REQUEST, detail="Invalid field")
 
-        query = select(func.count()).select_from(User).where(getattr(User, field) == value)
+        query = select(func.count()).select_from(
+            User).where(getattr(User, field) == value)
         try:
             results = await self.session.execute(query)
             count = results.scalar()
@@ -80,10 +83,12 @@ class UsersCRUD:
                                 detail=f"An error occurred while checking the field: {str(e)}")
 
     async def get_user_uuid(self, supabase_user_id: str) -> UUID | str:
-        statement = select(User).where(User.supabase_user_id == supabase_user_id)
+        statement = select(User).where(
+            User.supabase_user_id == supabase_user_id)
         result = await self.session.execute(statement)
         user = result.scalars().first()
         if user is None:
-            raise HTTPException(status_code=http_status.HTTP_404_NOT_FOUND, detail="User not found")
+            raise HTTPException(
+                status_code=http_status.HTTP_404_NOT_FOUND, detail="User not found")
 
         return user.uuid

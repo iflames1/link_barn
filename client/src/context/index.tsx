@@ -10,6 +10,7 @@ import axios from "axios";
 import { API_BASE_URL } from "@/lib/constants";
 import { getUserUUID } from "@/lib/auth";
 import { toast } from "sonner";
+import { revalidateTagServer } from "@/app/actions";
 
 interface LinkData {
   uuid: string;
@@ -248,7 +249,8 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
       prevUserProfileDetails &&
       userProfileDetails &&
       (prevUserProfileDetails.first_name !== userProfileDetails.first_name ||
-        prevUserProfileDetails.last_name !== userProfileDetails.last_name)
+        prevUserProfileDetails.last_name !== userProfileDetails.last_name ||
+        prevUserProfileDetails.username !== userProfileDetails.username)
     ) {
       try {
         await axios.patch(`${API_BASE_URL}/users/${UUID}`, {
@@ -268,12 +270,14 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         });
 
         console.log("User details updated successfully");
-        toast.success("Profile updated successfully.", { richColors: true });
+        toast.success("Updated successfully.", { richColors: true });
+
+        await revalidateTagServer("userProfile");
         setPrevUserProfileDetails(userProfileDetails);
         return true;
       } catch (error) {
         console.error("Error updating user details:", error);
-        toast.error("Failed to save profile details, Please try again", {
+        toast.error("Failed to save details, Please try again", {
           richColors: true,
         });
         return false;

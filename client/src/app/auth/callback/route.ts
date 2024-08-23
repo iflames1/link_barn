@@ -2,8 +2,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { type CookieOptions, createServerClient } from "@supabase/ssr";
 import { API_BASE_URL } from "@/lib/constants";
-import { ErrorBoundary } from "next/dist/client/components/error-boundary";
-import { check_supabase_user, setUserUUID } from "@/lib/auth";
+import { check_supabase_user } from "@/lib/auth";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
@@ -71,7 +70,6 @@ export async function GET(request: Request) {
                 theme: null,
                 profile_picture: user?.user_metadata?.avatar_url,
                 stx_address_mainnet: null,
-                // username: user?.user_metadata?.email.split("@"[0]) || null,
                 username: null,
                 supabase_user_id: user?.id,
                 wallet_provider: null,
@@ -126,7 +124,7 @@ export async function GET(request: Request) {
             });
           }
 
-          return NextResponse.redirect(`${origin}${next}`);
+          return NextResponse.redirect(`${origin}${next}/user/links`);
         } catch (err) {
           console.log(err);
           return NextResponse.redirect(`${origin}/auth/auth-code-error`);

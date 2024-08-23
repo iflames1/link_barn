@@ -44,34 +44,23 @@ export async function updateSession(request: NextRequest) {
     return supabaseResponse;
   }
 
-  // Redirect authenticated users away from login page
-  if (uuid && request.nextUrl.pathname.startsWith("/login")) {
+  console.log("FROM MEEE", request.nextUrl.clone(), request.nextUrl.pathname);
+  if (uuid && request.nextUrl.pathname.startsWith("/auth/login")) {
+    console.log("EVEN AFTER???");
     const url = request.nextUrl.clone();
-    url.pathname = "/";
+    console.log("HERE???");
+    url.pathname = "/user/links";
     return NextResponse.redirect(url);
   }
 
-  // Redirect unauthenticated users to login page
-  if (!uuid && !request.nextUrl.pathname.includes("/login")) {
+  const protectedRoutes = ["/user/links", "/user/profile", "/user/preview"];
+  const pathname = request.nextUrl.pathname;
+  if (!uuid && protectedRoutes.some((route) => pathname.startsWith(route))) {
     const url = request.nextUrl.clone();
-    url.pathname = "/login";
+    url.pathname = "/auth/login";
     return NextResponse.redirect(url);
   }
 
-  // const protectedRoutes = ["/links", "/profile", "/preview"];
-  //
-  // // Allow access to auth callback without redirects
-  // if (request.nextUrl.pathname.startsWith("/auth/callback")) {
-  //   return supabaseResponse;
-  // }
-  //
-  // // Redirect authenticated users away from the login page
-  // if (uuid && request.nextUrl.pathname.startsWith("/login")) {
-  //   const url = request.nextUrl.clone();
-  //   url.pathname = "/";
-  //   return NextResponse.redirect(url);
-  // }
-  //
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
   // creating a new response object with NextResponse.next() make sure to:
   // 1. Pass the request in it, like so:
