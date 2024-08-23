@@ -172,6 +172,7 @@ export function ShareLink({ userProfileDetails }: { userProfileDetails: any }) {
                   ? toast.info("Save Changes to copy link")
                   : handleCopyLink();
               }}
+              isEditing={isEditing}
               className=" rounded-lg h-full p-5"
             >
               <span className="sr-only">Copy</span>
