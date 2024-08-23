@@ -6,12 +6,18 @@ export function ConfettiSideCannons({
   children,
   className,
   onClick,
+  isEditing,
 }: {
   children: React.ReactNode;
   className?: string;
   onClick: () => void;
+  isEditing: boolean;
 }) {
   const handleClick = () => {
+    if (isEditing) {
+      onClick();
+      return;
+    }
     const end = Date.now() + 3 * 1000; // 3 seconds
     const colors = ["#a786ff", "#fd8bbc", "#eca184", "#f8deb1"];
 
