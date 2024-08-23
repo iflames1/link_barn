@@ -1,6 +1,5 @@
 import Header from "@/components/header";
 import { LandingPage } from "@/components/home/landing-page";
-import { Cursor1 } from "@/components/ui/custom-cursor";
 
 export default function Home() {
   return (
