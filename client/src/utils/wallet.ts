@@ -19,7 +19,7 @@ interface UserData {
 export const useWallet = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [userAddress, setUserAddress] = useState<string | "Connect Wallet">(
-    "Connect Wallet",
+    "Connect Wallet"
   );
   const { userProfileDetails } = useAppContext();
 
@@ -28,7 +28,7 @@ export const useWallet = () => {
 
   const appDetails = {
     name: "Link Barn",
-    icon: "/images/logo.svg",
+    icon: "/images/unik.png",
   };
 
   const connectWallet = () => {
@@ -77,7 +77,7 @@ export const useWallet = () => {
 
   const checkUserExists = async (
     field: string = "username",
-    value: string = userProfileDetails?.username ?? "",
+    value: string = userProfileDetails?.username ?? ""
   ): Promise<{ status: boolean; message: string }> => {
     try {
       const response = await axios.post(`${API_BASE_URL}/users/check`, {
@@ -115,7 +115,7 @@ export const useWallet = () => {
       if (!getUserUUID()) {
         const userExists = await checkUserExists(
           "stx_address_mainnet",
-          userAddress,
+          userAddress
         );
         if (!userExists.status) {
           const response = await postUserData(userData);

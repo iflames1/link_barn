@@ -55,6 +55,23 @@ export function ShareLink({ userProfileDetails }: { userProfileDetails: any }) {
     e.preventDefault();
     setIsLoading(true);
     const validate = async () => {
+      if (username.trim() === "") {
+        toast.warning("Username can't be empty", {
+          richColors: true,
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      // this is to reserve bns names
+      if (username.toLowerCase().endsWith(".btc")) {
+        toast.error("Usernames ending with '.btc' are reserved for BTC names", {
+          richColors: true,
+        });
+        setIsLoading(false);
+        return;
+      }
+
       const res = await checkUserExists("username", username);
       if (res.status && userProfileDetails?.username !== username) {
         console.log("User with that username already exist");
@@ -62,23 +79,12 @@ export function ShareLink({ userProfileDetails }: { userProfileDetails: any }) {
         setIsLoading(false);
       } else {
         // saveUserDetails();
-        if (username.trim() === "") {
-          toast.warning("Username can't be empty", {
-            richColors: true,
-          });
-          setIsLoading(false);
-          return;
-        }
         try {
-          // const response = await fetch(`${API_BASE_URL}/users?user_id=${userProfileDetails?.uuid}`, {
-          //             method: "PATCH",
-          //             he
-          //           })
           const res = await axios.patch(
             `${API_BASE_URL}/users/${userProfileDetails?.uuid}`,
             {
               username: username,
-            },
+            }
           );
           const data = await res.data;
           await revalidateTagServer("userProfile");
@@ -103,7 +109,7 @@ export function ShareLink({ userProfileDetails }: { userProfileDetails: any }) {
   };
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(`https://linkbarn.vercel.app/${username}`);
+    navigator.clipboard.writeText(`https://linkbarn.tech/${username}`);
     console.log("Link copied to clipboard!");
     setCopied(true);
     toast.success("Link copied to clipboard!");
@@ -133,7 +139,7 @@ export function ShareLink({ userProfileDetails }: { userProfileDetails: any }) {
               <Label htmlFor="link" className="sr-only">
                 Link
               </Label>
-              <div className="flex items-center justify-between border border-base-dark rounded-lg px-2 py-[8px]">
+              <div className="flex items-center justify-between border border-base-dark rounded-lg pl-2 py-2">
                 <div className="flex items-center">
                   <span className="text-gray-dark">linkbarn.tech/</span>
                   <Input
@@ -166,13 +172,14 @@ export function ShareLink({ userProfileDetails }: { userProfileDetails: any }) {
                   ? toast.info("Save Changes to copy link")
                   : handleCopyLink();
               }}
-              className=" rounded-lg h-full p-4"
+              isEditing={isEditing}
+              className=" rounded-lg h-full p-5"
             >
               <span className="sr-only">Copy</span>
               {copied ? (
-                <IoCheckmarkSharp className="size-4" />
+                <IoCheckmarkSharp className="size-5" />
               ) : (
-                <Copy className="size-4" />
+                <Copy className="size-5" />
               )}
             </ConfettiSideCannons>
           </div>
