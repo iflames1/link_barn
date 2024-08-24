@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Boxes } from "@/components/ui/background-boxes";
 import { BorderBeam } from "../ui/border-beam";
 import Image from "next/image";
 import AnimatedShinyText from "../ui/animated-shiny-text";
@@ -7,12 +6,14 @@ import { cn } from "@/lib/utils";
 import { ArrowRightIcon } from "lucide-react";
 import { Button } from "../ui/button";
 
+// <div className="relative w-full overflow-hidden bg-white text-black bM flex flex-col items-center justify-center rounded-xl p-4 pb-12">
 export default function Hero() {
   return (
-    <div className="relative w-full overflow-hidden bg-white text-black bM flex flex-col items-center justify-center rounded-xl p-4 pb-12">
+    <div className="w-full dark:bg-black bg-white  dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative flex flex-col bM items-center justify-center">
       <div className="absolute inset-0 w-full h-full bg-white z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
-      <Boxes />
-      <div className="overflow-auto max-w-[1100px] w-full relative z-20">
+      <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
+      {/* <Boxes /> */}
+      <div className="overflow-auto max-w-[1100px] w-full relative z-20 px-4">
         <div className="w-full flex flex-col items-center justify-center py-10">
           <div className="z-10 flex my-3 items-center justify-center">
             <div
@@ -28,7 +29,13 @@ export default function Hero() {
               </AnimatedShinyText>
             </div>
           </div>
-          <h1 className={"hM"}>Welcome to Link Barn</h1>
+          <h1
+            className={
+              "hM relative z-20 bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-500"
+            }
+          >
+            Welcome to Link Barn
+          </h1>
 
           {/* <InView */}
           {/*   variants={{ */}
