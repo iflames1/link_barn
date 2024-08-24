@@ -14,8 +14,6 @@ import { Button } from "../ui/button";
 export default function Hero() {
   return (
     <div className="relative w-full overflow-hidden bg-white text-black bM flex flex-col items-center justify-center rounded-xl p-4 pb-12">
-      <div className="absolute inset-0 w-full h-full bg-white z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
-      <Boxes />
       <div className="overflow-auto max-w-[1100px] w-full relative z-20">
         <div className="w-full flex flex-col items-center justify-center py-10">
           <div className="z-10 flex my-3 items-center justify-center">

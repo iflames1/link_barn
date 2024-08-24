@@ -8,7 +8,7 @@ export default function Home() {
 
   useEffect(() => {
     const loadPage = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+      await new Promise((resolve) => setTimeout(resolve, 3000));
       setIsLoaded(true);
     };
     loadPage();
