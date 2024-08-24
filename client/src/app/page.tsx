@@ -20,12 +20,18 @@ export default function Home() {
 
   return (
     <div className="bg-white w-full h-screen mx-auto flex flex-col gap-6">
-      <LandingPage />
+      {isLoaded ? (
+        <LandingPage />
+      ) : (
+        <div className="flex items-center justify-center h-[100vh]">
+          <Loader className="animate-spin" size={28} />
+        </div>
+      )}
       {/* <Suspense */}
       {/*   fallback={ */}
-      {/*     <div className="flex items-center justify-center h-[100vh]"> */}
-      {/*       <Loader className="animate-spin" size={28} /> */}
-      {/*     </div> */}
+      {/* V          <div className="flex items-center justify-center h-[100vh]"> */}
+      {/*             <Loader className="animate-spin" size={28} /> */}
+      {/*           </div> */}
       {/*   } */}
       {/* > */}
       {/*   <DelayedLandingPage /> */}
