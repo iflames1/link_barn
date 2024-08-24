@@ -108,7 +108,7 @@ export function ShareLink({ userProfileDetails }: { userProfileDetails: any }) {
   };
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(`https://linkbarn.tech/${username}`);
+    navigator.clipboard.writeText(`https://www.linkbarn.tech/${username}`);
     console.log("Link copied to clipboard!");
     setCopied(true);
     toast.success("Link copied to clipboard!");

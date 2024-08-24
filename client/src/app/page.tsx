@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { LandingPage } from "@/components/home/landing-page";
 import { Loader } from "lucide-react";
 
@@ -8,6 +8,16 @@ async function DelayedLandingPage() {
 }
 
 export default function Home() {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const loadPage = async () => {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      setIsLoaded(true);
+    };
+    loadPage();
+  }, []);
+
   return (
     <div className="bg-white w-full h-screen mx-auto flex flex-col gap-6">
       <LandingPage />
