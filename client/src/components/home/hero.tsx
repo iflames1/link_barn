@@ -5,6 +5,7 @@ import Image from "next/image";
 import AnimatedShinyText from "../ui/animated-shiny-text";
 import { cn } from "@/lib/utils";
 import { ArrowRightIcon } from "lucide-react";
+import { Button } from "../ui/button";
 
 export default function Hero() {
   return (
@@ -28,6 +29,7 @@ export default function Hero() {
             </div>
           </div>
           <h1 className={"hM"}>Welcome to Link Barn</h1>
+
           {/* <InView */}
           {/*   variants={{ */}
           {/*     hidden: { opacity: 0, y: 100, filter: "blur(4px)" }, */}
@@ -41,11 +43,13 @@ export default function Hero() {
             your online presence and share what matters most.
           </p>
           {/* </InView> */}
-          <Link
-            href={"/user/links"}
-            className="hS button text-white bg-base-dark hover:bg-opacity-90"
-          >
-            Get Started
+          <Link href={"/user/links"} className="">
+            <Button
+              variant="outline"
+              className="hS button text-white bg-base-dark hover:bg-opacity-90"
+            >
+              Get Started
+            </Button>
           </Link>
           <div className="pt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="text-center">
