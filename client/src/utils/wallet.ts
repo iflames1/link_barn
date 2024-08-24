@@ -4,7 +4,6 @@ import { API_BASE_URL } from "@/lib/constants";
 import { useAppContext } from "@/context";
 import { AppConfig, UserSession, showConnect } from "@stacks/connect";
 import { useState } from "react";
-import { error } from "console";
 
 interface UserProfile {
   stxAddress: {

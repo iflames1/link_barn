@@ -5,10 +5,11 @@ import { ShareLink } from "@/components/preview/share";
 import Link from "next/link";
 import { getUserProfile } from "@/lib/queries";
 import { cookies } from "next/headers";
+import SignOut from "./sign-out";
 
 export default async function PreviewPage() {
   const userProfileDetails = await getUserProfile(
-    cookies().get("uuid")?.value || "",
+    cookies().get("uuid")?.value || ""
   );
   const links = await userProfileDetails?.links;
   console.log(links, userProfileDetails);
@@ -29,7 +30,7 @@ export default async function PreviewPage() {
           <ShareLink userProfileDetails={userProfileDetails} />
         </div>
       </div>
-      <div className="w-full min-h-screen mx-auto relative">
+      <div className="w-full min-h-[calc(100vh-204px)] mx-auto relative">
         <Preview
           userProfileDetails={userProfileDetails}
           links={userProfileDetails && userProfileDetails.links}
@@ -42,11 +43,7 @@ export default async function PreviewPage() {
         >
           Change Appearance
         </Link>
-        <form action={signOut}>
-          <Button className="bg-base-dark hover:bg-opacity-90 rounded-lg items-center justify-between">
-            Sign Out
-          </Button>
-        </form>
+        <SignOut auth={userProfileDetails.auth_type} />
       </div>
     </div>
   );
