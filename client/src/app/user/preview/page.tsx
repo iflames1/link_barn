@@ -1,10 +1,27 @@
 import { signOut } from "@/app/actions";
 import Preview from "@/components/preview/preview";
 import { Button } from "@/components/ui/button";
-import { ShareLink } from "@/components/preview/share";
+// import { ShareLink } from "@/components/preview/share";
 import Link from "next/link";
 import { getUserProfile } from "@/lib/queries";
 import { cookies } from "next/headers";
+import dynamic from "next/dynamic";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { LoaderCircle } from "lucide-react";
+
+const ShareLink = dynamic(
+  () => import("@/components/preview/share").then((mod) => mod.ShareLink),
+  {
+    ssr: false,
+    loading: () => (
+      <Dialog open>
+        <DialogContent>
+          <LoaderCircle className="animate-spin" />
+        </DialogContent>
+      </Dialog>
+    ),
+  },
+);
 
 export default async function PreviewPage() {
   const userProfileDetails = await getUserProfile(

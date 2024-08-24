@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRef, useState } from "react";
-import { API_BASE_URL, DEV } from "@/lib/constants";
+import { API_BASE_URL } from "@/lib/constants";
 import { toast } from "sonner";
 import { IoCheckmarkSharp } from "react-icons/io5";
 import { checkUserExists } from "@/lib/queries";
@@ -78,13 +78,12 @@ export function ShareLink({ userProfileDetails }: { userProfileDetails: any }) {
         toast.error("User with that username already exist, try another");
         setIsLoading(false);
       } else {
-        // saveUserDetails();
         try {
           const res = await axios.patch(
             `${API_BASE_URL}/users/${userProfileDetails?.uuid}`,
             {
               username: username,
-            }
+            },
           );
           const data = await res.data;
           await revalidateTagServer("userProfile");

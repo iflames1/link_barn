@@ -1,13 +1,7 @@
-import type { Metadata, ResolvingMetadata } from "next";
-import PreviewLinks from "@/components/preview/preview-links";
-import PreviewProfile from "@/components/preview/preview-profile";
-import { API_BASE_URL } from "@/lib/constants";
-import { useWallet } from "@/utils/wallet";
-import { Suspense, useEffect } from "react";
-import { notFound, useRouter } from "next/navigation";
-import { useAppContext } from "@/context";
+import { Suspense } from "react";
+import { notFound } from "next/navigation";
 import { checkUserExists, getUserProfileByUsername } from "@/lib/queries";
-import Preview, { LinkSchema } from "@/components/preview/preview";
+import { LinkSchema } from "@/components/preview/preview";
 import { Loader } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
@@ -17,26 +11,6 @@ import { FaArrowRight } from "react-icons/fa6";
 interface PageProps {
   params: { username: string };
 }
-
-// export async function generateMetadata(
-//   { params }: PageProps,
-//   parent: ResolvingMetadata,
-// ): Promise<Metadata> {
-//   const { username } = params;
-//   const userProfile = await getUserProfileByUsername(username);
-//
-//   const previousImages = (await parent).openGraph?.images || [];
-//   const openGraphTitle =
-//     userProfile?.openGraph?.title || `LinkBarn | ${username}`;
-//
-//   return {
-//     title: openGraphTitle,
-//     openGraph: {
-//       title: openGraphTitle,
-//       images: ["/public/images/logo.svg", ...previousImages],
-//     },
-//   };
-// }
 
 export default async function Page({ params }: PageProps) {
   const { username } = params;
@@ -52,33 +26,12 @@ export default async function Page({ params }: PageProps) {
     console.log("HERERE");
     notFound();
   }
-  // const { checkUserExists } = useWallet();
-  // const router = useRouter();
-  // const { getData } = useAppContext();
-  //
-  // useEffect(() => {
-  //   const checkUser = async () => {
-  //     const res = await checkUserExists("username", username);
-  //     console.log(res);
-  //     if (res.status) {
-  //       console.log("User exists");
-  //       getData(`${API_BASE_URL}/users/profile/${username}`);
-  //     } else {
-  //       console.log("User does not exist");
-  //       router.push("/");
-  //     }
-  //   };
-  //
-  //   checkUser();
-  // }, [checkUserExists, getData, router, username]);
-  //
 
   return (
     <div
       suppressHydrationWarning={true}
       className="w-full h-full md:px-[18%] pt-[53px] flex flex-col items-center gap-14"
     >
-      {/* <Preview /> */}
       <Suspense
         fallback={
           <div className="flex items-center justify-center h-[50vh]">
@@ -158,10 +111,6 @@ export default async function Page({ params }: PageProps) {
           )}
         </div>
       </Suspense>
-
-      {/* <Preview */}
-      {/* <PreviewProfile /> */}
-      {/* <PreviewLinks /> */}
     </div>
   );
 }
