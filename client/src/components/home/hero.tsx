@@ -71,7 +71,6 @@ export default function Hero() {
         </div>
         <div className="relative flex h-[400px] md:h-[600px] w-full max-w-[1100px] flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl">
           <span className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center text-8xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10">
-            {/* Border Beam */}
             <Image
               src={"/hero-2.png"}
               className="w-full h-full object-cover"
