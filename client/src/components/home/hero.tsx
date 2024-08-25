@@ -5,15 +5,19 @@ import AnimatedShinyText from "../ui/animated-shiny-text";
 import { cn } from "@/lib/utils";
 import { ArrowRightIcon } from "lucide-react";
 import { Button } from "../ui/button";
-import { InView } from "../ui/core/in-view.tsx";
-import { BsLightningFill } from "lucide-react";
-import { Cover } from "../ui/cover.tsx";
+import { InView } from "../ui/core/in-view";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
+import { Cover } from "../ui/cover";
 import AnimatedGradientText from "../ui/animated-gradient-text";
 import { ChevronRight } from "lucide-react";
 import { TypewriterEffectSmooth } from "../ui/typewriter-effect";
 
 // <div className="relative w-full overflow-hidden bg-white text-black bM flex flex-col items-center justify-center rounded-xl p-4 pb-12">
 export default function Hero() {
+  // const ref = useRef(null);
+  // const inView = useInView(ref, { once: true, margin: "-100px" });
+
   const words = [
     {
       text: "Welcome",
@@ -38,12 +42,12 @@ export default function Hero() {
   ];
 
   return (
-    <div className="w-full dark:bg-black bg-white  dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative flex flex-col bM items-center justify-center">
+    <div className="w-full dark:bg-black bg-white  dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative flex flex-col bM items-center justify-center overflow-y-hidden">
       <div className="absolute inset-0 w-full h-full bg-white z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
       <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
       {/* <Boxes /> */}
       <div className="overflow-auto max-w-[1100px] w-full relative z-20 px-4">
-        <div className="w-full flex flex-col items-center justify-center py-10">
+        <div className="w-full flex flex-col items-center justify-center py-4">
           <div className="z-10 flex my-3 items-center justify-center">
             <AnimatedGradientText>
               🎉 <hr className="mx-2 h-4 w-[1px] shrink-0 bg-gray-300" />{" "}
@@ -76,7 +80,10 @@ export default function Hero() {
           {/* > */}
           {/*   Welcome to Link Barn */}
           {/* </h1> */}
-          <TypewriterEffectSmooth words={words} cursorClassName="mt-3" />
+          <TypewriterEffectSmooth
+            words={words}
+            cursorClassName="mt-3 lg:max-h-7 lg:mt-4"
+          />
 
           <InView
             variants={{
@@ -142,6 +149,33 @@ export default function Hero() {
             <BorderBeam size={250} duration={12} delay={9} />
           </div>
         </InView>
+
+        {/* <div */}
+        {/*   ref={ref} */}
+        {/*   className="animate-fade-up relative mt-32 opacity-0 [--animation-delay:400ms] [perspective:2000px] after:absolute after:inset-0 after:z-50 after:[background:linear-gradient(to_top,hsl(var(--background))_30%,transparent)]" */}
+        {/* > */}
+        {/*   <div */}
+        {/*     className={`rounded-xl border border-white/10 bg-white bg-opacity-[0.01] before:absolute before:bottom-1/2 before:left-0 before:top-0 before:size-full before:opacity-0 before:[background-image:linear-gradient(to_bottom,var(--color-one),var(--color-one),transparent_40%)] before:[filter:blur(180px)] ${ */}
+        {/*       inView ? "before:animate-image-glow" : "" */}
+        {/*     }`} */}
+        {/*   > */}
+        {/*     <BorderBeam */}
+        {/*       size={200} */}
+        {/*       duration={12} */}
+        {/*       delay={11} */}
+        {/*       colorFrom="var(--color-one)" */}
+        {/*       colorTo="var(--color-two)" */}
+        {/*     /> */}
+        {/**/}
+        {/*     <Image */}
+        {/*       src={"/hero-2.png"} */}
+        {/*       className="relative size-full rounded-[inherit] border object-contain dark:block" */}
+        {/*       height={600} */}
+        {/*       width={600} */}
+        {/*       alt="" */}
+        {/*     /> */}
+        {/*   </div> */}
+        {/* </div> */}
       </div>
     </div>
   );
