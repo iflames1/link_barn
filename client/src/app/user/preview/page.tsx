@@ -43,7 +43,7 @@ export default async function PreviewPage() {
         >
           Change Appearance
         </Link>
-        <SignOut auth={userProfileDetails.auth_type} />
+        <SignOut />
       </div>
     </div>
   );
