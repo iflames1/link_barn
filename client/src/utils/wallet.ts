@@ -37,7 +37,6 @@ export const useWallet = () => {
       appDetails,
       onFinish: () => {
         handleConnect();
-        window.location.reload();
       },
       onCancel: () => {
         console.log("oops, canceled");
@@ -51,7 +50,7 @@ export const useWallet = () => {
     setUserData(null);
     setUserAddress("Connect Wallet");
     clearUUID();
-    console.log("disconnected");
+    console.log("successfully signed out");
   };
 
   const postUserData = (userData: UserData) => {
@@ -78,7 +77,7 @@ export const useWallet = () => {
 
   const checkUserExists = async (
     field: string = "username",
-    value: string = userProfileDetails?.username ?? ""
+    value: string
   ): Promise<{ status: boolean; message: string }> => {
     try {
       const response = await axios.post(`${API_BASE_URL}/users/check`, {
@@ -114,12 +113,11 @@ export const useWallet = () => {
 
       setUserData(userData);
       setUserAddress(userData.profile.stxAddress.mainnet);
+      const address = userData.profile.stxAddress.mainnet;
+
+      const userExists = await checkUserExists("stx_address_mainnet", address);
 
       if (!getUserUUID()) {
-        const userExists = await checkUserExists(
-          "stx_address_mainnet",
-          userAddress
-        );
         if (!userExists.status) {
           try {
             const response = await postUserData(userData);
@@ -129,12 +127,15 @@ export const useWallet = () => {
           } finally {
             setPending(false);
           }
+        } else {
+          setUserUUID(userExists.message); // please update later
         }
       }
     } catch (error) {
       console.error("Error handling connection or saving user data:", error);
     } finally {
       setPending(false);
+      window.location.reload();
     }
   };
 

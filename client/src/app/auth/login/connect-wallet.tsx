@@ -12,7 +12,7 @@ export default function ConnectWallet() {
     <Button
       onClick={() => {
         connectWallet();
-        handleConnect();
+        //handleConnect();
       }}
       className="gap-4 w-full max-w-[300px]"
     >
