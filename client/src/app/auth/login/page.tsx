@@ -53,9 +53,9 @@ const Login = () => {
         </motion.p>
       </Link>
       <div className="flex items-center justify-center flex-col gap-4 !w-full">
-        <form action={signInWithGoogle} className="w-full max-w-[300px]">
+        {/*<form action={signInWithGoogle} className="w-full max-w-[300px]">
           <Submit />
-        </form>
+        </form>*/}
         <ConnectWallet />
       </div>
     </div>
