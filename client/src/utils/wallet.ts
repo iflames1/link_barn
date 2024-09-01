@@ -107,7 +107,6 @@ export const useWallet = () => {
         userData = userSession.loadUserData();
       } else {
         console.log("User is not signed in or pending");
-        setPending(false);
         return;
       }
 
@@ -125,7 +124,6 @@ export const useWallet = () => {
           } catch (error) {
             console.error("Error creating new user", error);
           } finally {
-            setPending(false);
           }
         } else {
           setUserUUID(userExists.message); // please update later
