@@ -126,7 +126,7 @@ export const useWallet = () => {
           } finally {
           }
         } else {
-          setUserUUID(userExists.message); // please update later
+          setUserUUID("d95fa9af-daaf-444e-ae39-29b04db6c0cd"); // please update later
         }
       }
     } catch (error) {
