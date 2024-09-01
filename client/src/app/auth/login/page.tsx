@@ -1,9 +1,7 @@
 "use client";
-import { cookies } from "next/headers";
 import { signInWithGoogle } from "./actions";
 import ConnectWallet from "./connect-wallet";
 import { Submit } from "./sumbit";
-import { NextResponse } from "next/server";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getUserUUID } from "@/lib/auth";

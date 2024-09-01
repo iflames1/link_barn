@@ -1,4 +1,4 @@
-"import server-only";
+// import "server-only";
 import axios from "axios";
 import { API_BASE_URL } from "./constants";
 

@@ -79,6 +79,19 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
+        "image-glow": {
+          "0%": {
+            opacity: "0",
+            "animation-timing-function": "cubic-bezier(0.74, 0.25, 0.76, 1)",
+          },
+          "10%": {
+            opacity: "0.7",
+            "animation-timing-function": "cubic-bezier(0.12, 0.01, 0.08, 0.99)",
+          },
+          "100%": {
+            opacity: "0.4",
+          },
+        },
         "accordion-down": {
           from: { height: "0" },
           to: { height: "var(--radix-accordion-content-height)" },
@@ -91,6 +104,10 @@ const config = {
           "100%": {
             "offset-distance": "100%",
           },
+        },
+        "fade-up": {
+          from: { opacity: "0", transform: "translateY(20px)" },
+          to: { opacity: "1", transform: "none" },
         },
         marquee: {
           from: { transform: "translateX(0)" },
@@ -108,14 +125,22 @@ const config = {
             "background-position": "calc(100% + var(--shimmer-width)) 0",
           },
         },
+        gradient: {
+          to: {
+            backgroundPosition: "var(--bg-size) 0",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
+        "image-glow": "image-glow 4100ms 600ms ease-out forwards",
         marquee: "marquee var(--duration) linear infinite",
         "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
         shimmer: "shimmer 8s infinite",
+        "fade-up": "fade-up 1000ms var(--animation-delay, 0ms) ease forwards",
+        gradient: "gradient 8s linear infinite",
       },
     },
   },
