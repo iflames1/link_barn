@@ -41,7 +41,7 @@ export default async function Preview({
                   width={104}
                   height={104}
                   className={cn(
-                    "rounded-full border-4 size-28 border-base-dark object-cover",
+                    "rounded-full border-4 size-28 border-base-dark object-cover"
                   )}
                 />
               ) : (
