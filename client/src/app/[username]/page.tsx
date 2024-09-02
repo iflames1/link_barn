@@ -42,7 +42,7 @@ export default async function Page({ params }: PageProps) {
   console.log(userProfile?.profile_picture);
 
   return (
-    <div className="flex flex-col items-center justify-between h-screen gap-6">
+    <div className="flex flex-col items-center justify-between min-h-screen gap-14">
       <div
         suppressHydrationWarning={true}
         className="w-full h-full md:px-[18%] pt-[53px] flex flex-col items-center gap-14"
@@ -88,18 +88,7 @@ export default async function Page({ params }: PageProps) {
                     <div className="bg-gray-preview w-40 h-4 rounded-full"></div>
                   </div>
                 )}
-                {/* {userProfile?.first_name || userProfile?.last_name ? ( */}
-                {/*{userProfile?.username ? (
-                  <div className="flex flex-col items-center gap-[13px]">
-                    <p className={cn("text-lg font-semibold text-black")}>
-                      @{userProfile?.username}
-                    </p>
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center gap-[13px]">
-                    <div className="bg-gray-preview w-40 h-4 rounded-full"></div>
-                  </div>
-                )}*/}
+                {<p className="text-center">{userProfile?.bio}</p>}
               </>
             ) : (
               <>
@@ -142,7 +131,9 @@ export default async function Page({ params }: PageProps) {
           </div>
         </Suspense>
       </div>
-      <JoinLinkBarn username={truncUsername} className="mb-4" />
+      <div className="pb-4">
+        <JoinLinkBarn username={truncUsername} />
+      </div>
     </div>
   );
 }

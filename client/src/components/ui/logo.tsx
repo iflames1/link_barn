@@ -41,10 +41,8 @@ export const LogoLink = () => {
 
 export const JoinLinkBarn = ({
   username,
-  className = "",
 }: {
   username: string;
-  className: string;
 }) => {
   const [showText, setShowText] = useState(false);
 
@@ -56,7 +54,7 @@ export const JoinLinkBarn = ({
   return (
     <Link
       href={"/"}
-      className={`flex items-center gap-2 ${className} bg-gray py-3 px-4 rounded-full hover:bg-opacity-70`}
+      className={`flex items-center gap-2 bg-gray py-3 px-4 rounded-full hover:bg-opacity-70`}
     >
       <motion.div
         initial={{ x: 100 }}
