@@ -127,7 +127,7 @@ export default function PreviewLinks() {
   const { links } = useAppContext();
 
   return (
-    <div className="flex flex-col items-center gap-5 w-full max-w-60">
+    <div className="flex flex-col items-center gap-5 w-full max-w-60 pb-14">
       <Suspense fallback={<LoadingLinks />}>
         {links?.length < 1 && pathname !== "/user/preview"
           ? Array(4)
