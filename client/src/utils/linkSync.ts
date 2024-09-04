@@ -18,6 +18,7 @@ interface LinkData {
   username: string;
   email: string;
   stx_address_mainnet: string;
+  themes: string;
   links: {
     uuid: string;
     platform: string;
@@ -35,6 +36,7 @@ export interface UserProfileDetails {
   username: string;
   email: string;
   stx_address_mainnet: string;
+  themes: string;
 }
 
 export const useLinkSync = () => {
@@ -48,7 +50,7 @@ export const useLinkSync = () => {
 
   const getLinks = useCallback(
     async (
-      url: string = `${API_BASE_URL}/users/?user_id=${UUID}`,
+      url: string = `${API_BASE_URL}/users/?user_id=${UUID}`
     ): Promise<boolean> => {
       try {
         const response = await axios.get<LinkData>(url);
@@ -77,6 +79,7 @@ export const useLinkSync = () => {
             username,
             email,
             stx_address_mainnet,
+            themes,
           } = response.data;
           const profileDetails = {
             uuid,
@@ -86,6 +89,7 @@ export const useLinkSync = () => {
             username,
             email,
             stx_address_mainnet,
+            themes,
           };
 
           setUserProfileDetails(profileDetails);
@@ -105,7 +109,7 @@ export const useLinkSync = () => {
         return false;
       }
     },
-    [UUID],
+    [UUID]
   );
 
   const addNewLink = useCallback((index: number) => {
@@ -123,8 +127,8 @@ export const useLinkSync = () => {
   const updateLink = useCallback((id: string, updatedLink: Partial<Link>) => {
     setLinks((prevLinks) =>
       prevLinks.map((link) =>
-        link.id === id ? { ...link, ...updatedLink } : link,
-      ),
+        link.id === id ? { ...link, ...updatedLink } : link
+      )
     );
   }, []);
 
@@ -135,7 +139,7 @@ export const useLinkSync = () => {
         return { ...prevDetails, ...updatedProfile };
       });
     },
-    [],
+    []
   );
 
   const removeLink = useCallback((id: string) => {
@@ -151,7 +155,7 @@ export const useLinkSync = () => {
     const updatedLinks = [];
     const newLinks = [];
     const deletedLinks = prevlinks.filter(
-      (pl) => !links.some((l) => l.id === pl.id),
+      (pl) => !links.some((l) => l.id === pl.id)
     );
 
     for (const link of links) {
@@ -177,7 +181,7 @@ export const useLinkSync = () => {
               index: link.index,
               url: link.url,
             })
-            .then(() => console.log(`Updated link: ${link.name}`)),
+            .then(() => console.log(`Updated link: ${link.name}`))
         ),
         ...newLinks.map((link) =>
           axios
@@ -187,12 +191,12 @@ export const useLinkSync = () => {
               url: link.url,
               user_id: UUID,
             })
-            .then(() => console.log(`Added new link: ${link.name}`)),
+            .then(() => console.log(`Added new link: ${link.name}`))
         ),
         ...deletedLinks.map((link) =>
           axios
             .delete(`${API_BASE_URL}/links/${link.id}`)
-            .then(() => console.log(`Deleted: ${link.name}`)),
+            .then(() => console.log(`Deleted: ${link.name}`))
         ),
       ]);
 
@@ -229,6 +233,7 @@ export const useLinkSync = () => {
           username: userProfileDetails.username,
           email: userProfileDetails.email,
           stx_address_mainnet: userProfileDetails.stx_address_mainnet,
+          themes: userProfileDetails.themes,
           // decentralized_id: null,
           // stx_address_testnet: null,
           // btc_address_mainnet: null,

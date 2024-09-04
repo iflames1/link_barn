@@ -38,7 +38,7 @@ export const NewPreview = ({
 
 const NewPreviewLinks = ({ links }: { links: LinkSchema[] }) => {
   return (
-    <div className="flex flex-col items-center gap-3 w-full max-w-60">
+    <div className="flex flex-col items-center gap-3 w-full max-w-60 pb-14">
       <Suspense
         fallback={
           <div className="flex items-center justify-center h-[50vh]">
@@ -103,7 +103,7 @@ const NewUserProfile = ({
                   width={104}
                   height={104}
                   className={cn(
-                    "rounded-full border-4 size-28 border-base-dark object-cover",
+                    "rounded-full border-4 size-28 border-base-dark object-cover"
                   )}
                 />
               ) : (
