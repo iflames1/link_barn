@@ -4,7 +4,8 @@ import { LandingPage } from "@/components/home/landing-page";
 import { Loader } from "lucide-react";
 import { HeaderDemo } from "@/components/ui/header/home-header";
 import { SiteFooter } from "@/components/home/footer";
-import CanvasCursor from "@/components/home/cursor/canvas-cursor";
+import SmoothCursor from "@/components/ui/smooth-cursor";
+// import CanvasCursor from "@/components/home/cursor/canvas-cursor";
 
 async function DelayedLandingPage() {
   await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -24,6 +25,7 @@ export default function Home() {
 
   return (
     <div className="bg-white w-full mx-auto flex flex-col gap-6">
+      <SmoothCursor />
       <HeaderDemo variant="default" />
       {isLoaded ? (
         <LandingPage />
@@ -32,7 +34,7 @@ export default function Home() {
           <Loader className="animate-spin" size={28} />
         </div>
       )}
-      <CanvasCursor />
+      {/* <CanvasCursor /> */}
       {/* <SiteFooter /> */}
       {/* <Suspense */}
       {/*   fallback={ */}
