@@ -8,6 +8,7 @@ import { getUserUUID } from "@/lib/auth";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { AppWrapper } from "@/context";
 
 const Login = () => {
   const searchParams = useSearchParams();
@@ -59,7 +60,9 @@ const Login = () => {
             <Submit />
           </form>
         )}
-        <ConnectWallet />
+        <AppWrapper>
+          <ConnectWallet />
+        </AppWrapper>
       </div>
     </div>
   );
