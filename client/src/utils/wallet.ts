@@ -2,7 +2,15 @@ import axios from "axios";
 import { clearUUID, getUserUUID, setUserUUID } from "@/lib/auth";
 import { API_BASE_URL } from "@/lib/constants";
 import { useAppContext } from "@/context";
-import { AppConfig, UserSession, showConnect } from "@stacks/connect";
+import {
+  AppConfig,
+  UserSession,
+  showConnect,
+  authenticate,
+  openSTXTransfer,
+  STXTransferOptions,
+} from "@stacks/connect";
+import { StacksMainnet } from "@stacks/network";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -85,6 +93,7 @@ export const useWallet = () => {
         field,
         value,
       });
+      console.log(response.data);
       return {
         status: response.data.status,
         message: response.data.message,
@@ -112,22 +121,25 @@ export const useWallet = () => {
       }
 
       setUserData(userData);
+      console.log(userData);
       setUserAddress(userData.profile.stxAddress.mainnet);
       const address = userData.profile.stxAddress.mainnet;
 
       const userExists = await checkUserExists("stx_address_mainnet", address);
 
       if (!getUserUUID()) {
-        if (!userExists.status) {
+        if (
+          !userExists.status &&
+          userExists.message === "User does not exist"
+        ) {
           try {
             const response = await postUserData(userData);
             setUserUUID(response.data.uuid);
           } catch (error) {
             console.error("Error creating new user", error);
-          } finally {
           }
         } else {
-          setUserUUID("d95fa9af-daaf-444e-ae39-29b04db6c0cd"); // please update later
+          setUserUUID(userExists.message);
         }
       }
     } catch (error) {
@@ -157,6 +169,52 @@ export const useWallet = () => {
     }
   };
 
+  async function sendSTXTransaction(
+    recipientAddress = "SP1SQHCJSFNR5020N2HJ8CPW192HF57J3NHNPP5A",
+    amount = "1",
+    memo = ""
+  ) {
+    const transactionDetails: STXTransferOptions = {
+      network: new StacksMainnet(),
+      recipient: recipientAddress,
+      amount: amount,
+      memo: memo,
+      appDetails: {
+        name: "Link Barn",
+        icon: "/images/unik.png",
+      },
+      onFinish: async (response: { txId: string }) => {
+        console.log("Transaction Result:", response);
+        console.log("Transaction ID:", response.txId);
+      },
+      onCancel: () => {
+        // WHEN user cancels/closes pop-up
+        console.log("User canceled");
+      },
+    };
+
+    await openSTXTransfer(transactionDetails);
+  }
+  async function checkTransactionStatus(txId = "") {
+    const url = `https://stacks-node-api.mainnet.stacks.co/extended/v1/tx/${txId}`;
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      console.log("Transaction Status:", data.tx_status);
+
+      if (data.tx_status === "success") {
+        console.log("Transaction confirmed!");
+      } else if (data.tx_status === "pending") {
+        console.log("Transaction is pending...");
+      } else {
+        console.log("Transaction failed:", data);
+      }
+    } catch (error) {
+      console.error("Error fetching transaction status:", error);
+    }
+  }
+
   return {
     userData,
     userAddress,
@@ -166,5 +224,7 @@ export const useWallet = () => {
     handleConnect,
     pending,
     holdUnik,
+    sendSTXTransaction,
+    checkTransactionStatus,
   };
 };
