@@ -2,7 +2,7 @@
 import { signInWithGoogle } from "./actions";
 import ConnectWallet from "./connect-wallet";
 import { Submit } from "./sumbit";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getUserUUID } from "@/lib/auth";
 import Image from "next/image";
@@ -10,6 +10,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 
 const Login = () => {
+  const searchParams = useSearchParams();
   const [showText, setShowText] = useState(false);
   const router = useRouter();
   const uuid = getUserUUID();
@@ -53,9 +54,11 @@ const Login = () => {
         </motion.p>
       </Link>
       <div className="flex items-center justify-center flex-col gap-4 !w-full">
-        {/*<form action={signInWithGoogle} className="w-full max-w-[300px]">
-          <Submit />
-        </form>*/}
+        {searchParams.get("superdupersecret") && (
+          <form action={signInWithGoogle} className="w-full max-w-[300px]">
+            <Submit />
+          </form>
+        )}
         <ConnectWallet />
       </div>
     </div>

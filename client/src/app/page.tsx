@@ -35,7 +35,7 @@ export default function Home() {
         </div>
       )}
       {/* <CanvasCursor /> */}
-      {/* <SiteFooter /> */}
+      <SiteFooter />
       {/* <Suspense */}
       {/*   fallback={ */}
       {/*       <div className="flex items-center justify-center h-[100vh]"> */}

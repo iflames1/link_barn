@@ -46,7 +46,7 @@ export default function Hero() {
       <div className="absolute inset-0 w-full h-full bg-white z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
       <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
       {/* <Boxes /> */}
-      <div className="overflow-auto max-w-[1100px] w-full relative z-20 px-4">
+      <div className="overflow-auto max-w-[1100px] w-full relative z-20 px-4 py-10">
         <div className="w-full flex flex-col items-center justify-center py-4">
           <div className="z-10 flex my-3 items-center justify-center">
             <AnimatedGradientText>

@@ -1,25 +1,27 @@
 import { FaXTwitter } from "react-icons/fa6";
 import { FaGithub } from "react-icons/fa";
+import { DiscordLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
 import { LogoLink } from "../logo";
 import { Header } from "./header";
 import { Button } from "../button";
 import Link from "next/link";
 
 const headerLinks = [
-  { name: "Features", href: "/header-demo/#features" },
-  { name: "Pricing", href: "/header-demo/#pricing" },
-  { name: "FAQs", href: "/header-demo/#faqs" },
+  { name: "Features", href: "/#features" },
+  { name: "Pricing", href: "/#pricing" },
+  { name: "FAQs", href: "/#faqs" },
+  { name: "Testimonial", href: "/#faqs" },
 ];
 const icons = [
   {
     name: "Twitter",
-    icon: <FaXTwitter size="14" />,
-    href: "https://x.com",
+    icon: <TwitterLogoIcon className="size-4" />,
+    href: "https://x.com/linkbarn",
   },
   {
     name: "GitHub",
-    icon: <FaGithub size="14" />,
-    href: "https://github.com",
+    icon: <DiscordLogoIcon className="size-4" />,
+    href: "https://discord.gg/d9HjRNRYgQ",
   },
 ];
 const HeaderLink = (props: { href: string; name: string }) => {

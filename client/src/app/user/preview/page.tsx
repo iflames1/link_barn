@@ -38,9 +38,9 @@ export default async function PreviewPage() {
           >
             Back to Editor
           </Link>
-          {/*<div className="hS py-[11px] px-[27px] bg-base-dark text-white hover:bg-opacity-90 rounded-lg cursor-pointer">
-            Share Link
-          </div>*/}
+          {/* <div className="hS py-[11px] px-[27px] bg-base-dark text-white hover:bg-opacity-90 rounded-lg cursor-pointer"> */}
+          {/*   Share Link */}
+          {/* </div> */}
           <ShareLink userProfileDetails={userProfileDetails} />
         </div>
       </div>
@@ -57,7 +57,7 @@ export default async function PreviewPage() {
         >
           Change Appearance
         </Link>
-        <SignOut />
+        {/* <SignOut /> */}
       </div>
     </div>
   );
