@@ -85,6 +85,7 @@ export const useWallet = () => {
         field,
         value,
       });
+      console.log(response.data);
       return {
         status: response.data.status,
         message: response.data.message,
@@ -118,16 +119,18 @@ export const useWallet = () => {
       const userExists = await checkUserExists("stx_address_mainnet", address);
 
       if (!getUserUUID()) {
-        if (!userExists.status) {
+        if (
+          !userExists.status &&
+          userExists.message === "User does not exist"
+        ) {
           try {
             const response = await postUserData(userData);
             setUserUUID(response.data.uuid);
           } catch (error) {
             console.error("Error creating new user", error);
-          } finally {
           }
         } else {
-          setUserUUID("d95fa9af-daaf-444e-ae39-29b04db6c0cd"); // please update later
+          setUserUUID(userExists.message);
         }
       }
     } catch (error) {
