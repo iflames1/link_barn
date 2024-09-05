@@ -75,7 +75,7 @@ export default function Form() {
         if (!response.ok) {
           console.log(responseData);
           throw new Error(
-            `An error occurred while updating profile: ${responseData.detail}`
+            `An error occurred while updating profile: ${responseData.detail}`,
           );
         }
 
@@ -234,7 +234,7 @@ export default function Form() {
         <div className="sm:py-6 sm:px-10 p-4 flex justify-end">
           <Button
             type="submit"
-            className={`hS button text-white bg-base-dark hover:bg-opacity-90 sm:w-fit w-full space-x-2`}
+            className={`hS button text-white bg-base-dark hover:bg-opacity-90 sm:w-fit w-full space-x-2 gap-3`}
             disabled={isLoading}
           >
             {isLoading && <LoaderCircle className="animate-spin size-[18px]" />}

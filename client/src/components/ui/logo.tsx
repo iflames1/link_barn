@@ -3,8 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
 
-export const LogoLink = () => {
+export const LogoLink = ({ footer = false }: { footer?: boolean }) => {
   const [showText, setShowText] = useState(false);
 
   useEffect(() => {
@@ -31,7 +32,7 @@ export const LogoLink = () => {
         initial={{ opacity: 0, x: 0 }}
         animate={{ opacity: showText ? 1 : 0, x: showText ? 0 : 20 }}
         transition={{ duration: 0.5 }}
-        className="text-center text-lg font-semibold"
+        className={cn("text-center text-lg font-semibold", footer && "text-xl")}
       >
         Link Barn
       </motion.p>
@@ -39,11 +40,7 @@ export const LogoLink = () => {
   );
 };
 
-export const JoinLinkBarn = ({
-  username,
-}: {
-  username: string;
-}) => {
+export const JoinLinkBarn = ({ username }: { username: string }) => {
   const [showText, setShowText] = useState(false);
 
   useEffect(() => {

@@ -44,9 +44,13 @@ async def get_user_by_uuid(user_id: str, users: UsersCRUD = Depends(get_users_cr
 @router.post("/check", response_model=StatusMessage, status_code=http_status.HTTP_200_OK)
 async def check(data: CheckRequest, users: UsersCRUD = Depends(get_users_crud)):
     try:
-        exists = await users.check_field_exists(field=data.field, value=data.value)
-        return StatusMessage(status=exists,
-                             message=f"{data.field.capitalize()} {data.value} {'already exists' if exists else 'does not exist'}")
+        exists, user = await users.check_field_exists(field=data.field, value=data.value)
+        if exists:
+            preview = User.from_orm(user)
+            print(preview)
+            return StatusMessage(status=True, message=str(preview.uuid))
+        else:
+            return StatusMessage(status=False, message="User does not exist")
     except Exception as e:
         raise HTTPException(status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR,
                             detail=f"An error occurred: {str(e)}")

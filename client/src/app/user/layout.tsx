@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import { AppWrapper } from "@/context";
 import LenisProvider from "@/components/miscellaneous/LenisProvider";
 
 export const metadata: Metadata = {
@@ -17,13 +15,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body data-top-bg className={`font-instrument bg-white`}>
-        {/* <AppWrapper> */}
+      <body data-top-bg className={`font-instrument bg-gray-light`}>
         <LenisProvider>
           {children}
           <Toaster />
         </LenisProvider>
-        {/* </AppWrapper> */}
       </body>
     </html>
   );
