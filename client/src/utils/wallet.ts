@@ -8,6 +8,7 @@ import {
   showConnect,
   authenticate,
   openSTXTransfer,
+  STXTransferOptions,
 } from "@stacks/connect";
 import { StacksMainnet } from "@stacks/network";
 import { useState } from "react";
@@ -170,10 +171,10 @@ export const useWallet = () => {
 
   async function sendSTXTransaction(
     recipientAddress = "SP1SQHCJSFNR5020N2HJ8CPW192HF57J3NHNPP5A",
-    amount = 1,
+    amount = "1",
     memo = ""
   ) {
-    const transactionDetails = {
+    const transactionDetails: STXTransferOptions = {
       network: new StacksMainnet(),
       recipient: recipientAddress,
       amount: amount,
@@ -194,7 +195,6 @@ export const useWallet = () => {
 
     await openSTXTransfer(transactionDetails);
   }
-
   async function checkTransactionStatus(txId = "") {
     const url = `https://stacks-node-api.mainnet.stacks.co/extended/v1/tx/${txId}`;
 
