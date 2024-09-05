@@ -23,6 +23,7 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.0",
     "@stacks/connect": "^7.7.1",
+    "@stacks/transactions": "^6.16.1",
     "@supabase/ssr": "^0.4.0",
     "@supabase/supabase-js": "^2.45.1",
     "@tabler/icons-react": "^3.12.0",
