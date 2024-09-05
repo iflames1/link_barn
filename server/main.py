@@ -34,8 +34,6 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000",
                    "https://linkbarn.vercel.app",
-                   "https://link-barn-pi.vercel.app",
-                   "https://www.linkbarn.tech",
                    "https://www.linkbarn.tech/",
                    ],
     allow_credentials=True,
@@ -44,9 +42,6 @@ app.add_middleware(
 )
 app.include_router(api_router, prefix=settings.api_v1_prefix)
 
-
-# BE USER
-# 18b6597c-8ac9-4425-a162-06c19b11bf45
 
 @app.get("/", tags=["status"])
 async def health_check():

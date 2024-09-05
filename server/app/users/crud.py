@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.users.models import User, UserCreate, UserUpdate, UserRead, Preview
 from sqlalchemy import select, func
 from uuid import UUID
+from typing import Optional
 
 
 class UsersCRUD:
@@ -65,19 +66,19 @@ class UsersCRUD:
 
         return user
 
-    async def check_field_exists(self, field: str, value: str) -> bool:
-        valid_fields = ['stx_address_mainnet',
-                        "username", "supabase_user_id", "email"]
+    async def check_field_exists(self, field: str, value: str) -> tuple[bool, Optional[User]]:
+        valid_fields = ['stx_address_mainnet', "username", "supabase_user_id", "email"]
         if field not in valid_fields:
             raise HTTPException(
                 status_code=http_status.HTTP_400_BAD_REQUEST, detail="Invalid field")
 
-        query = select(func.count()).select_from(
-            User).where(getattr(User, field) == value)
+        query = select(User).where(getattr(User, field) == value)
         try:
-            results = await self.session.execute(query)
-            count = results.scalar()
-            return count > 0
+            result = await self.session.execute(query)
+            user = result.scalar_one_or_none()
+            if user:
+                return True, user
+            return False, None
         except Exception as e:
             raise HTTPException(status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR,
                                 detail=f"An error occurred while checking the field: {str(e)}")
