@@ -11,6 +11,7 @@ import { API_BASE_URL } from "@/lib/constants";
 import { getUserUUID } from "@/lib/auth";
 import { toast } from "sonner";
 import { revalidateTagServer } from "@/app/actions";
+import { checkUserExists } from "@/lib/queries";
 
 interface LinkData {
   uuid: string;
@@ -20,6 +21,7 @@ interface LinkData {
   username: string;
   email: string;
   stx_address_mainnet: string;
+  bio: string;
   links: {
     uuid: string;
     platform: string;
@@ -44,6 +46,7 @@ export interface UserProfileDetails {
   username: string;
   email: string;
   stx_address_mainnet: string;
+  bio: string;
 }
 
 interface AppContextType {
@@ -56,6 +59,10 @@ interface AppContextType {
   saveLinks: () => Promise<boolean>;
   updateUserProfile: (updatedProfile: Partial<UserProfileDetails>) => void;
   saveUserDetails: () => Promise<boolean>;
+  saveUsername: (
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    setIsEditing: React.Dispatch<React.SetStateAction<boolean>>
+  ) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -104,6 +111,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
             username,
             email,
             stx_address_mainnet,
+            bio,
           } = response.data;
           const profileDetails = {
             uuid,
@@ -113,10 +121,12 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
             username,
             email,
             stx_address_mainnet,
+            bio,
           };
 
           setUserProfileDetails(profileDetails);
           setPrevUserProfileDetails(profileDetails);
+          console.log(userProfileDetails);
 
           return true;
         }
@@ -250,7 +260,8 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
       userProfileDetails &&
       (prevUserProfileDetails.first_name !== userProfileDetails.first_name ||
         prevUserProfileDetails.last_name !== userProfileDetails.last_name ||
-        prevUserProfileDetails.username !== userProfileDetails.username)
+        prevUserProfileDetails.username !== userProfileDetails.username ||
+        prevUserProfileDetails.bio !== userProfileDetails.bio)
     ) {
       try {
         await axios.patch(`${API_BASE_URL}/users/${UUID}`, {
@@ -260,6 +271,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
           username: userProfileDetails.username,
           email: userProfileDetails.email,
           stx_address_mainnet: userProfileDetails.stx_address_mainnet,
+          bio: userProfileDetails.bio,
           // decentralized_id: null,
           // stx_address_testnet: null,
           // btc_address_mainnet: null,
@@ -289,6 +301,58 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
     }
   }, [prevUserProfileDetails, userProfileDetails, UUID]);
 
+  const saveUsername = async (
+    //username = userProfileDetails?.username,
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    setIsEditing: React.Dispatch<React.SetStateAction<boolean>>
+  ) => {
+    const username = userProfileDetails?.username;
+    if (!username || username.trim() === "") {
+      toast.warning("Username can't be empty", {
+        richColors: true,
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    // this is to reserve bns names
+    if (username.toLowerCase().endsWith(".btc")) {
+      toast.error("Usernames ending with '.btc' are reserved for BTC names", {
+        richColors: true,
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    const res = await checkUserExists("username", username);
+    if (res.status && userProfileDetails?.username !== username) {
+      console.log("User with that username already exist");
+      toast.error("User with that username already exist, try another");
+      setIsLoading(false);
+    } else {
+      try {
+        const res = await axios.patch(
+          `${API_BASE_URL}/users/${userProfileDetails?.uuid}`,
+          {
+            username: username,
+          }
+        );
+        const data = await res.data;
+        await revalidateTagServer("userProfile");
+        console.log(data);
+
+        toast.success("Username updated successfully", {
+          richColors: true,
+        });
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setIsLoading(false);
+      }
+      setIsEditing(false);
+    }
+  };
+
   const contextValue: AppContextType = {
     links,
     userProfileDetails,
@@ -299,6 +363,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
     saveLinks,
     updateUserProfile,
     saveUserDetails,
+    saveUsername,
   };
 
   return (
