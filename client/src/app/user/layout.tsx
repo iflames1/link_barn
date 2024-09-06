@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/sonner";
 import LenisProvider from "@/components/miscellaneous/LenisProvider";
+import { AppWrapper } from "@/context";
 
 export const metadata: Metadata = {
   title: "Link Barn",
@@ -16,10 +17,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body data-top-bg className={`font-instrument bg-gray-light`}>
-        <LenisProvider>
-          {children}
-          <Toaster />
-        </LenisProvider>
+        <AppWrapper>
+          <LenisProvider>
+            {children}
+            <Toaster />
+          </LenisProvider>
+        </AppWrapper>
       </body>
     </html>
   );
