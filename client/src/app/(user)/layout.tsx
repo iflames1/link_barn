@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AppWrapper } from "@/context";
 
 export const metadata: Metadata = {
   title: "Link Barn - User",
@@ -10,5 +11,9 @@ export default function UserLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <div className="font-instrument bg-gray-light">{children}</div>;
+  return (
+    <div className="font-instrument bg-gray-light">
+      <AppWrapper>{children}</AppWrapper>
+    </div>
+  );
 }
