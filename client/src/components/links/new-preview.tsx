@@ -9,6 +9,7 @@ interface LinkSchema {
   platform: string;
   url: string;
   index: number;
+  link_title: string | null;
 }
 
 export const NewPreview = ({
@@ -67,7 +68,11 @@ const NewPreviewLinks = ({ links }: { links: LinkSchema[] }) => {
                 >
                   <p className="flex items-center justify-start gap-2">
                     {attributes.icon}
-                    <span>{link.platform}</span>
+                    <span>
+                      {link.platform === "link"
+                        ? link.link_title
+                        : link.platform}
+                    </span>
                   </p>
                   <FaArrowRight className="size-4" />
                 </a>
@@ -103,7 +108,7 @@ const NewUserProfile = ({
                   width={104}
                   height={104}
                   className={cn(
-                    "rounded-full border-4 size-28 border-base-dark object-cover"
+                    "rounded-full border-4 size-28 border-base-dark object-cover",
                   )}
                 />
               ) : (

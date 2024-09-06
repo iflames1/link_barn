@@ -1,4 +1,5 @@
 "use client";
+import { Suspense } from "react";
 import { signInWithGoogle } from "./actions";
 import ConnectWallet from "./connect-wallet";
 import { Submit } from "./sumbit";
@@ -10,7 +11,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { AppWrapper } from "@/context";
 
-const Login = () => {
+const LoginContent = () => {
   const searchParams = useSearchParams();
   const [showText, setShowText] = useState(false);
   const router = useRouter();
@@ -25,7 +26,6 @@ const Login = () => {
     if (uuid) {
       console.log(uuid);
       router.push("/user/links");
-      // router.refresh();
     }
   }, [uuid, router]);
 
@@ -65,6 +65,14 @@ const Login = () => {
         </AppWrapper>
       </div>
     </div>
+  );
+};
+
+const Login = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginContent />
+    </Suspense>
   );
 };
 
