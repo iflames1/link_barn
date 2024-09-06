@@ -9,6 +9,16 @@ import { Suspense } from "react";
 export default function PreviewProfile() {
   const pathname = usePathname();
   const { userProfileDetails } = useAppContext();
+  let truncUsername = "";
+
+  const truncateString = (str: string): string => {
+    if (str.length > 15) {
+      return `${str.slice(0, 5)}...${str.slice(-5)}`;
+    }
+    return str;
+  };
+  truncUsername = truncateString(userProfileDetails?.username || "");
+
   return (
     <div className="flex flex-col items-center gap-[25px]">
       <Suspense fallback={<LoadingProfile />}>
@@ -34,17 +44,23 @@ export default function PreviewProfile() {
                 })}
               ></div>
             )}
-            {userProfileDetails?.first_name || userProfileDetails?.last_name ? (
-              <div className="flex flex-col items-center gap-[13px]">
-                <p
-                  className={cn("hS text-black", {
-                    hM: pathname === "/user/preview",
-                  })}
-                >
-                  {userProfileDetails?.first_name}{" "}
-                  {userProfileDetails?.last_name}
-                </p>
-              </div>
+            {userProfileDetails?.username ? (
+              <>
+                <div className="flex flex-col items-center gap-2">
+                  <p
+                    className={cn("hS text-black", {
+                      hM: pathname === "/user/preview",
+                    })}
+                  >
+                    {userProfileDetails?.first_name}{" "}
+                    {userProfileDetails?.last_name}
+                  </p>
+                  <p className={cn("bM text-black")}>@{truncUsername}</p>
+                  <p className="text-sm text-center text-black pt-3">
+                    {userProfileDetails?.bio}
+                  </p>
+                </div>
+              </>
             ) : (
               <div className="flex flex-col items-center gap-[13px]">
                 <div className="bg-gray-preview w-40 h-4 rounded-full"></div>

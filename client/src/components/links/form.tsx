@@ -49,7 +49,7 @@ export default function Form() {
   return (
     <form
       onSubmit={(e) => handleSaveLinks(e)}
-      className="bg-white flex flex-col justify-between rounded-xl lg:w-[60%] z-0 h-[calc(100vh-152px)] overflow-auto"
+      className="bg-white flex flex-col justify-between rounded-xl lg:w-[60%] z-0 sm:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-auto"
     >
       <div className="sm:p-10 p-6">
         <div className="pb-6  relative">
