@@ -45,7 +45,7 @@ export default async function PreviewPage() {
           <ShareLink UUID={cookies().get("uuid")?.value || ""} />
         </div>*/}
       <div className="sm:p-0 sm:pt-6 p-4">
-        <div className="bg-white rounded-xl sm:sm:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] h-[calc(100vh-96.37px)] overflow-y-auto sm:p-10 p-6">
+        <div className="bg-white rounded-xl sm:sm:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-y-auto sm:p-10 p-6">
           <Preview
             userProfileDetails={userProfileDetails}
             links={userProfileDetails && userProfileDetails.links}
