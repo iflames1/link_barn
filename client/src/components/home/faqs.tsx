@@ -42,8 +42,7 @@ const FAQs = () => {
     <Accordion
       type="single"
       collapsible
-      id="faq"
-      className="w-full max-w-[1000px] px-4 py-6 mx-auto flex flex-col gap-4"
+      className="w-full max-w-[1000px] px-4 mx-auto flex flex-col gap-4"
     >
       {faqs.map((faq, index) => (
         <FAQ faq={faq} key={index} index={index} />

@@ -2,6 +2,7 @@ import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { MobileHeader } from "./mobile-header";
 import { cn } from "@/lib/utils";
+import { ScrollAwareHeader } from "./scroll-aware-header";
 
 const headerVariants = cva("mx-auto", {
   variants: {
@@ -12,7 +13,7 @@ const headerVariants = cva("mx-auto", {
     },
   },
   defaultVariants: {
-    variant: "default",
+    variant: "centered",
   },
 });
 
@@ -44,17 +45,22 @@ export const Header = ({
   return (
     <header
       className={cn(
-        "w-full dark:bg-zinc-950/50 backdrop-blur-md border-b border-b-gray z-[999]",
+        "w-full dark:bg-zinc-950/50 backdrop-blur-xl md:px-5 z-[999] sticky-header",
         sticky && variant == "centered" && "md:sticky top-3",
-        sticky && variant == "default" && "md:sticky top-0",
+        sticky && variant == "default" && "md:sticky top-3",
       )}
     >
-      <div className={cn("hidden md:block", headerVariants({ variant }))}>
+      <ScrollAwareHeader
+        className={cn("hidden md:block", headerVariants({ variant }))}
+        normal={"transition-all duration-150 border"}
+        isTopFalse="border border-gray rounded-xl"
+        isTopTrue="border-b-gray border-l-transparent border-r-transparent border-t-transparent"
+      >
         <div className="flex-row-start flex justify-between px-6 py-4 w-full gap-2">
           {Logo}
           <nav className="flex-row-end gap-3 lg:gap-8">{desktopItems}</nav>
         </div>
-      </div>
+      </ScrollAwareHeader>
       <MobileHeader Logo={Logo}>{mobileItems}</MobileHeader>
     </header>
   );
