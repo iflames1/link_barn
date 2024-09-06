@@ -1,15 +1,14 @@
 "use client";
-import { Suspense } from "react";
+import { AppWrapper } from "@/context";
+import { getUserUUID } from "@/lib/auth";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 import { signInWithGoogle } from "./actions";
 import ConnectWallet from "./connect-wallet";
 import { Submit } from "./sumbit";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { getUserUUID } from "@/lib/auth";
-import Image from "next/image";
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { AppWrapper } from "@/context";
 
 const LoginContent = () => {
   const searchParams = useSearchParams();

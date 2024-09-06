@@ -7,10 +7,10 @@ import { Button } from "../button";
 import Link from "next/link";
 
 const headerLinks = [
-  { name: "Features", href: "/#features" },
-  { name: "Pricing", href: "/#pricing" },
-  { name: "FAQs", href: "/#faqs" },
-  { name: "Testimonial", href: "/#faqs" },
+  { name: "Features", href: "#features" },
+  { name: "Pricing", href: "#pricing" },
+  { name: "FAQs", href: "#faqs" },
+  { name: "Testimonial", href: "#testimonials" },
 ];
 const icons = [
   {
@@ -25,11 +25,18 @@ const icons = [
   },
 ];
 const HeaderLink = (props: { href: string; name: string }) => {
-  return <Link href={props.href}>{props.name}</Link>;
+  return (
+    <Link
+      href={props.href}
+      className="text-[#151515] hover:text-[#5845EE] transition-colors duration-200"
+    >
+      {props.name}
+    </Link>
+  );
 };
 
 export const HeaderDemo = ({
-  variant = "default",
+  variant = "centered",
 }: {
   variant: "default" | "centered";
 }) => (
@@ -38,7 +45,7 @@ export const HeaderDemo = ({
     variant={variant}
     sticky={true}
     desktopItems={
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
         {headerLinks.map((link, i) => (
           <HeaderLink key={i} href={link.href} name={link.name} />
         ))}

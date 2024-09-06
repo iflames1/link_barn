@@ -24,6 +24,7 @@ const config = {
     extend: {
       fontFamily: {
         instrument: ["Instrument Sans", "sans-serif"],
+        inter: ["Inter", "sans-serif"],
       },
       colors: {
         "base-dark": "#633CFF",

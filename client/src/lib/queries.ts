@@ -8,6 +8,7 @@ export const getUserProfile = async (uuid: string) => {
     const response = await fetch(url, {
       next: {
         tags: ["userProfile"],
+        revalidate: 0,
       },
     });
 

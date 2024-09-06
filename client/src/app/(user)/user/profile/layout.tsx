@@ -14,14 +14,5 @@ export default function ProfileLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body data-top-bg className={`font-instrument bg-white`}>
-        <AppWrapper>
-          {children}
-          <Toaster />
-        </AppWrapper>
-      </body>
-    </html>
-  );
+  return <AppWrapper>{children}</AppWrapper>;
 }

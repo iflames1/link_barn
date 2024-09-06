@@ -1,14 +1,9 @@
 import Link from "next/link";
 import { BorderBeam } from "../ui/border-beam";
 import Image from "next/image";
-import AnimatedShinyText from "../ui/animated-shiny-text";
 import { cn } from "@/lib/utils";
-import { ArrowRightIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { InView } from "../ui/core/in-view";
-import { useInView } from "framer-motion";
-import { useRef } from "react";
-import { Cover } from "../ui/cover";
 import AnimatedGradientText from "../ui/animated-gradient-text";
 import { ChevronRight } from "lucide-react";
 import { TypewriterEffectSmooth } from "../ui/typewriter-effect";
@@ -60,18 +55,6 @@ export default function Hero() {
               </span>
               <ChevronRight className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
             </AnimatedGradientText>
-            {/* <div */}
-            {/*   className={cn( */}
-            {/*     "group rounded-full border border-black/5 bg-neutral-100 text-base text-white transition-all ease-in hover:cursor-pointer hover:bg-neutral-200 dark:border-white/5 dark:bg-neutral-900 dark:hover:bg-neutral-800", */}
-            {/*   )} */}
-            {/* > */}
-            {/*   <AnimatedShinyText className="inline-flex items-center justify-center px-4 py-1 transition ease-out hover:text-neutral-600 hover:duration-300 hover:dark:text-neutral-400"> */}
-            {/*     <Link href={"/auth/login"} className="text-sm"> */}
-            {/*       ✨ Introducing Link Barn */}
-            {/*     </Link> */}
-            {/*     <ArrowRightIcon className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" /> */}
-            {/*   </AnimatedShinyText> */}
-            {/* </div> */}
           </div>
           {/* <h1 */}
           {/*   className={ */}
@@ -93,7 +76,7 @@ export default function Hero() {
             viewOptions={{ margin: "0px 0px 0px 0px" }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
           >
-            <p className="text-center pt-2 pb-8 max-w-md">
+            <p className="text-center pt-2 pb-8 max-w-md text-[#566072]">
               Your one-stop destination for all your important links. Simplify
               your online presence and share what matters most.
             </p>
@@ -109,13 +92,6 @@ export default function Hero() {
           <div className="pt-12 grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="text-center">
               <h3 className="hS">Easy to Use</h3>
-              {/* <p className="items-center gap-3 hidden lg:flex"> */}
-              {/*   Create links at */}
-              {/*   <Cover> */}
-              {/*     warp speed */}
-              {/*     <BsLightningFill className="inline-flex text-orange-400" /> */}
-              {/*   </Cover> */}
-              {/* </p> */}
               <p>Create links at ease</p>
             </div>
             <div className="text-center">

@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { options } from "@/components/links/select-link";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState, useRef } from "react";
 import { API_BASE_URL } from "@/lib/constants";
 import { getUserUUID } from "@/lib/auth";
 import { toast } from "sonner";
@@ -58,6 +58,7 @@ export const NewLinks = ({
   userProfile: any;
   defaultLinks: any;
 }) => {
+  const formRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [deletedEntries, setDeletedEntries] = useState<number[]>([]);
   const [newLinks, setNewLinks] = useState<number[]>([]);
@@ -213,6 +214,13 @@ export const NewLinks = ({
     setNewLinks((prev) => [...prev, fields.length]);
   };
 
+  setTimeout(() => {
+    const newForm = formRef.current?.lastElementChild;
+    if (newForm) {
+      newForm.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, 100);
+
   // const handleChange = (index: number) => {
   //   if (!newLinks.includes(index) && !editedLinks.includes(index)) {
   //     setEditedLinks((prev) => [...prev, index]);
@@ -313,7 +321,7 @@ export const NewLinks = ({
                       </div>
                     }
                   >
-                    <div className="flex w-full flex-col gap-6">
+                    <div ref={formRef} className="flex w-full flex-col gap-6">
                       {fields.map((field, index) => (
                         <SortableItem key={field.id} value={field.id} asChild>
                           <div
