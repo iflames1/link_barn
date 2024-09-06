@@ -75,7 +75,7 @@ export default function Form() {
         if (!response.ok) {
           console.log(responseData);
           throw new Error(
-            `An error occurred while updating profile: ${responseData.detail}`,
+            `An error occurred while updating profile: ${responseData.detail}`
           );
         }
 
@@ -127,7 +127,7 @@ export default function Form() {
   return (
     <form
       onSubmit={(e) => handleSubmit(e)}
-      className="bg-white flex flex-col justify-between rounded-xl lg:w-[60%] h-[calc(100vh-152px)] overflow-auto"
+      className="bg-white flex flex-col justify-between rounded-xl lg:w-[60%] sm:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-auto"
     >
       <div className="sm:p-10 p-6">
         <div className="pb-10">
@@ -224,6 +224,19 @@ export default function Form() {
                 }
                 className="py-3 px-4 w-full placeholder:text-gray-dark placeholder:text-base bM text-black border-[1px] border-gray rounded-lg outline-none focus:shadow-active"
               />
+            </div>
+            <div className="flex md:flex-row flex-col md:items-center md:gap-4 gap-1 w-full">
+              <label htmlFor="bio" className="text-gray-dark w-60">
+                Bio
+              </label>
+              <textarea
+                id="bio"
+                placeholder={"Write a short description about yourself"}
+                value={userProfileDetails?.bio || ""}
+                onChange={(e) => updateUserProfile({ bio: e.target.value })}
+                maxLength={160}
+                className="py-3 px-4 w-full min-h-12 h-auto placeholder:text-gray-dark placeholder:text-base bM text-black border-[1px] border-gray rounded-lg outline-none focus:shadow-active"
+              ></textarea>
             </div>
           </div>
         </div>
