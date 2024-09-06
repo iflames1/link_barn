@@ -25,7 +25,7 @@ import { Suspense, useEffect, useState } from "react";
 import { API_BASE_URL } from "@/lib/constants";
 import { getUserUUID } from "@/lib/auth";
 import { toast } from "sonner";
-import { LoaderCircle } from "lucide-react";
+import { LoaderCircle, Minus } from "lucide-react";
 import { DragHandleDots2Icon } from "@radix-ui/react-icons";
 
 import {
@@ -34,7 +34,7 @@ import {
   SortableItem,
 } from "@/components/ui/sortable";
 import { NewPreview } from "./new-preview";
-import { revalidatePathServer, revalidateTagServer } from "@/app/actions";
+import { revalidateTagServer } from "@/app/actions";
 import GetStarted from "./get-started";
 import LoadingForm from "./loading";
 import { Skeleton } from "../ui/skeleton";
@@ -46,6 +46,7 @@ const formSchema = z.object({
       platform: z.string().min(2).max(50),
       url: z.string().url().min(2).max(50),
       index: z.number(),
+      link_title: z.string().max(20).optional(),
     }),
   ),
 });
@@ -61,7 +62,6 @@ export const NewLinks = ({
   const [deletedEntries, setDeletedEntries] = useState<number[]>([]);
   const [newLinks, setNewLinks] = useState<number[]>([]);
   const [editedLinks, setEditedLinks] = useState<number[]>([]);
-  // const editableDefaultLinks = defaultLinks;
   const [defaultLinksLen, setdefaultLinksLen] = useState(defaultLinks.length);
   const [currentLinks, setCurrentLinks] = useState<any>([]);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -76,6 +76,7 @@ export const NewLinks = ({
             platform: link.platform,
             url: link.url,
             index: link.index,
+            link_title: link.platform === "link" ? link.link_title : "",
           })),
     },
   });
@@ -103,7 +104,6 @@ export const NewLinks = ({
             next: {
               tags: ["userProfile"],
             },
-            // credentials: "include",
           });
 
           if (!response.ok) {
@@ -135,6 +135,7 @@ export const NewLinks = ({
               platform: item.platform,
               url: item.url,
               index: item.index,
+              link_title: item.link_title,
             }),
             next: {
               tags: ["userProfile"],
@@ -243,6 +244,12 @@ export const NewLinks = ({
 
     setEditedLinks((prev) => prev.filter((i) => i !== index));
     setNewLinks((prev) => prev.filter((i) => i !== index));
+  };
+
+  const handleMinusClick = (index: number) => {
+    form.setValue(`links.${index}.platform`, "");
+    form.setValue(`links.${index}.link_title`, "");
+    handleChange(index);
   };
 
   return (
@@ -358,6 +365,47 @@ export const NewLinks = ({
                                 </FormItem>
                               )}
                             />
+                            {form.watch(`links.${index}.platform`) ===
+                              "link" && (
+                              <FormField
+                                control={form.control}
+                                name={`links.${index}.link_title`}
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Link Title</FormLabel>
+                                    <FormControl>
+                                      <div className="relative">
+                                        <Button
+                                          variant={"outline"}
+                                          size={"icon"}
+                                          className="absolute h-5 w-5 top-[-4px] right-[-2px]"
+                                          type="button"
+                                          onClick={() =>
+                                            handleMinusClick(index)
+                                          }
+                                        >
+                                          <Minus size={16} />
+                                        </Button>
+                                        <Input
+                                          placeholder="Enter link title"
+                                          className="focus:shadow-active py-5 placeholder:text-black"
+                                          {...field}
+                                          defaultValue={""}
+                                          onChange={(e) => {
+                                            field.onChange(e);
+                                            handleChange(index);
+                                          }}
+                                        />
+                                      </div>
+                                    </FormControl>
+                                    <FormDescription>
+                                      Enter a title for your generic link.
+                                    </FormDescription>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                            )}
                             <FormField
                               control={form.control}
                               name={`links.${index}.platform`}
@@ -372,7 +420,14 @@ export const NewLinks = ({
                                     defaultValue={field.value}
                                   >
                                     <FormControl>
-                                      <SelectTrigger className="focus:shadow-active py-5 placeholder:text-black">
+                                      <SelectTrigger
+                                        disabled={
+                                          form.watch(
+                                            `links.${index}.platform`,
+                                          ) === "link"
+                                        }
+                                        className="focus:shadow-active py-5 placeholder:text-black"
+                                      >
                                         <SelectValue placeholder="Select a platform" />
                                       </SelectTrigger>
                                     </FormControl>

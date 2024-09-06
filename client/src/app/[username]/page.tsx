@@ -64,7 +64,7 @@ export default async function Page({ params }: PageProps) {
                     width={104}
                     height={104}
                     className={cn(
-                      "rounded-full border-4 size-28 border-base-dark object-cover"
+                      "rounded-full border-4 size-28 border-base-dark object-cover",
                     )}
                   />
                 ) : (
@@ -121,7 +121,11 @@ export default async function Page({ params }: PageProps) {
                     >
                       <p className="flex items-center justify-start gap-2">
                         {attributes.icon}
-                        <span>{link.platform}</span>
+                        <span>
+                          {link.platform === "link"
+                            ? link.link_title
+                            : link.platform}
+                        </span>
                       </p>
                       <FaArrowRight className="size-4" />
                     </a>
