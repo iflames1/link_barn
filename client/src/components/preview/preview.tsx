@@ -23,8 +23,17 @@ export default async function Preview({
   userProfileDetails: any;
   links: LinkSchema[];
 }) {
+  let truncUsername = "";
+
+  const truncateString = (str: string): string => {
+    if (str.length > 15) {
+      return `${str.slice(0, 5)}...${str.slice(-5)}`;
+    }
+    return str;
+  };
+  truncUsername = truncateString(userProfileDetails?.username || "");
   return (
-    <div className="w-full h-full px-[18%] pt-[53px] flex flex-col items-center gap-14">
+    <div className="w-full h-full flex flex-col items-center gap-14 overflow-y-auto">
       <Suspense
         fallback={
           <div className="flex items-center justify-center h-[50vh]">
@@ -42,7 +51,7 @@ export default async function Preview({
                   width={104}
                   height={104}
                   className={cn(
-                    "rounded-full border-4 size-28 border-base-dark object-cover",
+                    "rounded-full border-4 size-28 border-base-dark object-cover"
                   )}
                 />
               ) : (
@@ -50,19 +59,24 @@ export default async function Preview({
                   className={cn(`bg-gray-preview size-28 rounded-full`)}
                 ></div>
               )}
-              {userProfileDetails?.first_name ||
-              userProfileDetails?.last_name ? (
-                <div className="flex flex-col items-center gap-[13px]">
-                  <p className={cn("hM text-black")}>
-                    {userProfileDetails?.first_name}{" "}
-                    {userProfileDetails?.last_name}
-                  </p>
-                </div>
+              {userProfileDetails?.username ? (
+                <>
+                  <div className="flex flex-col items-center gap-2">
+                    <p className="text-xl font-bold">
+                      {userProfileDetails?.first_name}{" "}
+                      {userProfileDetails?.last_name}
+                    </p>
+                    <p className={cn("text-md font-semibold text-black")}>
+                      @{truncUsername}
+                    </p>
+                  </div>
+                </>
               ) : (
                 <div className="flex flex-col items-center gap-[13px]">
                   <div className="bg-gray-preview w-40 h-4 rounded-full"></div>
                 </div>
               )}
+              <p className="text-center max-w-60">{userProfileDetails?.bio}</p>
             </>
           ) : (
             <>

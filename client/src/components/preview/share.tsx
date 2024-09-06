@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { API_BASE_URL } from "@/lib/constants";
 import { toast } from "sonner";
 import { IoCheckmarkSharp } from "react-icons/io5";
@@ -21,90 +21,99 @@ import { checkUserExists } from "@/lib/queries";
 import axios from "axios";
 import { revalidateTagServer } from "@/app/actions";
 import { ConfettiSideCannons } from "../ui/confetti-side";
+import { getUserProfile } from "@/lib/queries";
+import { useAppContext } from "@/context";
+import { getUserUUID } from "@/lib/auth";
 
-export function ShareLink({ userProfileDetails }: { userProfileDetails: any }) {
+export function ShareLink() {
   // const { getData, userProfileDetails, updateUserProfile, saveUserDetails } =
   //   useAppContext();
   // const { checkUserExists } = useWallet();
+  const { userProfileDetails, saveUsername, updateUserProfile, getData } =
+    useAppContext();
+  console.log(userProfileDetails);
+  //const userProfileDetails = await getUserProfile(UUID);
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [username, setUsername] = useState(userProfileDetails?.username);
   const [copied, setCopied] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     const userID = getUserUUID();
-  //     if (userID) {
-  //       console.log("UUID", userID);
-  //       const res = await getData(API_BASE_URL + "/users/?user_id=" + userID);
-  //       if (res) {
-  //         console.log("Successfully fetched user details");
-  //         setUsername(userProfileDetails?.username || "");
-  //         console.log(username);
-  //       } else {
-  //         console.log("failed to get user");
-  //       }
-  //     }
-  //   };
-  //
-  //   fetchUser();
-  // }, [getData]);
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userID = getUserUUID();
+      if (userID) {
+        console.log("UUID", userID);
+        const res = await getData(API_BASE_URL + "/users/?user_id=" + userID);
+        if (res) {
+          console.log("Successfully fetched user details");
+          setUsername(userProfileDetails?.username || "");
+          console.log(username);
+        } else {
+          console.log("failed to get user");
+        }
+      }
+    };
+
+    fetchUser();
+  }, [getData]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    const validate = async () => {
-      if (username.trim() === "") {
-        toast.warning("Username can't be empty", {
-          richColors: true,
-        });
-        setIsLoading(false);
-        return;
-      }
+    saveUsername(setIsLoading, setIsEditing);
+    //const validate = async () => {
+    //  if (!username || username.trim() === "") {
+    //    toast.warning("Username can't be empty", {
+    //      richColors: true,
+    //    });
+    //    setIsLoading(false);
+    //    return;
+    //  }
 
-      // this is to reserve bns names
-      if (username.toLowerCase().endsWith(".btc")) {
-        toast.error("Usernames ending with '.btc' are reserved for BTC names", {
-          richColors: true,
-        });
-        setIsLoading(false);
-        return;
-      }
+    //  // this is to reserve bns names
+    //  if (username.toLowerCase().endsWith(".btc")) {
+    //    toast.error("Usernames ending with '.btc' are reserved for BTC names", {
+    //      richColors: true,
+    //    });
+    //    setIsLoading(false);
+    //    return;
+    //  }
 
-      const res = await checkUserExists("username", username);
-      if (res.status && userProfileDetails?.username !== username) {
-        console.log("User with that username already exist");
-        toast.error("User with that username already exist, try another");
-        setIsLoading(false);
-      } else {
-        try {
-          const res = await axios.patch(
-            `${API_BASE_URL}/users/${userProfileDetails?.uuid}`,
-            {
-              username: username,
-            },
-          );
-          const data = await res.data;
-          await revalidateTagServer("userProfile");
-          console.log(data);
+    //  const res = await checkUserExists("username", username);
+    //  if (res.status && userProfileDetails?.username !== username) {
+    //    console.log("User with that username already exist");
+    //    toast.error("User with that username already exist, try another");
+    //    setIsLoading(false);
+    //  } else {
+    //    try {
+    //      const res = await axios.patch(
+    //        `${API_BASE_URL}/users/${userProfileDetails?.uuid}`,
+    //        {
+    //          username: username,
+    //        }
+    //      );
+    //      const data = await res.data;
+    //      await revalidateTagServer("userProfile");
+    //      console.log(data);
 
-          toast.success("Username updated successfully", {
-            richColors: true,
-          });
-        } catch (err) {
-          console.log(err);
-        } finally {
-          setIsLoading(false);
-        }
-        setIsEditing(false);
-      }
-    };
-    validate();
+    //      toast.success("Username updated successfully", {
+    //        richColors: true,
+    //      });
+    //    } catch (err) {
+    //      console.log(err);
+    //    } finally {
+    //      setIsLoading(false);
+    //    }
+    //    setIsEditing(false);
+    //  }
+    //};
+    //validate();
   };
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
+    //setUsername(e.target.value);
+    updateUserProfile({ username: e.target.value });
   };
 
   const handleCopyLink = () => {
@@ -121,7 +130,7 @@ export function ShareLink({ userProfileDetails }: { userProfileDetails: any }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="hS py-[11px] px-[27px] bg-base-dark text-white hover:bg-opacity-90 rounded-lg">
+        <button className="button py-[11px] sm:px-7 px-4 border-[1px] border-base-dark text-base-dark  hover:bg-base-light">
           Share Link
         </button>
       </DialogTrigger>
