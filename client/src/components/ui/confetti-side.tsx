@@ -7,11 +7,13 @@ export function ConfettiSideCannons({
   className,
   onClick,
   isEditing,
+  disabled,
 }: {
   children: React.ReactNode;
   className?: string;
   onClick: () => void;
   isEditing: boolean;
+  disabled: boolean;
 }) {
   const handleClick = () => {
     if (isEditing) {
@@ -55,6 +57,7 @@ export function ConfettiSideCannons({
         className={className}
         type="button"
         onClick={handleClick}
+        disabled={disabled}
       >
         {children}
       </Button>

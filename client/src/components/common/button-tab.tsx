@@ -7,13 +7,24 @@ import { IoEyeOutline } from "react-icons/io5";
 import dynamic from "next/dynamic";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { LoaderCircle } from "lucide-react";
-import { ShareLink } from "@/components/preview/share";
 
 interface TabProps {
   path: string;
   title: string;
 }
-
+const ShareLink = dynamic(
+  () => import("@/components/preview/share").then((mod) => mod.ShareLink),
+  {
+    ssr: false,
+    loading: () => (
+      <Dialog open>
+        <DialogContent>
+          <LoaderCircle className="animate-spin" />
+        </DialogContent>
+      </Dialog>
+    ),
+  },
+);
 //const ShareLink = dynamic(
 //  () => import("@/components/preview/share").then((mod) => mod.ShareLink),
 //  {
@@ -47,7 +58,7 @@ export default function ButtonTab({ path, title }: TabProps) {
             {
               "bg-base-light":
                 pathname === path && pathname !== "/user/preview",
-            }
+            },
           )}
         >
           <p className="sm:inline-flex hS hidden">{title}</p>

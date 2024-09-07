@@ -1,18 +1,71 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import { checkUserExists, getUserProfileByUsername } from "@/lib/queries";
+import {
+  checkUserExists,
+  getAllUsernames,
+  getUserProfileByUsername,
+} from "@/lib/queries";
 import { LinkSchema } from "@/components/preview/preview";
 import { Loader } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { linkAttributes } from "@/components/common/links-attr";
 import { FaArrowRight } from "react-icons/fa6";
-import Link from "next/link";
-import { motion } from "framer-motion";
 import { JoinLinkBarn, LogoLink } from "@/components/ui/logo";
+import type { Metadata } from "next";
 
 interface PageProps {
   params: { username: string };
+}
+type User = {
+  username: string | null;
+};
+
+export async function generateStaticParams(): Promise<string[]> {
+  const response: User[] = await getAllUsernames();
+  const filteredUsers = response.filter(
+    (user: User): user is User & { username: string } => user.username !== null,
+  );
+  return filteredUsers.map(({ username }) => username);
+}
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { username } = params;
+  const user_exists = await checkUserExists("username", username);
+  let userProfile = null;
+  let links = null;
+  let truncUsername = "";
+  console.log(user_exists);
+
+  const truncateString = (str: string): string => {
+    if (str.length > 15) {
+      return `${str.slice(0, 5)}...${str.slice(-5)}`;
+    }
+    return str;
+  };
+
+  if (user_exists.status) {
+    userProfile = await getUserProfileByUsername(username);
+    links = userProfile && userProfile?.links;
+    truncUsername = truncateString(userProfile?.username);
+  } else {
+    console.log("HERERE");
+    notFound();
+  }
+
+  return {
+    title: truncUsername,
+    description: userProfile?.bio || `${username} Links`,
+    openGraph: {
+      images: [
+        {
+          url: userProfile?.profile_picture,
+        },
+      ],
+    },
+  };
 }
 
 export default async function Page({ params }: PageProps) {

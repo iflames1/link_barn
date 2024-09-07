@@ -1,5 +1,4 @@
-import { FaXTwitter } from "react-icons/fa6";
-import { FaGithub } from "react-icons/fa";
+"use client";
 import { DiscordLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
 import { LogoLink } from "../logo";
 import { Header } from "./header";
@@ -7,10 +6,10 @@ import { Button } from "../button";
 import Link from "next/link";
 
 const headerLinks = [
-  { name: "Features", href: "#features" },
-  { name: "Pricing", href: "#pricing" },
-  { name: "FAQs", href: "#faqs" },
-  { name: "Testimonial", href: "#testimonials" },
+  { name: "Features", href: "/#features" },
+  { name: "Pricing", href: "/pricing" },
+  { name: "FAQs", href: "/#faqs" },
+  { name: "Testimonial", href: "/#testimonials" },
 ];
 const icons = [
   {

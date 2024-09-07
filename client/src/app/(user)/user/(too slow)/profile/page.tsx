@@ -1,6 +1,11 @@
 import Header from "@/components/header";
 import ProfileDetails from "@/components/profile-details/profile-details";
-import Wallet from "@/components/wallet";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Profile",
+  description: "Update your information",
+};
 
 export default function ProfilePage() {
   return (
@@ -13,3 +18,6 @@ export default function ProfilePage() {
     </div>
   );
 }
+
+// <div class="absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]">
+// </div>;

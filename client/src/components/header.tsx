@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { BsLink } from "react-icons/bs";
 import Tab from "./common/tab";
 import ButtonTab from "./common/button-tab";
 import Image from "next/image";

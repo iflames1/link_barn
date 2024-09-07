@@ -175,6 +175,7 @@ export function ShareLink() {
               </div>
             </div>
             <ConfettiSideCannons
+              disabled={isLoading}
               onClick={() => {
                 isEditing
                   ? toast.info("Save Changes to copy link")
