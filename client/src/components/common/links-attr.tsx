@@ -26,6 +26,7 @@ import {
   SiSubstack,
   SiWix,
 } from "react-icons/si";
+import Image from "next/image";
 
 const randomColors = [
   "bg-blue-500",
@@ -60,6 +61,45 @@ export const linkAttributes = {
     text: "text-white",
     bg: "bg-[#0088cc]",
     icon: <FaTelegram className="size-4" />,
+  },
+  velar: {
+    text: "text-orange-500",
+    bg: "bg-[#000000]",
+    icon: (
+      <Image
+        src="/images/velar.jpg"
+        alt="velar"
+        width={16}
+        height={16}
+        className="size-4"
+      />
+    ),
+  },
+  alex: {
+    text: "text-[#e5e7eb]",
+    bg: "bg-blue-600",
+    icon: (
+      <Image
+        src="/images/alex.png"
+        alt="alex"
+        width={16}
+        height={16}
+        className="size-4"
+      />
+    ),
+  },
+  stackswap: {
+    text: "text-[#00FA8E]",
+    bg: "bg-[#001524]",
+    icon: (
+      <Image
+        src="/images/stackswap.png"
+        alt="stackswap"
+        width={16}
+        height={16}
+        className="size-4"
+      />
+    ),
   },
   youtube: {
     text: "text-white",

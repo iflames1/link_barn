@@ -56,7 +56,7 @@ export default function PreviewProfile() {
                     {userProfileDetails?.last_name}
                   </p>
                   <p className={cn("bM text-black")}>@{truncUsername}</p>
-                  <p className="text-sm text-center text-black pt-3">
+                  <p className="text-sm text-center text-black pt-3 px-1">
                     {userProfileDetails?.bio}
                   </p>
                 </div>
