@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { Progressbar } from "@/components/miscellaneous/LenisProvider";
+import GotoTop from "@/components/miscellaneous/go-to-top";
 
 export const metadata: Metadata = {
   title: {
@@ -30,6 +31,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} bg-white`}>
         <Progressbar>{children}</Progressbar>
+        <GotoTop />
+
         <Toaster />
       </body>
     </html>

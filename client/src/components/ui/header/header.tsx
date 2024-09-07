@@ -45,14 +45,14 @@ export const Header = ({
   return (
     <header
       className={cn(
-        "w-full dark:bg-zinc-950/50 backdrop-blur-xl md:px-5 z-[999] sticky-header",
+        "w-full dark:bg-zinc-950/50 md:px-5 z-[999] sticky-header",
         sticky && variant == "centered" && "md:sticky top-3",
         sticky && variant == "default" && "md:sticky top-3",
       )}
     >
       <ScrollAwareHeader
         className={cn("hidden md:block", headerVariants({ variant }))}
-        normal={"transition-all duration-150 border"}
+        normal={"transition-all duration-150 border backdrop-blur-xl"}
         isTopFalse="border border-gray rounded-xl"
         isTopTrue="border-b-gray border-l-transparent border-r-transparent border-t-transparent"
       >

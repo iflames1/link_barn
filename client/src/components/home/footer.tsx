@@ -11,11 +11,11 @@ const footerNavs = [
       //   name: "Email Collection",
       // },
       {
-        href: "/#pricing",
+        href: "/pricing",
         name: "Pricing",
       },
       {
-        href: "/#faq",
+        href: "/#faqs",
         name: "FAQ",
       },
       {
@@ -51,8 +51,8 @@ const footerNavs = [
       },
 
       {
-        href: "/privacy",
-        name: "Privacy",
+        href: "/policy",
+        name: "Privacy & policy",
       },
     ],
   },
