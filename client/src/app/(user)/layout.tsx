@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Link Barn - User",
+  title: {
+    default: "User",
+    template: "%s - Link Barn",
+  },
   description: "Manage your links and profile in Link Barn",
 };
 

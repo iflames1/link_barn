@@ -1,8 +1,14 @@
 import Header from "@/components/header";
-import Links from "@/components/links/links";
 import { NewLinks } from "@/components/links/new-links-content";
 import { getUserProfile } from "@/lib/queries";
 import { cookies } from "next/headers";
+
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Links",
+  description: "Create | Read | Update | Delete | Reorder your links",
+};
 
 export default async function LinksPage() {
   const uuid = cookies().get("uuid")?.value;
