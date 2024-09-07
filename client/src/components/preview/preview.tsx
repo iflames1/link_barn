@@ -76,7 +76,7 @@ export default async function Preview({
                   <div className="bg-gray-preview w-40 h-4 rounded-full"></div>
                 </div>
               )}
-              <p className="text-center max-w-60 text-black">
+              <p className="text-center px-1 max-w-72">
                 {userProfileDetails?.bio}
               </p>
             </>
