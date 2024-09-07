@@ -51,7 +51,7 @@ export default async function Preview({
                   width={104}
                   height={104}
                   className={cn(
-                    "rounded-full border-4 size-28 border-base-dark object-cover"
+                    "rounded-full border-4 size-28 border-base-dark object-cover",
                   )}
                 />
               ) : (
@@ -76,7 +76,9 @@ export default async function Preview({
                   <div className="bg-gray-preview w-40 h-4 rounded-full"></div>
                 </div>
               )}
-              <p className="text-center max-w-60">{userProfileDetails?.bio}</p>
+              <p className="text-center max-w-60 text-black">
+                {userProfileDetails?.bio}
+              </p>
             </>
           ) : (
             <>

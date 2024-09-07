@@ -92,6 +92,7 @@ export function HeroScrollDemo() {
           </div>
         }
       >
+        {/* <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-green-500 opacity-20 blur-[100px]"></div> */}
         <InView
           variants={{
             hidden: { opacity: 0, y: 40, filter: "blur(5px)" },

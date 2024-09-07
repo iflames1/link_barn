@@ -1,0 +1,102 @@
+import { ImageResponse } from "next/og";
+import { Inter } from "next/font/google";
+import { checkUserExists, getUserProfileByUsername } from "@/lib/queries";
+import { notFound } from "next/navigation";
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["600"], // SemiBold
+});
+
+export const runtime = "edge";
+
+export const alt = "About Acme";
+export const size = {
+  width: 1200,
+  height: 630,
+};
+interface PageProps {
+  params: { username: string };
+}
+
+export const contentType = "image/png";
+
+export default async function Image({ params }: PageProps) {
+  const { username } = params;
+  const user_exists = await checkUserExists("username", username);
+  let userProfile = null;
+  let links = null;
+  let truncUsername = "";
+  console.log(user_exists);
+
+  const truncateString = (str: string): string => {
+    if (str.length > 15) {
+      return `${str.slice(0, 5)}...${str.slice(-5)}`;
+    }
+    return str;
+  };
+
+  if (user_exists.status) {
+    userProfile = await getUserProfileByUsername(username);
+    links = userProfile && userProfile?.links;
+    truncUsername = truncateString(userProfile?.username);
+    console.log("MEE FFS");
+  } else {
+    console.log("HERERE");
+    notFound();
+  }
+
+  console.log(userProfile?.profile_picture);
+
+  if (!userProfile) {
+    return new ImageResponse(
+      (
+        <div
+          style={{
+            fontSize: 48,
+            background: "white",
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          User not found
+        </div>
+      ),
+      { ...size },
+    );
+  }
+
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          fontSize: 48,
+          background: "white",
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "20px",
+        }}
+      >
+        <img
+          src={userProfile.profile_picture}
+          alt={userProfile.username}
+          width="200"
+          height="200"
+          style={{
+            borderRadius: "50%",
+          }}
+        />
+        <div>{userProfile.username}</div>
+        <div style={{ fontSize: 24 }}>{userProfile.bio}</div>
+      </div>
+    ),
+    { ...size },
+  );
+}

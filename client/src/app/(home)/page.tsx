@@ -60,7 +60,7 @@ export default function Home() {
 
   useEffect(() => {
     const loadPage = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       setIsLoaded(true);
     };
     loadPage();
@@ -70,8 +70,6 @@ export default function Home() {
     <div className="bg-white w-full mx-auto flex flex-col min-h-screen">
       <HeaderDemo variant="default" />
       <main className="flex-grow pt-[var(--header-height)]">
-        {" "}
-        {/* Added padding-top */}
         {isLoaded ? (
           <LandingPage />
         ) : (

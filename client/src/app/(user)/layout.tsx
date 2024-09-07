@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AppWrapper } from "@/context";
 
 export const metadata: Metadata = {
   title: {

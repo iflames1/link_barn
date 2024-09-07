@@ -3,6 +3,9 @@ import Link from "next/link";
 import Image from "next/image";
 import error from "/public/error.gif";
 import { useRouter } from "next/navigation";
+import { HeroScrollDemo } from "@/components/home/container-scroll";
+import { HeaderDemo } from "@/components/ui/header/home-header";
+import { SiteFooter } from "@/components/home/footer";
 
 export default function ErrorPage() {
   const router = useRouter();
@@ -12,7 +15,8 @@ export default function ErrorPage() {
   };
 
   return (
-    <section className="bg-transparent">
+    <div className="bg-white w-full mx-auto flex flex-col min-h-screen">
+      <HeaderDemo variant="default" />
       <div className="container px-6 py-12 mx-auto flex items-center flex-col justify-center lg:gap-12">
         <div className="wf-ull lg:w-1/2">
           <h1 className="mt-3 text-2xl font-semibold text-gray-800 dark:text-white md:text-3xl">
@@ -47,6 +51,7 @@ export default function ErrorPage() {
           />
         </div>
       </div>
-    </section>
+      <SiteFooter />
+    </div>
   );
 }
