@@ -15,11 +15,21 @@ export default function LinkEditor() {
     updateLink(id, { url: e.target.value });
   };
 
-  const { links, removeLink, updateLink } = useAppContext();
+  const { links, removeLink, updateLink, setLinks } = useAppContext();
+
+  const handleDragEnd = (items: Link[]) => {
+    const updatedLinks = items.map((link, index) => ({
+      ...link,
+      index,
+    }));
+    setLinks(updatedLinks);
+  };
 
   return (
     <Sortable
       value={links}
+      //onMove={handleDragEnd}
+      onValueChange={handleDragEnd}
       overlay={
         <div className="flex flex-col items-center gap-2 bg-[#fafafa] p-4 rounded-lg">
           <div className="flex items-center justify-between w-full gap-4 mb-4">

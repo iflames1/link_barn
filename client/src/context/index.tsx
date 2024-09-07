@@ -59,6 +59,7 @@ interface AppContextType {
   saveLinks: () => Promise<boolean>;
   updateUserProfile: (updatedProfile: Partial<UserProfileDetails>) => void;
   saveUserDetails: () => Promise<boolean>;
+  setLinks: React.Dispatch<React.SetStateAction<Link[]>>;
   saveUsername: (
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
     setIsEditing: React.Dispatch<React.SetStateAction<boolean>>
@@ -364,6 +365,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
     updateUserProfile,
     saveUserDetails,
     saveUsername,
+    setLinks,
   };
 
   return (
