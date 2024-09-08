@@ -151,7 +151,7 @@ export const useWallet = () => {
       console.error("Error handling connection or saving user data:", error);
     } finally {
       setPending(false);
-      //window.location.reload();
+      window.location.reload();
     }
   };
 
