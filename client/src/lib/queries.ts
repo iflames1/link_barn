@@ -1,4 +1,5 @@
 // import "server-only";
+import isUUID from "is-uuid";
 import axios from "axios";
 import { API_BASE_URL } from "./constants";
 
@@ -31,6 +32,12 @@ export const checkUserExists = async (
   value: string,
 ): Promise<{ status: boolean; message: string }> => {
   try {
+    if (field === "uuid" && !isUUID.v4(value)) {
+      return {
+        status: false,
+        message: "You think you are smart abi :joy:",
+      };
+    }
     const response = await axios.post(`${API_BASE_URL}/users/check`, {
       field,
       value,

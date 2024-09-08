@@ -38,9 +38,10 @@ import { revalidateTagServer } from "@/app/actions";
 import GetStarted from "./get-started";
 import LoadingForm from "./loading";
 import { Skeleton } from "../ui/skeleton";
-import { LinkSchema } from "../preview/preview";
 import Preview from "../appearance/preview";
 import { layouts } from "../appearance/layouts";
+import { UserProfileSchema } from "@/types/users";
+import { LinkSchema } from "@/types/links";
 
 const formSchema = z.object({
   links: z.array(
@@ -57,7 +58,7 @@ export const NewLinks = ({
   userProfile,
   defaultLinks,
 }: {
-  userProfile: any;
+  userProfile: UserProfileSchema;
   defaultLinks: any;
 }) => {
   const formRef = useRef<HTMLDivElement>(null);
@@ -262,10 +263,10 @@ export const NewLinks = ({
     handleChange(index);
   };
 
-  const layout = layouts.find(
-    (layout) => layout.name === "layout1",
-    // (layout) => layout.name === userProfileDetails?.appearance || "layout3",
-  );
+  const layout =
+    layouts.find(
+      (layout) => layout.name === (userProfile?.appearance || "layout1"),
+    ) || layouts.find((layout) => layout.name === "layout1");
 
   return (
     <main className="grid grid-cols-1 show-grid gap-4">
@@ -275,12 +276,15 @@ export const NewLinks = ({
         {/* className={`lg:flex p-6 rounded-xl bg-white justify-center items-center sm:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] `} */}
 
         <Preview className="w-full h-full flex">
-          {
-            <layout.LayoutComponent
-              userData={userProfile}
-              links={currentLinks}
-            />
-          }
+          <div className="w-full px-6">
+            {
+              // @ ts-ignore
+              <layout.LayoutComponent
+                userData={userProfile}
+                links={currentLinks}
+              />
+            }
+          </div>
         </Preview>
       </div>
 

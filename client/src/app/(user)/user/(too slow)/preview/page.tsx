@@ -7,6 +7,7 @@ import { cookies } from "next/headers";
 import type { Metadata } from "next";
 import ResponsiveButton from "@/components/common/responsive-button";
 import { layouts } from "@/components/appearance/layouts";
+import { UserProfileSchema } from "@/types/users";
 
 export const metadata: Metadata = {
   title: "Preview",
@@ -18,11 +19,11 @@ export default async function PreviewPage() {
     cookies().get("uuid")?.value || "",
   );
   console.log(userProfileDetails, "HMMMMM");
-  const links = await userProfileDetails?.links;
+  const links = userProfileDetails?.links;
   console.log(links, userProfileDetails);
   const layout = layouts.find(
-    (layout) => layout.name === "layout3",
-    // (layout) => layout.name === userProfileDetails?.appearance || "layout3",
+    // (layout) => layout.name === "layout1",
+    (layout) => layout.name === userProfileDetails?.appearance || "layout1",
   );
   console.log(layout, "WATASHI WA STAR");
 

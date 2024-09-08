@@ -47,10 +47,12 @@ export async function updateSession(request: NextRequest) {
     return supabaseResponse;
   }
 
-  console.log("FROM MEEE", request.nextUrl.clone(), request.nextUrl.pathname);
-  if (uuid && valid && request.nextUrl.pathname.startsWith("/auth/login")) {
+  if (
+    uuid &&
+    valid.status &&
+    request.nextUrl.pathname.startsWith("/auth/login")
+  ) {
     const url = request.nextUrl.clone();
-    console.log("HERE???");
     url.pathname = "/user/links";
     return NextResponse.redirect(url);
   }
@@ -63,6 +65,16 @@ export async function updateSession(request: NextRequest) {
     "/user/themes",
   ];
   const pathname = request.nextUrl.pathname;
+  if (
+    uuid &&
+    !valid.status &&
+    protectedRoutes.some((route) => pathname.startsWith(route))
+  ) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/auth/login";
+    return NextResponse.redirect(url);
+  }
+
   if (!uuid && protectedRoutes.some((route) => pathname.startsWith(route))) {
     const url = request.nextUrl.clone();
     url.pathname = "/auth/login";
