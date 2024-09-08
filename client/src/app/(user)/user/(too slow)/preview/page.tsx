@@ -21,9 +21,7 @@ export default async function PreviewPage() {
   console.log(userProfileDetails, "HMMMMM");
   const links = await userProfileDetails?.links;
   console.log(links, userProfileDetails);
-  const layout = layouts.find(
-    (layout) => layout.name === userProfileDetails?.appearance || "layout2",
-  );
+  const layout = layouts.find((layout) => layout.name === "layout1");
   console.log(layout, "WATASHI WA STAR");
 
   return (
