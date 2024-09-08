@@ -1,12 +1,6 @@
 import { ImageResponse } from "next/og";
-import { Inter } from "next/font/google";
 import { checkUserExists, getUserProfileByUsername } from "@/lib/queries";
 import { notFound } from "next/navigation";
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["600"], // SemiBold
-});
 
 export const runtime = "edge";
 
@@ -65,7 +59,7 @@ export default async function Image({ params }: PageProps) {
           User not found
         </div>
       ),
-      { ...size },
+      { ...size }
     );
   }
 
@@ -97,6 +91,6 @@ export default async function Image({ params }: PageProps) {
         <div style={{ fontSize: 24 }}>{userProfile.bio}</div>
       </div>
     ),
-    { ...size },
+    { ...size }
   );
 }

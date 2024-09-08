@@ -24,6 +24,7 @@ import { ConfettiSideCannons } from "../ui/confetti-side";
 import { getUserProfile } from "@/lib/queries";
 import { useAppContext } from "@/context";
 import { getUserUUID } from "@/lib/auth";
+import { FaShareAlt } from "react-icons/fa";
 
 export function ShareLink() {
   // const { getData, userProfileDetails, updateUserProfile, saveUserDetails } =
@@ -131,7 +132,8 @@ export function ShareLink() {
     <Dialog>
       <DialogTrigger asChild>
         <button className="button py-[11px] sm:px-7 px-4 border-[1px] border-base-dark text-base-dark  hover:bg-base-light">
-          Share Link
+          <span className="hidden sm:flex">Share Link</span>
+          <FaShareAlt className="flex sm:hidden size-4" />
         </button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
