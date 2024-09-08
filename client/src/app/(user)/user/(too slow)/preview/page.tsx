@@ -3,7 +3,6 @@ import Preview from "@/components/preview/preview";
 import Link from "next/link";
 import { getUserProfile } from "@/lib/queries";
 import { cookies } from "next/headers";
-import { LuLayoutDashboard } from "react-icons/lu";
 
 import type { Metadata } from "next";
 import ResponsiveButton from "@/components/common/responsive-button";
@@ -21,7 +20,10 @@ export default async function PreviewPage() {
   console.log(userProfileDetails, "HMMMMM");
   const links = await userProfileDetails?.links;
   console.log(links, userProfileDetails);
-  const layout = layouts.find((layout) => layout.name === "layout1");
+  const layout = layouts.find(
+    (layout) => layout.name === "layout3",
+    // (layout) => layout.name === userProfileDetails?.appearance || "layout3",
+  );
   console.log(layout, "WATASHI WA STAR");
 
   return (
@@ -33,8 +35,13 @@ export default async function PreviewPage() {
           {/*   userProfileDetails={userProfileDetails} */}
           {/*   links={userProfileDetails && userProfileDetails.links} */}
           {/* /> */}
-          <div className="max-w-[500px]">
-            {layout && <layout.LayoutComponent userData={userProfileDetails} />}
+          <div className="max-w-[500px] mx-auto">
+            {layout && (
+              <layout.LayoutComponent
+                userData={userProfileDetails}
+                links={userProfileDetails.links}
+              />
+            )}
           </div>
           <ResponsiveButton
             path="/user/appearance"

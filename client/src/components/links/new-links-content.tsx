@@ -39,6 +39,8 @@ import GetStarted from "./get-started";
 import LoadingForm from "./loading";
 import { Skeleton } from "../ui/skeleton";
 import { LinkSchema } from "../preview/preview";
+import Preview from "../appearance/preview";
+import { layouts } from "../appearance/layouts";
 
 const formSchema = z.object({
   links: z.array(
@@ -47,7 +49,7 @@ const formSchema = z.object({
       url: z.string().url().min(2).max(50),
       index: z.number(),
       link_title: z.string().max(20).optional(),
-    })
+    }),
   ),
 });
 
@@ -260,10 +262,26 @@ export const NewLinks = ({
     handleChange(index);
   };
 
+  const layout = layouts.find(
+    (layout) => layout.name === "layout1",
+    // (layout) => layout.name === userProfileDetails?.appearance || "layout3",
+  );
+
   return (
     <main className="grid grid-cols-1 show-grid gap-4">
-      <div className="hidden show-preview">
-        <NewPreview links={currentLinks} userProfileDetails={userProfile} />
+      <div className="hidden show-preview h-full w-full">
+        {/* <NewPreview links={currentLinks} userProfileDetails={userProfile} /> */}
+        {/* "w-[40%] lg:flex hidden p-6 rounded-xl bg-white  justify-center items-center", */}
+        {/* className={`lg:flex p-6 rounded-xl bg-white justify-center items-center sm:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] `} */}
+
+        <Preview className="w-full h-full flex">
+          {
+            <layout.LayoutComponent
+              userData={userProfile}
+              links={currentLinks}
+            />
+          }
+        </Preview>
       </div>
 
       <div className="bg-white flex flex-col justify-between rounded-xl z-0 sm:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-auto">
@@ -431,7 +449,7 @@ export const NewLinks = ({
                                       <SelectTrigger
                                         disabled={
                                           form.watch(
-                                            `links.${index}.platform`
+                                            `links.${index}.platform`,
                                           ) === "link"
                                         }
                                         className="focus:shadow-active py-5 placeholder:text-black"

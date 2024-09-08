@@ -28,9 +28,9 @@ const iconMap = {
 };
 
 interface UserDataProps {
-  name: string;
-  bio: string;
-  profilePicture: string;
+  name: string | null;
+  bio: string | null;
+  profilePicture: string | null;
   links: Link[];
 }
 
@@ -54,8 +54,8 @@ export function Layout1({
     <div className="mx-auto flex flex-col gap-6">
       <div className="flex items-center gap-4">
         <Image
-          src={userData.profilePicture}
-          alt={userData.name}
+          src={userData.profilePicture as string}
+          alt={userData.name as string}
           width={80}
           height={80}
           className="rounded-full"
@@ -124,8 +124,8 @@ export function Layout2({ userData }: LayoutProps) {
   return (
     <div className="mx-auto p-6 text-center space-y-6">
       <Image
-        src={userData.profilePicture}
-        alt={userData.name}
+        src={userData.profilePicture as string}
+        alt={userData.name as string}
         width={120}
         height={120}
         className="rounded-full mx-auto"
@@ -164,8 +164,8 @@ export function Layout3({ userData }: LayoutProps) {
           style={{ height: "100px" }}
         />
         <Image
-          src={userData.profilePicture}
-          alt={userData.name}
+          src={userData.profilePicture as string}
+          alt={userData.name as string}
           width={100}
           height={100}
           className="rounded-full absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 border-4 border-white"
@@ -201,8 +201,8 @@ export function Layout4({ userData }: LayoutProps) {
     <div className="mx-auto p-6 space-y-6">
       <div className="flex flex-col items-center space-y-4">
         <Image
-          src={userData.profilePicture}
-          alt={userData.name}
+          src={userData.profilePicture as string}
+          alt={userData.name as string}
           width={100}
           height={100}
           className="rounded-full"
