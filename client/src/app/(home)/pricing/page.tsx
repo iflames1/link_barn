@@ -11,8 +11,9 @@ import {
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Manrope } from "next/font/google";
-import { CheckIcon, MinusIcon } from "lucide-react";
+import { CheckIcon } from "lucide-react";
 import Link from "next/link";
+import ContactUs from "./contact";
 
 interface PlanFeature {
   type: string;
@@ -143,7 +144,7 @@ export default function PricingSectionCards() {
 
         <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:items-center">
           {/* Card */}
-          <Card>
+          <Card className="hover:scale-[1.03] transition-transform duration-300">
             <CardHeader className="text-center pb-2">
               <CardTitle className="mb-7">Free</CardTitle>
               <span className="font-bold text-5xl">Free</span>
@@ -175,7 +176,7 @@ export default function PricingSectionCards() {
           </Card>
           {/* End Card */}
           {/* Card */}
-          <Card className="border-base-dark">
+          <Card className="border-base-dark hover:scale-[1.03] transition-transform duration-300">
             <CardHeader className="text-center pb-2">
               <Badge className="uppercase w-max self-center mb-3">
                 Most popular
@@ -210,7 +211,7 @@ export default function PricingSectionCards() {
           </Card>
           {/* End Card */}
           {/* Card */}
-          <Card>
+          <Card className="hover:scale-[1.03] transition-transform duration-300">
             <CardHeader className="text-center pb-2">
               <CardTitle className="!mb-7">Premium</CardTitle>
               <span className="font-bold text-5xl">5stx</span>
@@ -235,7 +236,7 @@ export default function PricingSectionCards() {
               </ul>
             </CardContent>
             <CardFooter>
-              <Button className="w-full" variant={"outline"}>
+              <Button className="w-full" variant={"outline"} asChild>
                 <Link href={"/user/preview"}>Get Started</Link>
               </Button>
             </CardFooter>
@@ -254,7 +255,7 @@ export default function PricingSectionCards() {
               Frequently Aked Questions
             </h3>
             <span className="my-1 block">Have more questions?</span>
-            <Button variant={"outline"}>Contact The Team</Button>
+            <ContactUs />
           </div>
           <FAQs
             className="bg-[#fafafa] py-4 rounded-md flex-1"

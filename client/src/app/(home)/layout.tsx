@@ -9,11 +9,11 @@ export default function HomeLayout({
   children: React.ReactNode;
 }) {
   return (
-    <LenisProvider>
+    <>
       <HeaderDemo variant="default" />
       {children}
       <SiteFooter />
       <SmoothCursor />
-    </LenisProvider>
+    </>
   );
 }

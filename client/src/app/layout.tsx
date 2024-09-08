@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { Progressbar } from "@/components/miscellaneous/LenisProvider";
 import GotoTop from "@/components/miscellaneous/go-to-top";
+import CookieConsent from "@/components/ui/cookie-consent";
 
 export const metadata: Metadata = {
   title: {
@@ -33,6 +34,7 @@ export default function RootLayout({
         <Progressbar>{children}</Progressbar>
         <GotoTop />
         <Toaster />
+        <CookieConsent />
       </body>
     </html>
   );
