@@ -10,12 +10,10 @@ export default function HomeLayout({
 }) {
   return (
     <LenisProvider>
-      {/* <div className="h-screen"> */}
       <HeaderDemo variant="default" />
       {children}
       <SiteFooter />
-      {/* </div> */}
-      {/* <SmoothCursor /> */}
+      <SmoothCursor />
     </LenisProvider>
   );
 }
