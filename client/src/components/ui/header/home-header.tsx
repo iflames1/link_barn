@@ -39,50 +39,52 @@ export const HeaderDemo = ({
 }: {
   variant: "default" | "centered";
 }) => (
-  <Header
-    Logo={<LogoLink />}
-    variant={variant}
-    sticky={true}
-    desktopItems={
-      <div className="flex items-center gap-3">
-        {headerLinks.map((link, i) => (
-          <HeaderLink key={i} href={link.href} name={link.name} />
-        ))}
-      </div>
-    }
-    mobileItems={({ setIsOpen }) => (
-      <>
-        {headerLinks.map((link) => (
-          <Button
-            key={link.href}
-            asChild
-            variant={"outline"}
-            className="w-full rounded-xl justify-center"
-            size="lg"
-            onClick={() => setIsOpen(false)}
-          >
-            <Link href={link.href}>{link.name}</Link>
-          </Button>
-        ))}
-        <div className="flex-row-end w-full gap-3 border-t pt-4 border-dashed">
-          {icons && (
-            <div className="flex-row-center grow gap-2 justify-center flex">
-              {icons.map((icon) => (
-                <Button
-                  key={icon.name}
-                  size="icon"
-                  className="rounded-full"
-                  variant={"outline"}
-                  asChild
-                  onClick={() => setIsOpen(false)}
-                >
-                  <Link href={icon.href}>{icon.icon}</Link>
-                </Button>
-              ))}
-            </div>
-          )}
+  <div className="relative z-50">
+    <Header
+      Logo={<LogoLink />}
+      variant={variant}
+      sticky={true}
+      desktopItems={
+        <div className="flex items-center gap-3">
+          {headerLinks.map((link, i) => (
+            <HeaderLink key={i} href={link.href} name={link.name} />
+          ))}
         </div>
-      </>
-    )}
-  />
+      }
+      mobileItems={({ setIsOpen }) => (
+        <>
+          {headerLinks.map((link) => (
+            <Button
+              key={link.href}
+              asChild
+              variant={"outline"}
+              className="w-full rounded-xl justify-center"
+              size="lg"
+              onClick={() => setIsOpen(false)}
+            >
+              <Link href={link.href}>{link.name}</Link>
+            </Button>
+          ))}
+          <div className="flex-row-end w-full gap-3 border-t pt-4 border-dashed">
+            {icons && (
+              <div className="flex-row-center grow gap-2 justify-center flex">
+                {icons.map((icon) => (
+                  <Button
+                    key={icon.name}
+                    size="icon"
+                    className="rounded-full"
+                    variant={"outline"}
+                    asChild
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <Link href={icon.href}>{icon.icon}</Link>
+                  </Button>
+                ))}
+              </div>
+            )}
+          </div>
+        </>
+      )}
+    />
+  </div>
 );
