@@ -1,6 +1,7 @@
 import { LandingPage } from "@/components/home/landing-page";
 import { HeaderDemo } from "@/components/ui/header/home-header";
 import { SiteFooter } from "@/components/home/footer";
+import CookieConsent from "@/components/ui/cookie-consent";
 
 export default async function Home() {
   return (
