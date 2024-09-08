@@ -18,6 +18,7 @@ export default async function Home() {
       {/*     </div> */}
       {/*   )} */}
       {/* </main> */}
+      {/* <main className="flex-grow pt-[var(--header-height)]"> */}
       <main className="flex-grow">
         <LandingPage />
       </main>
