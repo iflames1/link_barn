@@ -6,6 +6,7 @@ import {
   FaLinkedin,
   FaGithub,
 } from "react-icons/fa";
+import { linkAttributes } from "../common/links-attr";
 
 interface Link {
   id: string;
@@ -14,15 +15,8 @@ interface Link {
   icon: "link" | "twitter" | "instagram" | "linkedin" | "github";
 }
 
-interface UserData {
-  name: string;
-  bio: string;
-  profilePicture: string;
-  links: Link[];
-}
-
 interface LayoutProps {
-  userData: UserData;
+  userData: UserDataProps;
 }
 
 const iconMap = {
@@ -33,7 +27,29 @@ const iconMap = {
   github: FaGithub,
 };
 
-export function Layout1({ userData }: LayoutProps) {
+interface UserDataProps {
+  name: string;
+  bio: string;
+  profilePicture: string;
+  links: Link[];
+}
+
+export interface LinkSchema {
+  uuid: string;
+  platform: string;
+  index: number;
+  url: string;
+  user_id: string;
+  link_title: string | null;
+}
+
+export function Layout1({
+  userData,
+  links,
+}: {
+  userData: UserDataProps;
+  links?: LinkSchema[];
+}) {
   return (
     <div className="mx-auto flex flex-col gap-6">
       <div className="flex items-center gap-4">
@@ -52,21 +68,53 @@ export function Layout1({ userData }: LayoutProps) {
         </div>
       </div>
       <div className="grid grid-cols-1 gap-4">
-        {userData.links.map((link) => {
-          const Icon = iconMap[link.icon];
-          return (
-            <a
-              key={link.id}
-              href={"https://example.com"}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center space-x-2 p-2 border rounded hover:bg-gray-100"
-            >
-              <Icon className="text-gray-600" />
-              <span>{link.title}</span>
-            </a>
-          );
-        })}
+        {links ? (
+          links.length < 1 ? (
+            <div>You have not added any links</div>
+          ) : (
+            links
+              .slice()
+              .sort((a, b) => a.index - b.index)
+              .map((link, index) => {
+                const normalizedLinkName =
+                  link.platform.toLowerCase() as keyof typeof linkAttributes;
+                const attributes =
+                  linkAttributes[normalizedLinkName] || linkAttributes.link;
+                return (
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    key={index}
+                    className={`flex items-center space-x-2 p-2 border rounded capitalize ${attributes.bg} ${attributes.text}`}
+                  >
+                    {attributes.icon}
+                    <span>
+                      {link.platform === "link"
+                        ? link.link_title
+                        : link.platform}
+                    </span>
+                  </a>
+                );
+              })
+          )
+        ) : (
+          userData.links.map((link) => {
+            const Icon = iconMap[link.icon];
+            return (
+              <a
+                key={link.id}
+                href={"https://example.com"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 p-2 border rounded hover:bg-gray-100"
+              >
+                <Icon className="text-gray-600" />
+                <span>{link.title}</span>
+              </a>
+            );
+          })
+        )}
       </div>
     </div>
   );
