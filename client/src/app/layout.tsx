@@ -26,7 +26,6 @@ export default function RootLayout({
       <body className={` bg-white`}>
         <Progressbar>{children}</Progressbar>
         <GotoTop />
-
         <Toaster />
       </body>
     </html>
