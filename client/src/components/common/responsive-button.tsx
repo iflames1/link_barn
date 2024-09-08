@@ -3,17 +3,20 @@ import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { IconType } from "react-icons";
+import { RiPaintFill } from "react-icons/ri";
 
 interface TabProps {
   path: string;
   title: string;
+  className: string;
 }
 
 const IconMap: { [key: string]: IconType } = {
   "/user/appearance": LuLayoutDashboard,
+  "/user/themes": RiPaintFill,
 };
 
-export default function ResponsiveButton({ path, title }: TabProps) {
+export default function ResponsiveButton({ path, title, className }: TabProps) {
   const [showLink, setShowLink] = useState(false);
   const buttonRef = useRef<HTMLDivElement>(null);
 
@@ -40,7 +43,7 @@ export default function ResponsiveButton({ path, title }: TabProps) {
   };
 
   return (
-    <div className="absolute bottom-0 right-6" ref={buttonRef}>
+    <div className={className} ref={buttonRef}>
       <Link
         href={path}
         className="hidden sm:flex bg-white button py-[11px] px-7 border border-base-dark text-base-dark hover:bg-base-light"
