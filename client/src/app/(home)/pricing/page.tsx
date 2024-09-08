@@ -179,7 +179,7 @@ export default function PricingSectionCards() {
           </p>
         </div>
 
-        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:items-center">
+        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:items-center">
           {/* Card */}
           <Card className="hover:scale-[1.03] transition-transform duration-300">
             <CardHeader className="text-center pb-2">
@@ -193,11 +193,7 @@ export default function PricingSectionCards() {
               <ul className="mt-7 space-y-2.5 text-sm">
                 <li className="flex space-x-2">
                   <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                  <span className="text-muted-foreground">1 user</span>
-                </li>
-                <li className="flex space-x-2">
-                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                  <span className="text-muted-foreground">Plan features</span>
+                  <span className="text-muted-foreground">Custom URL</span>
                 </li>
                 <li className="flex space-x-2">
                   <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
@@ -222,17 +218,27 @@ export default function PricingSectionCards() {
               <span className="font-bold text-5xl">3stx</span>
             </CardHeader>
             <CardDescription className="text-center w-11/12 mx-auto">
-              All the basics for starting a new business
+              Everything you need for a growing presence
             </CardDescription>
             <CardContent>
               <ul className="mt-7 space-y-2.5 text-sm">
                 <li className="flex space-x-2">
                   <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                  <span className="text-muted-foreground">2 user</span>
+                  <span className="text-muted-foreground">
+                    All free tier features
+                  </span>
                 </li>
                 <li className="flex space-x-2">
                   <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                  <span className="text-muted-foreground">Plan features</span>
+                  <span className="text-muted-foreground">
+                    Remove Link Barn Branding
+                  </span>
+                </li>
+                <li className="flex space-x-2">
+                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
+                  <span className="text-muted-foreground">
+                    Appearance Customization
+                  </span>
                 </li>
                 <li className="flex space-x-2">
                   <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
@@ -260,15 +266,75 @@ export default function PricingSectionCards() {
               <ul className="mt-7 space-y-2.5 text-sm">
                 <li className="flex space-x-2">
                   <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                  <span className="text-muted-foreground">5 user</span>
+                  <span className="text-muted-foreground">
+                    All free tier features
+                  </span>
                 </li>
                 <li className="flex space-x-2">
                   <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                  <span className="text-muted-foreground">Plan features</span>
+                  <span className="text-muted-foreground">
+                    Remove Link Barn Branding
+                  </span>
+                </li>
+                <li className="flex space-x-2">
+                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
+                  <span className="text-muted-foreground">
+                    Appearance Customization
+                  </span>
                 </li>
                 <li className="flex space-x-2">
                   <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
                   <span className="text-muted-foreground">Product support</span>
+                </li>
+              </ul>
+            </CardContent>
+            <CardFooter>
+              <Button className="w-full" variant={"outline"} asChild>
+                <Link href={"/user/preview"}>Get Started</Link>
+              </Button>
+            </CardFooter>
+          </Card>
+          {/* End Card */}
+          {/* Card */}
+          <Card className="hover:scale-[1.03] transition-transform duration-300">
+            <CardHeader className="text-center pb-2">
+              <CardTitle className="!mb-7">Business</CardTitle>
+              <span className="font-bold text-5xl">20stx</span>
+            </CardHeader>
+            <CardDescription className="text-center  w-11/12 mx-auto">
+              Everything you need for a growing presence
+            </CardDescription>
+            <CardContent>
+              <ul className="mt-7 space-y-2.5 text-sm">
+                <li className="flex space-x-2">
+                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
+                  <span className="text-muted-foreground">
+                    All Premium tier features
+                  </span>
+                </li>
+                <li className="flex space-x-2">
+                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
+                  <span className="text-muted-foreground">
+                    Custom Domain Support
+                  </span>
+                </li>
+                <li className="flex space-x-2">
+                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
+                  <span className="text-muted-foreground">
+                    24/7 priority support
+                  </span>
+                </li>
+                <li className="flex space-x-2">
+                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
+                  <span className="text-muted-foreground">
+                    Custom icon/logo upload
+                  </span>
+                </li>
+                <li className="flex space-x-2">
+                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
+                  <span className="text-muted-foreground">
+                    Request personalized appearance
+                  </span>
                 </li>
               </ul>
             </CardContent>
