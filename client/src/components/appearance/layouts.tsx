@@ -46,7 +46,9 @@ export function Layout1({ userData }: LayoutProps) {
         />
         <div className="">
           <h1 className="text-2xl font-bold">{userData.name}</h1>
-          <p className="text-sm text-gray-600 break-words">{userData.bio}</p>
+          <p className="text-sm text-gray-600 break-words text-wrap">
+            {userData.bio}
+          </p>
         </div>
       </div>
       <div className="grid grid-cols-1 gap-4">
@@ -82,7 +84,7 @@ export function Layout2({ userData }: LayoutProps) {
       />
       <div>
         <h1 className="text-2xl font-bold">{userData.name}</h1>
-        <p className="text-sm text-gray-600 mt-2">{userData.bio}</p>
+        <p className="text-sm text-gray-600 mt-2 text-wrap">{userData.bio}</p>
       </div>
       <div className="flex justify-center space-x-4">
         {userData.links.map((link) => {
@@ -123,7 +125,7 @@ export function Layout3({ userData }: LayoutProps) {
       </div>
       <div className="text-center mb-6">
         <h1 className="text-2xl font-bold">{userData.name}</h1>
-        <p className="text-sm text-gray-600 mt-2">{userData.bio}</p>
+        <p className="text-sm text-gray-600 mt-2 text-wrap">{userData.bio}</p>
       </div>
       <div className="grid grid-cols-2 gap-4">
         {userData.links.map((link) => {
@@ -159,7 +161,9 @@ export function Layout4({ userData }: LayoutProps) {
         />
         <h1 className="text-2xl font-bold">{userData.name}</h1>
       </div>
-      <p className="text-center text-sm text-gray-600">{userData.bio}</p>
+      <p className="text-center text-sm text-gray-600 text-wrap">
+        {userData.bio}
+      </p>
       <div className="flex flex-wrap justify-center gap-4">
         {userData.links.map((link) => {
           const Icon = iconMap[link.icon];
