@@ -32,7 +32,6 @@ export default function RootLayout({
       <body className={`${inter.className} bg-white`}>
         <Progressbar>{children}</Progressbar>
         <GotoTop />
-
         <Toaster />
       </body>
     </html>
