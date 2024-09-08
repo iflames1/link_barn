@@ -93,6 +93,16 @@ const config = {
             opacity: "0.4",
           },
         },
+        "popover-in": {
+          "0%": {
+            opacity: "0",
+            transform: "scale(.95) translateY(-10px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "scale(1) translateY(0)",
+          },
+        },
         "accordion-down": {
           from: { height: "0" },
           to: { height: "var(--radix-accordion-content-height)" },
@@ -142,6 +152,7 @@ const config = {
         shimmer: "shimmer 8s infinite",
         "fade-up": "fade-up 1000ms var(--animation-delay, 0ms) ease forwards",
         gradient: "gradient 8s linear infinite",
+        "popover-in": "popover-in .15s ease",
       },
     },
   },

@@ -12,8 +12,8 @@ export default function HomeLayout({
     <LenisProvider>
       <HeaderDemo variant="default" />
       {children}
-      <SmoothCursor />
       <SiteFooter />
+      <SmoothCursor />
     </LenisProvider>
   );
 }

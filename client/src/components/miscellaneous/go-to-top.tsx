@@ -36,7 +36,7 @@ const GotoTop = () => {
       role="button"
       onClick={handleTop}
       className={cn(
-        " fixed bottom-12 right-2    z-[9999] mx-auto  flex max-w-[1440px] select-none  items-center rounded border border-primary bg-primary/90 text-2xl text-white backdrop-blur-xl transition-all  duration-1000 active:scale-95 active:duration-300 dark:bg-white dark:text-black dark:shadow-[0_0_40px_0_rgba(255,255,255,0.26)] max-[400px]:bottom-16 sm:bottom-16 sm:right-5 sm:text-4xl",
+        " fixed bottom-12 right-2    z-[9999] mx-auto  flex max-w-[1440px] select-none  items-center rounded border border-white bg-base-dark text-2xl text-white backdrop-blur-xl transition-all  duration-1000 active:scale-95 active:duration-300 dark:bg-white dark:text-black dark:shadow-[0_0_40px_0_rgba(255,255,255,0.26)] max-[400px]:bottom-16 sm:bottom-16 sm:right-5 sm:text-4xl",
         scrollY > 1000
           ? "translate-x-0 opacity-100 shadow-[0_0_40px_0_rgba(0,0,0,0.16)]"
           : "translate-x-20 opacity-0",
