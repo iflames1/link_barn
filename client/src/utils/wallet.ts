@@ -138,8 +138,13 @@ export const useWallet = () => {
           } catch (error) {
             console.error("Error creating new user", error);
           }
-        } else {
+        } else if (userExists.message === "Error checking user existence") {
+          console.error("Error checking user existence");
+          toast.error("Please try again later");
+        } else if (userExists.status) {
           setUserUUID(userExists.message);
+        } else {
+          console.log("Unable to catch issue");
         }
       }
     } catch (error) {

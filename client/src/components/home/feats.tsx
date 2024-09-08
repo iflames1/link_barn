@@ -1,61 +1,64 @@
 import { cn } from "@/lib/utils";
 import {
-  IconAdjustmentsBolt,
-  IconCloud,
-  IconCurrencyDollar,
-  IconEaseInOut,
-  IconHeart,
-  IconHelp,
-  IconRouteAltLeft,
-  IconTerminal2,
-} from "@tabler/icons-react";
+  Wallet,
+  Link,
+  Brush,
+  Zap,
+  Lock,
+  Gift,
+  Star,
+  Share2,
+} from "lucide-react";
 
 export function FeaturesSectionDemo() {
   const features = [
     {
-      title: "Built for developers",
+      title: "Wallet Integration",
       description:
-        "Built for engineers, developers, dreamers, thinkers and doers.",
-      icon: <IconTerminal2 />,
+        "Secure account creation and sign-in using your favorite cryptocurrency wallet.",
+      icon: <Wallet />,
     },
     {
-      title: "Ease of use",
+      title: "Intuitive Link Management",
       description:
-        "It's as easy as using an Apple, and as expensive as buying one.",
-      icon: <IconEaseInOut />,
+        "Easily create, update, delete, and reorder your links with our user-friendly interface.",
+      icon: <Link />,
     },
     {
-      title: "Pricing like no other",
+      title: "Customizable Design",
       description:
-        "Our prices are best in the market. No cap, no lock, no credit card required.",
-      icon: <IconCurrencyDollar />,
+        "Personalize your page with custom themes, colors, and backgrounds to match your brand.",
+      icon: <Brush />,
     },
     {
-      title: "100% Uptime guarantee",
-      description: "We just cannot be taken down by anyone.",
-      icon: <IconCloud />,
-    },
-    {
-      title: "Multi-tenant Architecture",
-      description: "You can simply share passwords instead of buying new seats",
-      icon: <IconRouteAltLeft />,
-    },
-    {
-      title: "24/7 Customer Support",
+      title: "Lightning-Fast Performance",
       description:
-        "We are available a 100% of the time. Atleast our AI Agents are.",
-      icon: <IconHelp />,
+        "Experience blazing-fast load times and smooth interactions across all devices.",
+      icon: <Zap />,
     },
     {
-      title: "Money back guarantee",
+      title: "Enhanced Security",
       description:
-        "If you donot like EveryAI, we will convince you to like us.",
-      icon: <IconAdjustmentsBolt />,
+        "Benefit from the added security of blockchain technology for your account.",
+      icon: <Lock />,
     },
     {
-      title: "And everything else",
-      description: "I just ran out of copy ideas. Accept my sincere apologies",
-      icon: <IconHeart />,
+      title: "Easy Sharing",
+      description:
+        "Share your Link Barn page effortlessly across various platforms and social media.",
+      icon: <Share2 />,
+    },
+    {
+      title: "Free Tier Available",
+      description:
+        "Get started with our feature-rich free tier, no credit card required.",
+      icon: <Gift />,
+    },
+    {
+      title: "Premium Features",
+      description:
+        "Unlock advanced capabilities with our affordable premium plan.",
+      icon: <Star />,
     },
   ];
   return (
@@ -83,7 +86,7 @@ const Feature = ({
       className={cn(
         "flex flex-col lg:border-r  py-7 pb-10 relative group/feature dark:border-neutral-800",
         (index === 0 || index === 4) && "lg:border-l dark:border-neutral-800",
-        index < 4 && "lg:border-b dark:border-neutral-800",
+        index < 4 && "lg:border-b dark:border-neutral-800"
       )}
     >
       {index < 4 && (
