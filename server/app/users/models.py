@@ -17,15 +17,17 @@ def _create_enums(metadata, conn, **kw):
     # Create the enum
     auth_type.create(conn, checkfirst=True)
 
+class UserUsername(SQLModel):
+    username: str | None = Field(default=None)
 
-class UserProfile(SQLModel):
+class UserProfile(UserUsername):
     bio: str | None = Field(default=None)
+    appearance: str | None = Field(default=None)
     first_name: str | None = Field(default=None)
     last_name: str | None = Field(default=None)
     theme: str | None = Field(default=None)
     profile_picture: str | None = Field(default=None)
     email: str | None = Field(default=None)
-    username: str | None = Field(default=None)
 
 
 class UserBase(UserProfile):
@@ -62,6 +64,9 @@ class UserUpdate(SQLModel):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     profile_picture: Optional[str] = None
+    theme: Optional[str] = None
+    appearance: Optional[str] = None
+    bio: Optional[str] = None
     username: Optional[str] = None
     email: Optional[str] = None
     decentralized_id: Optional[str] = None

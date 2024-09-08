@@ -1,6 +1,6 @@
 from fastapi import HTTPException, status as http_status
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.users.models import User, UserCreate, UserUpdate, UserRead, Preview
+from app.users.models import User, UserCreate, UserUpdate, UserRead, Preview, UserUsername
 from sqlalchemy import select, func
 from uuid import UUID
 from typing import Optional
@@ -53,6 +53,14 @@ class UsersCRUD:
         users = results.scalars().all()
 
         return users
+
+    async def get_all_usernames(self) -> list[UserUsername]:
+        statement = select(User).order_by(User.created_at)
+        results = await self.session.execute(statement)
+        users = results.scalars().all()
+
+        return users
+
 
     async def get_user_profile(self, username: str) -> Preview:
         statement = select(User).where(User.username == username)

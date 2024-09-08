@@ -5,7 +5,7 @@ from app.users.deps import get_users_crud
 from app.links.models import LinkRead as LinkReadModel
 from uuid import UUID
 from app.core.models import StatusMessage, UUIDModel
-from app.users.models import UserRead, UserCreate, UserUpdate, User, CheckRequest, UserProfile, Preview
+from app.users.models import UserRead, UserCreate, UserUpdate, User, CheckRequest, UserProfile, Preview, UserUsername
 
 router = APIRouter()
 
@@ -15,6 +15,14 @@ async def create_user(data: UserCreate, users: UsersCRUD = Depends(get_users_cru
     user = await users.create(data)
 
     return user
+
+
+@router.get("/all/usernames", response_model=List[UserUsername], status_code=http_status.HTTP_200_OK)
+async def get_usernames(users: UsersCRUD = Depends(get_users_crud)):
+    usernames = await users.get_all_usernames()
+
+    return usernames
+
 
 
 @router.get("/", response_model=UserRead, status_code=http_status.HTTP_200_OK)

@@ -10,6 +10,7 @@ if TYPE_CHECKING:
 class LinkBase(SQLModel):
     platform: str = Field(nullable=False)
     index: int = Field(nullable=False)
+    link_title: str = Field(nullable=True, default=None)
     url: str = Field(nullable=False)
     user_id: Optional[UUID] = Field(default=None, foreign_key="users.uuid")
 
@@ -31,3 +32,4 @@ class LinkUpdate(SQLModel):
     platform: Optional[str] = Field(default=None)
     index: Optional[int] = Field(default=None)
     url: Optional[str] = Field(default=None)
+    link_title: Optional[str] = Field(nullable=True, default=None)
