@@ -38,6 +38,7 @@ export const checkUserExists = async (
   field: string = "username",
   value: string,
 ): Promise<{ status: boolean; message: string }> => {
+  console.log("Im BEING CALLED");
   try {
     if (field === "uuid" && !isUUID.v4(value)) {
       return {
