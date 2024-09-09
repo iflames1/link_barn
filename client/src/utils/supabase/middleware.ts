@@ -2,6 +2,7 @@ import { checkUserExists } from "@/lib/queries";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
+import { cache } from "react";
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({

@@ -10,9 +10,9 @@ export default function PreviewPage() {
             href={"/links"}
             className="hS py-[11px] px-[27px] border-[1px] hover:bg-base-light text-base-dark border-base-dark rounded-lg"
           >
-            Back to Editor
+            {/* Back to Editor */}
           </Link>
-          <div className="hS py-[11px] px-[27px] bg-base-dark text-white hover:bg-opacity-90 rounded-lg cursor-pointer">
+          {/* <div className="hS py-[11px] px-[27px] bg-base-dark text-white hover:bg-opacity-90 rounded-lg cursor-pointer"> */}
             Share Link
           </div>
         </div>

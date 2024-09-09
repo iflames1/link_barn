@@ -58,7 +58,7 @@ export const NewLinks = ({
   userProfile,
   defaultLinks,
 }: {
-  userProfile: UserProfileSchema;
+  userProfile: any;
   defaultLinks: any;
 }) => {
   const formRef = useRef<HTMLDivElement>(null);
@@ -264,9 +264,8 @@ export const NewLinks = ({
   };
 
   const layout =
-    layouts.find(
-      (layout) => layout.name === (userProfile?.appearance || "layout1"),
-    ) || layouts.find((layout) => layout.name === "layout1");
+    layouts.find((layout) => layout.name === userProfile?.appearance) ||
+    layouts[0];
 
   return (
     <main className="grid grid-cols-1 show-grid gap-4">
