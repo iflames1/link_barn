@@ -2,6 +2,8 @@ import Image from "next/image";
 import { linkAttributes } from "../common/links-attr";
 import { Fragment } from "react";
 import { LinkData, LinkSchema } from "@/types/links";
+import { FaArrowRight } from "react-icons/fa";
+import { link } from "fs";
 
 interface LinkWrapperProps {
   userData: LinkData;
@@ -51,6 +53,54 @@ export function LinkWrapper({ userData, links, children }: LinkWrapperProps) {
         })
       )}
     </>
+  );
+}
+
+export function Layout1({ userData, links }: LayoutProps) {
+  return (
+    <div className="flex flex-col items-center gap-[25px]">
+      <Image
+        src={userData?.profile_picture as string}
+        alt={userData?.first_name as string}
+        width={104}
+        height={104}
+        className="rounded-full border-4 size-28 border-base-dark object-cover"
+      />{" "}
+      <div className="flex flex-col items-center gap-2">
+        <p className="text-xl font-bold">
+          {userData?.first_name} {userData?.last_name}
+        </p>
+        {/*<p className={cn("text-md font-semibold text-black")}>
+            @{truncUsername}
+          </p>*/}
+      </div>
+      <p className="text-center px-1 max-w-72 break-words text-wrap">
+        {" "}
+        {userData?.bio}
+      </p>
+      <div className="flex flex-col items-center gap-3 w-full max-w-60">
+        <LinkWrapper userData={userData} links={links}>
+          {(linkData) => (
+            <a
+              href={linkData.url}
+              target="_blank"
+              key={linkData.uuid}
+              className={`flex justify-between items-center py-[11px] px-4 rounded-lg w-full border-[1px] border-gray capitalize $${linkData.bg} ${linkData.text}`}
+            >
+              <p className="flex items-center justify-start gap-2">
+                {linkData.icon}
+                <span>
+                  {linkData.platform === "link"
+                    ? linkData.link_title
+                    : linkData.platform}
+                </span>
+              </p>
+              <FaArrowRight className="size-4" />
+            </a>
+          )}
+        </LinkWrapper>
+      </div>
+    </div>
   );
 }
 
@@ -272,9 +322,9 @@ export function Layout5({ userData, links }: LayoutProps) {
 }
 
 export const layouts = [
-  //{ name: "layout1", LayoutComponent: Layout1 },
+  { name: "layout1", LayoutComponent: Layout1 },
   { name: "layout2", LayoutComponent: Layout2 },
   { name: "layout3", LayoutComponent: Layout3 },
   { name: "layout4", LayoutComponent: Layout4 },
-  { name: "layout4", LayoutComponent: Layout5 },
+  { name: "layout5", LayoutComponent: Layout5 },
 ];
