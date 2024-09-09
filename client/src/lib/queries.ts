@@ -4,6 +4,13 @@ import axios from "axios";
 import { API_BASE_URL } from "./constants";
 
 export const getUserProfile = async (uuid: string) => {
+  console.log("IM BEING CALLED :sob:");
+  console.log("IM BEING CALLED :sob:");
+  console.log("IM BEING CALLED :sob:");
+  console.log("IM BEING CALLED :sob:");
+  console.log("IM BEING CALLED :sob:");
+  console.log("IM BEING CALLED :sob:");
+  console.log("IM BEING CALLED :sob:");
   try {
     const url = `${API_BASE_URL}/users?user_id=${uuid}`;
     const response = await fetch(url, {

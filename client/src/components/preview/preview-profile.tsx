@@ -5,10 +5,11 @@ import { usePathname } from "next/navigation";
 import { useAppContext } from "@/context";
 import LoadingProfile from "./loading-profile";
 import { Suspense } from "react";
+import { useUserdata } from "@/lib/useUserdata";
 
 export default function PreviewProfile() {
   const pathname = usePathname();
-  const { userProfileDetails } = useAppContext();
+  const { userData } = useUserdata();
   let truncUsername = "";
 
   const truncateString = (str: string): string => {
@@ -17,17 +18,17 @@ export default function PreviewProfile() {
     }
     return str;
   };
-  truncUsername = truncateString(userProfileDetails?.username || "");
+  truncUsername = truncateString(userData?.username || "");
 
   return (
     <div className="flex flex-col items-center gap-[25px]">
       <Suspense fallback={<LoadingProfile />}>
-        {userProfileDetails ? (
+        {userData ? (
           <>
-            {userProfileDetails?.profile_picture ? (
+            {userData?.profile_picture ? (
               <Image
-                src={userProfileDetails?.profile_picture}
-                alt={userProfileDetails?.first_name}
+                src={userData?.profile_picture}
+                alt={userData?.first_name}
                 width={104}
                 height={104}
                 className={cn(
@@ -44,7 +45,7 @@ export default function PreviewProfile() {
                 })}
               ></div>
             )}
-            {userProfileDetails?.username ? (
+            {userData?.username ? (
               <>
                 <div className="flex flex-col items-center gap-2">
                   <p
@@ -52,12 +53,11 @@ export default function PreviewProfile() {
                       hM: pathname === "/user/preview",
                     })}
                   >
-                    {userProfileDetails?.first_name}{" "}
-                    {userProfileDetails?.last_name}
+                    {userData?.first_name} {userData?.last_name}
                   </p>
                   <p className={cn("bM text-black")}>@{truncUsername}</p>
                   <p className="text-sm text-center text-black pt-3 px-1">
-                    {userProfileDetails?.bio}
+                    {userData?.bio}
                   </p>
                 </div>
               </>

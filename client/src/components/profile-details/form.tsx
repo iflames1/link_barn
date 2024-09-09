@@ -1,125 +1,153 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { getUser } from "@/lib/getUser";
+import { UserData } from "@/types/links";
+import { saveUserDetails } from "@/lib/saveUserDetails";
+import { handleFileUpload } from "@/lib/handleFileUpload";
+import { getUserUUID } from "@/lib/auth";
 import Image from "next/image";
 import { IoImageOutline } from "react-icons/io5";
-import { API_BASE_URL } from "@/lib/constants";
-import { getUserUUID } from "@/lib/auth";
-import { toast } from "sonner";
-import { useAppContext } from "@/context";
-import ImageInput from "./image-input";
-import { revalidateTagServer } from "@/app/actions";
-import { LoaderCircle } from "lucide-react";
 import { Button } from "../ui/button";
+import { LoaderCircle } from "lucide-react";
+import { toast } from "sonner";
+import { useUserdata } from "@/lib/useUserdata";
+import { revalidateTagServer } from "@/app/actions";
+import { API_BASE_URL } from "@/lib/constants";
 
 export default function Form() {
-  const [image, setImage] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const uuid = getUserUUID();
-  const { getData, userProfileDetails, updateUserProfile, saveUserDetails } =
-    useAppContext();
+  const [userProfileDetails, setUserProfileDetails] = useState<UserData>();
+  const [image, setImage] = useState<string>("");
+  const initialProfileData = useRef<UserData>();
+  const { setUserData } = useUserdata();
+
+  const updateUserProfile = useCallback(
+    (updatedProfile: Partial<UserData>) => {
+      setUserProfileDetails((prevDetails) => {
+        if (!prevDetails) return;
+        return { ...prevDetails, ...updatedProfile };
+      });
+      setUserData(userProfileDetails);
+    },
+    [setUserData, userProfileDetails],
+  );
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const userID = getUserUUID();
-      if (userID) {
-        console.log("UUID", userID);
-        const res = await getData(API_BASE_URL + "/users/?user_id=" + userID);
-        if (res) {
-          console.log("Successfully fetched user details");
-        } else {
-          console.log("failed to get user");
+    const fetchUserData = async () => {
+      const result = await getUser();
+      if (result) {
+        const { userData, links } = result;
+        setUserProfileDetails(userData);
+        setUserData(userData);
+        initialProfileData.current = userData;
+        setImage(userData?.profile_picture);
+      }
+    };
+    fetchUserData();
+  }, []);
+
+  const hasChanged = useCallback(() => {
+    if (!userProfileDetails || !initialProfileData.current) return false;
+
+    const uploadStagedFile = async (stagedFile: File | Blob, uuid: string) => {
+      const form = new FormData();
+      form.set("file", stagedFile);
+      console.log(stagedFile);
+
+      try {
+        const res = await fetch("/upload", {
+          method: "POST",
+          body: form,
+          headers: {},
+        });
+
+        if (!res.ok) {
+          throw new Error("Failed to upload image");
         }
+
+        const data = await res.json();
+        console.log("Cloudinary Response:", data.imgUrl);
+
+        // Update the user profile with the uploaded image URL
+        try {
+          const url = `${API_BASE_URL}/users/${uuid}`;
+          const response = await fetch(url, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              profile_picture: data.imgUrl,
+            }),
+          });
+
+          const responseData = await response.json();
+
+          if (!response.ok) {
+            console.log(responseData);
+            throw new Error(
+              `An error occurred while updating profile: ${responseData.detail}`,
+            );
+          }
+
+          console.log("API Response:", response, responseData);
+
+          toast.success("Image updated successfully", {
+            richColors: true,
+            position: "top-center",
+          });
+          await revalidateTagServer("userProfile");
+        } catch (err) {
+          console.error("Error updating profile:", err);
+
+          if (err instanceof Error) {
+            toast.error(`An error occurred: ${err.message}`, {
+              position: "top-center",
+              richColors: true,
+            });
+          } else {
+            toast.error("An unknown error occurred", {
+              position: "top-center",
+              richColors: true,
+            });
+          }
+        }
+      } catch (err) {
+        console.log("Error uploading image:", err);
       }
     };
 
-    fetchUser();
-  }, [getData]);
-
-  const uploadStagedFile = async (stagedFile: File | Blob, uuid: string) => {
-    const form = new FormData();
-    form.set("file", stagedFile);
-    console.log(stagedFile);
-
-    try {
-      const res = await fetch("/upload", {
-        method: "POST",
-        body: form,
-        headers: {},
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to upload image");
-      }
-
-      const data = await res.json();
-      console.log("Cloudinary Response:", data.imgUrl);
-
-      // Update the user profile with the uploaded image URL
-      try {
-        const url = `${API_BASE_URL}/users/${uuid}`;
-        const response = await fetch(url, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            profile_picture: data.imgUrl,
-          }),
-        });
-
-        const responseData = await response.json();
-
-        if (!response.ok) {
-          console.log(responseData);
-          throw new Error(
-            `An error occurred while updating profile: ${responseData.detail}`,
-          );
-        }
-
-        console.log("API Response:", response, responseData);
-
-        toast.success("Image updated successfully", {
-          richColors: true,
-          position: "top-center",
-        });
-        await revalidateTagServer("userProfile");
-      } catch (err) {
-        console.error("Error updating profile:", err);
-
-        if (err instanceof Error) {
-          toast.error(`An error occurred: ${err.message}`, {
-            position: "top-center",
-            richColors: true,
-          });
-        } else {
-          toast.error("An unknown error occurred", {
-            position: "top-center",
-            richColors: true,
-          });
-        }
-      }
-    } catch (err) {
-      console.log("Error uploading image:", err);
-    }
-  };
-
-  const handleFileUpload = () => {
-    if (selectedFile) {
-      uploadStagedFile(selectedFile, uuid as string);
-    } else {
-      console.log("No file selected");
-    }
-  };
+    // const handleFileUpload = () => {
+    //   if (selectedFile) {
+    //     uploadStagedFile(selectedFile, uuid as string);
+    //   } else {
+    //     console.log("No file selected");
+    //   }
+    // };
+    return Object.keys(userProfileDetails).some(
+      (key) =>
+        userProfileDetails[key as keyof UserData] !==
+        initialProfileData.current?.[key as keyof UserData],
+    );
+  }, [userProfileDetails]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!hasChanged() && !selectedFile) {
+      toast.info("No changes to save", { richColors: true });
+      console.log("No changes to save");
+      return;
+    }
     setIsLoading(true);
     try {
-      await handleFileUpload();
-      await saveUserDetails();
+      if (selectedFile) await handleFileUpload(selectedFile, uuid);
+
+      if (hasChanged()) await saveUserDetails(userProfileDetails);
+      initialProfileData.current = userProfileDetails;
     } catch (error) {
       console.error("Error during submission:", error);
     } finally {

@@ -11,7 +11,7 @@ const Preview = ({
     <div
       className={cn(
         "w-[40%] lg:flex hidden p-6 rounded-xl bg-white  justify-center items-center",
-        className,
+        className
       )}
       // className={`lg:flex p-6 rounded-xl bg-white justify-center items-center sm:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] `}
     >

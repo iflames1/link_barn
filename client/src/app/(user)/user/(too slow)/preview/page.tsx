@@ -1,5 +1,5 @@
 import Header from "@/components/header";
-import Preview from "@/components/preview/preview";
+import Preview from "@/components/preview/preview-layout";
 import Link from "next/link";
 import { getUserProfile } from "@/lib/queries";
 import { cookies } from "next/headers";
@@ -8,6 +8,8 @@ import type { Metadata } from "next";
 import ResponsiveButton from "@/components/common/responsive-button";
 import { layouts } from "@/components/appearance/layouts";
 import { UserProfileSchema } from "@/types/users";
+import { unstable_cache } from "next/cache";
+import { getUserProfileCached } from "@/lib/caching";
 
 export const metadata: Metadata = {
   title: "Preview",
@@ -15,17 +17,18 @@ export const metadata: Metadata = {
 };
 
 export default async function PreviewPage() {
-  const userProfileDetails = await getUserProfile(
-    cookies().get("uuid")?.value || "",
-  );
-  console.log(userProfileDetails, "HMMMMM");
-  const links = userProfileDetails?.links;
-  console.log(links, userProfileDetails);
+  const uuid = cookies().get("uuid")?.value;
+
+  const userProfile = await getUserProfileCached(uuid || "");
+  const links = userProfile?.links;
+  // console.log(userProfile, "HIMMMv2", links);
+  // console.log(userProfile, "HMMMMM");
+  // const links = userProfileDetails?.links;
+  // console.log(links, userProfile);
   const layout = layouts.find(
     // (layout) => layout.name === "layout1",
-    (layout) => layout.name === userProfileDetails?.appearance || "layout1",
+    (layout) => layout.name === userProfile?.appearance || "layout1",
   );
-  console.log(layout, "WATASHI WA STAR");
 
   return (
     <div className="sm:p-6 w-full max-w-[1440px] mx-auto">
@@ -38,10 +41,7 @@ export default async function PreviewPage() {
           {/* /> */}
           <div className="max-w-[500px] mx-auto">
             {layout && (
-              <layout.LayoutComponent
-                userData={userProfileDetails}
-                links={userProfileDetails.links}
-              />
+              <layout.LayoutComponent userData={userProfile} links={links} />
             )}
           </div>
           <ResponsiveButton
