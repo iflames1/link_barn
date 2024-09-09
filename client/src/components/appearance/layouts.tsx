@@ -1,54 +1,26 @@
 import Image from "next/image";
-import {
-  FaLink,
-  FaTwitter,
-  FaInstagram,
-  FaLinkedin,
-  FaGithub,
-} from "react-icons/fa";
 import { linkAttributes } from "../common/links-attr";
 import { Fragment } from "react";
-import { link } from "fs";
+import { LinkData, LinkSchema } from "@/types/links";
 
-interface Link {
-  id: string;
-  title: string;
-  url: string;
-  icon: "link" | "twitter" | "instagram" | "linkedin" | "github";
-}
-
-interface LayoutProps {
-  userData: UserDataProps;
-}
-
-const iconMap = {
-  link: FaLink,
-  twitter: FaTwitter,
-  instagram: FaInstagram,
-  linkedin: FaLinkedin,
-  github: FaGithub,
-};
-
-interface UserDataProps {
-  name: string | null;
-  bio: string | null;
-  profilePicture: string | null;
-  links: Link[];
-}
-
-export interface LinkSchema {
+export interface UserdataLinkSchema {
   uuid: string;
-  platform: string;
+  platform: "link" | "twitter" | "instagram" | "linkedin" | "github";
   index: number;
-  url: string;
+  url: "https://example.com";
   user_id: string;
   link_title: string | null;
 }
 
 interface LinkWrapperProps {
-  userData: UserDataProps;
+  userData: LinkData;
   links?: LinkSchema[];
   children: (linkData: any) => React.ReactNode;
+}
+
+interface LayoutProps {
+  userData: LinkData;
+  links?: LinkSchema[];
 }
 
 export function LinkWrapper({ userData, links, children }: LinkWrapperProps) {
@@ -76,35 +48,38 @@ export function LinkWrapper({ userData, links, children }: LinkWrapperProps) {
         )
       ) : (
         userData.links.map((link, index) => {
-          const Icon = iconMap[link.icon];
-          return <Fragment key={index}>{children({ ...link, Icon })}</Fragment>;
+          const normalizedLinkName =
+            link.platform.toLowerCase() as keyof typeof linkAttributes;
+          const attributes =
+            linkAttributes[normalizedLinkName] || linkAttributes.link;
+          return (
+            <Fragment key={index}>
+              {children({ ...link, ...attributes })}
+            </Fragment>
+          );
         })
       )}
     </>
   );
 }
 
-export function Layout1({
-  userData,
-  links,
-}: {
-  userData: UserDataProps;
-  links?: LinkSchema[];
-}) {
+export function Layout1({ userData, links }: LayoutProps) {
   return (
     <div className="mx-auto flex flex-col gap-6">
       <div className="flex items-center gap-4">
         <Image
-          src={userData.profilePicture as string}
-          alt={userData.name as string}
+          src={userData?.profile_picture as string}
+          alt={userData?.first_name as string}
           width={80}
           height={80}
           className="rounded-full"
         />
         <div className="">
-          <h1 className="text-2xl font-bold">{userData.name}</h1>
+          <h1 className="text-2xl font-bold">
+            {userData?.first_name} {userData?.last_name}
+          </h1>
           <p className="text-sm text-gray-600 break-words text-wrap">
-            {userData.bio}
+            {userData?.bio}
           </p>
         </div>
       </div>
@@ -132,24 +107,20 @@ export function Layout1({
   );
 }
 
-export function Layout2({
-  userData,
-  links,
-}: {
-  userData: UserDataProps;
-  links?: LinkSchema[];
-}) {
+export function Layout2({ userData, links }: LayoutProps) {
   return (
     <div className="mx-auto p-6 text-center space-y-6">
       <Image
-        src={userData.profilePicture as string}
-        alt={userData.name as string}
+        src={userData.profile_picture as string}
+        alt={userData.first_name as string}
         width={120}
         height={120}
         className="rounded-full mx-auto"
       />
       <div>
-        <h1 className="text-2xl font-bold">{userData.name}</h1>
+        <h1 className="text-2xl font-bold">
+          {userData?.first_name} {userData?.last_name}
+        </h1>
         <p className="text-sm text-gray-600 mt-2 text-wrap">{userData.bio}</p>
       </div>
       <div className="flex justify-center space-x-4">
@@ -187,13 +158,7 @@ export function Layout2({
   );
 }
 
-export function Layout3({
-  userData,
-  links,
-}: {
-  userData: UserDataProps;
-  links?: LinkSchema[];
-}) {
+export function Layout3({ userData, links }: LayoutProps) {
   return (
     <div className="mx-auto p-6">
       <div className="relative mb-16">
@@ -202,15 +167,17 @@ export function Layout3({
           style={{ height: "100px" }}
         />
         <Image
-          src={userData.profilePicture as string}
-          alt={userData.name as string}
+          src={userData.profile_picture as string}
+          alt={userData.first_name as string}
           width={100}
           height={100}
           className="rounded-full absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 border-4 border-white"
         />
       </div>
       <div className="text-center mb-6">
-        <h1 className="text-2xl font-bold">{userData.name}</h1>
+        <h1 className="text-2xl font-bold">
+          {userData?.first_name} {userData?.last_name}
+        </h1>
         <p className="text-sm text-gray-600 mt-2 text-wrap">{userData.bio}</p>
       </div>
       <div className="grid grid-cols-2 gap-4">
@@ -252,24 +219,20 @@ export function Layout3({
   );
 }
 
-export function Layout4({
-  userData,
-  links,
-}: {
-  userData: UserDataProps;
-  links?: LinkSchema[];
-}) {
+export function Layout4({ userData, links }: LayoutProps) {
   return (
     <div className="mx-auto p-6 space-y-6">
       <div className="flex flex-col items-center space-y-4">
         <Image
-          src={userData.profilePicture as string}
-          alt={userData.name as string}
+          src={userData?.profile_picture as string}
+          alt={userData?.first_name as string}
           width={100}
           height={100}
           className="rounded-full"
         />
-        <h1 className="text-2xl font-bold">{userData.name}</h1>
+        <h1 className="text-2xl font-bold">
+          {userData?.first_name} {userData?.last_name}
+        </h1>
       </div>
       <p className="text-center text-sm text-gray-600 text-wrap">
         {userData.bio}
