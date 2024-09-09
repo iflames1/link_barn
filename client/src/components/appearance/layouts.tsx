@@ -7,6 +7,8 @@ import {
   FaGithub,
 } from "react-icons/fa";
 import { linkAttributes } from "../common/links-attr";
+import { Fragment } from "react";
+import { link } from "fs";
 
 interface Link {
   id: string;
@@ -43,6 +45,45 @@ export interface LinkSchema {
   link_title: string | null;
 }
 
+interface LinkWrapperProps {
+  userData: UserDataProps;
+  links?: LinkSchema[];
+  children: (linkData: any) => React.ReactNode;
+}
+
+export function LinkWrapper({ userData, links, children }: LinkWrapperProps) {
+  return (
+    <>
+      {" "}
+      {links ? (
+        links.length < 1 ? (
+          <div>You have not added any links</div>
+        ) : (
+          links
+            .slice()
+            .sort((a, b) => a.index - b.index)
+            .map((link, index) => {
+              const normalizedLinkName =
+                link.platform.toLowerCase() as keyof typeof linkAttributes;
+              const attributes =
+                linkAttributes[normalizedLinkName] || linkAttributes.link;
+              return (
+                <Fragment key={index}>
+                  {children({ ...link, ...attributes })}
+                </Fragment>
+              );
+            })
+        )
+      ) : (
+        userData.links.map((link, index) => {
+          const Icon = iconMap[link.icon];
+          return <Fragment key={index}>{children({ ...link, Icon })}</Fragment>;
+        })
+      )}
+    </>
+  );
+}
+
 export function Layout1({
   userData,
   links,
@@ -68,59 +109,36 @@ export function Layout1({
         </div>
       </div>
       <div className="grid grid-cols-1 gap-4">
-        {links ? (
-          links.length < 1 ? (
-            <div>You have not added any links</div>
-          ) : (
-            links
-              .slice()
-              .sort((a, b) => a.index - b.index)
-              .map((link, index) => {
-                const normalizedLinkName =
-                  link.platform.toLowerCase() as keyof typeof linkAttributes;
-                const attributes =
-                  linkAttributes[normalizedLinkName] || linkAttributes.link;
-                return (
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    key={index}
-                    className={`flex items-center space-x-2 p-2 border rounded capitalize ${attributes.bg} ${attributes.text}`}
-                  >
-                    {attributes.icon}
-                    <span>
-                      {link.platform === "link"
-                        ? link.link_title
-                        : link.platform}
-                    </span>
-                  </a>
-                );
-              })
-          )
-        ) : (
-          userData.links.map((link) => {
-            const Icon = iconMap[link.icon];
-            return (
-              <a
-                key={link.id}
-                href={"https://example.com"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center space-x-2 p-2 border rounded hover:bg-gray-100"
-              >
-                <Icon className="text-gray-600" />
-                <span>{link.title}</span>
-              </a>
-            );
-          })
-        )}
+        <LinkWrapper userData={userData} links={links}>
+          {(linkData) => (
+            <a
+              href={linkData.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              key={linkData.uuid}
+              className={`flex items-center space-x-2 p-2 border rounded capitalize ${linkData.bg} ${linkData.text}`}
+            >
+              {linkData.icon}
+              <span>
+                {linkData.platform === "link"
+                  ? linkData.link_title
+                  : linkData.platform}
+              </span>
+            </a>
+          )}
+        </LinkWrapper>
       </div>
     </div>
   );
 }
 
-export function Layout2({ userData }: LayoutProps) {
+export function Layout2({
+  userData,
+  links,
+}: {
+  userData: UserDataProps;
+  links?: LinkSchema[];
+}) {
   return (
     <div className="mx-auto p-6 text-center space-y-6">
       <Image
@@ -135,7 +153,21 @@ export function Layout2({ userData }: LayoutProps) {
         <p className="text-sm text-gray-600 mt-2 text-wrap">{userData.bio}</p>
       </div>
       <div className="flex justify-center space-x-4">
-        {userData.links.map((link) => {
+        <LinkWrapper userData={userData} links={links}>
+          {(linkData) => (
+            <a
+              key={linkData.uuid}
+              href={linkData.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 rounded-full bg-gray-200 hover:bg-gray-300"
+              title={linkData.platform}
+            >
+              {linkData.icon}
+            </a>
+          )}
+        </LinkWrapper>
+        {/*{userData.links.map((link) => {
           const Icon = iconMap[link.icon];
           return (
             <a
@@ -149,13 +181,19 @@ export function Layout2({ userData }: LayoutProps) {
               <Icon className="text-gray-700" />
             </a>
           );
-        })}
+        })}*/}
       </div>
     </div>
   );
 }
 
-export function Layout3({ userData }: LayoutProps) {
+export function Layout3({
+  userData,
+  links,
+}: {
+  userData: UserDataProps;
+  links?: LinkSchema[];
+}) {
   return (
     <div className="mx-auto p-6">
       <div className="relative mb-16">
@@ -176,7 +214,25 @@ export function Layout3({ userData }: LayoutProps) {
         <p className="text-sm text-gray-600 mt-2 text-wrap">{userData.bio}</p>
       </div>
       <div className="grid grid-cols-2 gap-4">
-        {userData.links.map((link) => {
+        <LinkWrapper userData={userData} links={links}>
+          {(linkData) => (
+            <a
+              key={linkData.uuid}
+              href={linkData.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center space-x-2 p-2 border rounded hover:bg-gray-100"
+            >
+              {linkData.icon}
+              <span>
+                {linkData.platform === "link"
+                  ? linkData.link_title
+                  : linkData.platform}
+              </span>
+            </a>
+          )}
+        </LinkWrapper>
+        {/*{userData.links.map((link) => {
           const Icon = iconMap[link.icon];
           return (
             <a
@@ -190,13 +246,19 @@ export function Layout3({ userData }: LayoutProps) {
               <span>{link.title}</span>
             </a>
           );
-        })}
+        })}*/}
       </div>
     </div>
   );
 }
 
-export function Layout4({ userData }: LayoutProps) {
+export function Layout4({
+  userData,
+  links,
+}: {
+  userData: UserDataProps;
+  links?: LinkSchema[];
+}) {
   return (
     <div className="mx-auto p-6 space-y-6">
       <div className="flex flex-col items-center space-y-4">
@@ -213,7 +275,27 @@ export function Layout4({ userData }: LayoutProps) {
         {userData.bio}
       </p>
       <div className="flex flex-wrap justify-center gap-4">
-        {userData.links.map((link) => {
+        <LinkWrapper userData={userData} links={links}>
+          {(linkData) => (
+            <a
+              key={linkData.uuid}
+              href={linkData.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center p-2 w-20 text-center"
+            >
+              <div className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 mb-1">
+                {linkData.icon}
+              </div>
+              <span className="text-xs">
+                {linkData.platform === "link"
+                  ? linkData.link_title
+                  : linkData.platform}
+              </span>
+            </a>
+          )}
+        </LinkWrapper>
+        {/*{userData.links.map((link) => {
           const Icon = iconMap[link.icon];
           return (
             <a
@@ -229,7 +311,7 @@ export function Layout4({ userData }: LayoutProps) {
               <span className="text-xs">{link.title}</span>
             </a>
           );
-        })}
+        })}*/}
       </div>
     </div>
   );
