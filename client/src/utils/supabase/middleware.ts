@@ -1,7 +1,9 @@
+import { checkUserExistsCached } from "@/lib/caching";
 import { checkUserExists } from "@/lib/queries";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
+import { cache } from "react";
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -36,9 +38,9 @@ export async function updateSession(request: NextRequest) {
   // issues with users being randomly logged out.
 
   const cookieStore = cookies();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // const {
+  //   data: { user },
+  // } = await supabase.auth.getUser();
   const uuid = cookieStore.get("uuid")?.value;
   const valid = await checkUserExists("uuid", uuid as string);
   console.log("IT IS IIII", valid);
@@ -65,20 +67,18 @@ export async function updateSession(request: NextRequest) {
     "/user/themes",
   ];
   const pathname = request.nextUrl.pathname;
-  if (
-    uuid &&
-    !valid.status &&
-    protectedRoutes.some((route) => pathname.startsWith(route))
-  ) {
+  if (uuid && valid.status && pathname.startsWith("/auth/login")) {
     const url = request.nextUrl.clone();
-    url.pathname = "/auth/login";
+    url.pathname = "/user/links";
     return NextResponse.redirect(url);
   }
 
-  if (!uuid && protectedRoutes.some((route) => pathname.startsWith(route))) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/auth/login";
-    return NextResponse.redirect(url);
+  if (!uuid || !valid.status) {
+    if (protectedRoutes.some((route) => pathname.startsWith(route))) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/auth/login";
+      return NextResponse.redirect(url);
+    }
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're

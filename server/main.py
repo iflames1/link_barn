@@ -28,14 +28,16 @@ async def lifespan(app: FastAPI):
     yield
 
 
+origins = [
+    "http://localhost:3000",
+    "https://linkbarn.vercel.app",
+    "https://www.linkbarn.tech",
+]
 app = FastAPI(title=settings.project_name, openapi_url=f"{settings.api_v1_prefix}/openapi.json", debug=settings.debug,
               version=settings.version, lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000",
-                   "https://linkbarn.vercel.app",
-                   "https://www.linkbarn.tech/",
-                   ],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -75,7 +75,7 @@ class UsersCRUD:
         return user
 
     async def check_field_exists(self, field: str, value: str) -> tuple[bool, Optional[User]]:
-        valid_fields = ['stx_address_mainnet', "username", "supabase_user_id", "email"]
+        valid_fields = ['stx_address_mainnet', "username", "supabase_user_id", "email", "uuid"]
         if field not in valid_fields:
             raise HTTPException(
                 status_code=http_status.HTTP_400_BAD_REQUEST, detail="Invalid field")

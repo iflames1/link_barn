@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 
 import type { Metadata } from "next";
 import Links from "@/components/links/links";
+import { getUserProfileCached } from "@/lib/caching";
 // import Links from "@/components/links/links";
 
 export const metadata: Metadata = {
@@ -14,9 +15,10 @@ export const metadata: Metadata = {
 
 export default async function LinksPage() {
   const uuid = cookies().get("uuid")?.value;
-  const userProfile = await getUserProfile(uuid || "");
+  // const userProfile = await getUserProfile(uuid || "");
+  const userProfile = await getUserProfileCached(uuid || "");
   const links = userProfile?.links ?? [];
-  console.log(userProfile);
+  // console.log(userProfile);
 
   return (
     <div className="min-h-screen max-h-screen overflow-hidden sm:p-6 w-full max-w-[1440px] mx-auto relative">

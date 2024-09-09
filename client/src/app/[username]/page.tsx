@@ -13,6 +13,7 @@ import { FaArrowRight } from "react-icons/fa6";
 import { JoinLinkBarn, LogoLink } from "@/components/ui/logo";
 import type { Metadata } from "next";
 import { layouts } from "@/components/appearance/layouts";
+import { API_BASE_URL } from "@/lib/constants";
 
 interface PageProps {
   params: { username: string };
@@ -33,6 +34,7 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { username } = params;
+
   const user_exists = await checkUserExists("username", username);
   let userProfile = null;
   let links = null;
