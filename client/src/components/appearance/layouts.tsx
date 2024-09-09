@@ -3,15 +3,6 @@ import { linkAttributes } from "../common/links-attr";
 import { Fragment } from "react";
 import { LinkData, LinkSchema } from "@/types/links";
 
-export interface UserdataLinkSchema {
-  uuid: string;
-  platform: "link" | "twitter" | "instagram" | "linkedin" | "github";
-  index: number;
-  url: "https://example.com";
-  user_id: string;
-  link_title: string | null;
-}
-
 interface LinkWrapperProps {
   userData: LinkData;
   links?: LinkSchema[];
@@ -63,7 +54,7 @@ export function LinkWrapper({ userData, links, children }: LinkWrapperProps) {
   );
 }
 
-export function Layout1({ userData, links }: LayoutProps) {
+export function Layout2({ userData, links }: LayoutProps) {
   return (
     <div className="mx-auto flex flex-col gap-6">
       <div className="flex items-center gap-4">
@@ -107,7 +98,7 @@ export function Layout1({ userData, links }: LayoutProps) {
   );
 }
 
-export function Layout2({ userData, links }: LayoutProps) {
+export function Layout3({ userData, links }: LayoutProps) {
   return (
     <div className="mx-auto p-6 text-center space-y-6">
       <Image
@@ -131,7 +122,7 @@ export function Layout2({ userData, links }: LayoutProps) {
               href={linkData.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 rounded-full bg-gray-200 hover:bg-gray-300"
+              className={`p-2 rounded-full bg-gray-200 hover:bg-gray-300 ${linkData.bg} ${linkData.text}`}
               title={linkData.platform}
             >
               {linkData.icon}
@@ -158,7 +149,7 @@ export function Layout2({ userData, links }: LayoutProps) {
   );
 }
 
-export function Layout3({ userData, links }: LayoutProps) {
+export function Layout4({ userData, links }: LayoutProps) {
   return (
     <div className="mx-auto p-6">
       <div className="relative mb-16">
@@ -188,7 +179,7 @@ export function Layout3({ userData, links }: LayoutProps) {
               href={linkData.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center space-x-2 p-2 border rounded hover:bg-gray-100"
+              className={`flex items-center justify-center space-x-2 p-2 border rounded ${linkData.bg} ${linkData.text}`}
             >
               {linkData.icon}
               <span>
@@ -207,7 +198,7 @@ export function Layout3({ userData, links }: LayoutProps) {
               href={"https://example.com"}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center space-x-2 p-2 border rounded hover:bg-gray-100"
+              className="flex items-center justify-center space-x-2 p-2 border rounded "
             >
               <Icon className="text-gray-600" />
               <span>{link.title}</span>
@@ -219,7 +210,7 @@ export function Layout3({ userData, links }: LayoutProps) {
   );
 }
 
-export function Layout4({ userData, links }: LayoutProps) {
+export function Layout5({ userData, links }: LayoutProps) {
   return (
     <div className="mx-auto p-6 space-y-6">
       <div className="flex flex-col items-center space-y-4">
@@ -245,9 +236,9 @@ export function Layout4({ userData, links }: LayoutProps) {
               href={linkData.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex flex-col items-center p-2 w-20 text-center"
+              className={`flex flex-col items-center p-2 w-20 text-center rounded ${linkData.bg} ${linkData.text}`}
             >
-              <div className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 mb-1">
+              <div className="p-2 bg-gray-200 hover:bg-gray-300 mb-1">
                 {linkData.icon}
               </div>
               <span className="text-xs">
@@ -281,8 +272,9 @@ export function Layout4({ userData, links }: LayoutProps) {
 }
 
 export const layouts = [
-  { name: "layout1", LayoutComponent: Layout1 },
+  //{ name: "layout1", LayoutComponent: Layout1 },
   { name: "layout2", LayoutComponent: Layout2 },
   { name: "layout3", LayoutComponent: Layout3 },
   { name: "layout4", LayoutComponent: Layout4 },
+  { name: "layout4", LayoutComponent: Layout5 },
 ];
