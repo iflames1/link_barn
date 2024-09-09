@@ -18,3 +18,14 @@ interface LinkData {
   bio: string;
   links: LinkSchema[];
 }
+interface UserData {
+  uuid: string;
+  profile_picture: string;
+  first_name: string;
+  last_name: string;
+  username: string;
+  email: string;
+  stx_address_mainnet: string;
+  bio: string;
+  links: LinkSchema[];
+}
