@@ -1,17 +1,16 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { getUser } from "@/lib/getUser";
+import { UserData } from "@/types/links";
+import { saveUserDetails } from "@/lib/saveUserDetails";
+import { handleFileUpload } from "@/lib/handleFileUpload";
+import { getUserUUID } from "@/lib/auth";
 import Image from "next/image";
 import { IoImageOutline } from "react-icons/io5";
-import { API_BASE_URL } from "@/lib/constants";
-import { getUserUUID } from "@/lib/auth";
-import { toast } from "sonner";
-import { useAppContext } from "@/context";
-import ImageInput from "./image-input";
-import { revalidateTagServer } from "@/app/actions";
-import { LoaderCircle } from "lucide-react";
 import { Button } from "../ui/button";
-import axios from "axios";
-import { set } from "zod";
+import { LoaderCircle } from "lucide-react";
+import { toast } from "sonner";
+import { useUserdata } from "@/lib/useUserdata";
 
 export default function Form() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -19,133 +18,59 @@ export default function Form() {
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const uuid = getUserUUID();
-  const { getData, userProfileDetails, updateUserProfile, saveUserDetails } =
-    useAppContext();
-  const [image, setImage] = useState<string | null>(
-    userProfileDetails?.profile_picture || null
+  const [userProfileDetails, setUserProfileDetails] = useState<UserData>();
+  const [image, setImage] = useState<string>("");
+  const initialProfileData = useRef<UserData>();
+  const { setUserData } = useUserdata();
+
+  const updateUserProfile = useCallback(
+    (updatedProfile: Partial<UserData>) => {
+      setUserProfileDetails((prevDetails) => {
+        if (!prevDetails) return;
+        return { ...prevDetails, ...updatedProfile };
+      });
+      setUserData(userProfileDetails);
+    },
+    [setUserData, userProfileDetails]
   );
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const userID = getUserUUID();
-      if (userID) {
-        console.log("UUID", userID);
-        const response = await getData(
-          API_BASE_URL + "/users/?user_id=" + userID
-        );
-        if (response) {
-          console.log("Successfully fetched user details");
-        } else {
-          console.log("failed to get user");
-        }
+    const fetchUserData = async () => {
+      const result = await getUser();
+      if (result) {
+        const { userData, links } = result;
+        setUserProfileDetails(userData);
+        setUserData(userData);
+        initialProfileData.current = userData;
+        setImage(userData?.profile_picture);
       }
     };
+    fetchUserData();
+  }, []);
 
-    const getUserProfile = async () => {
-      const userID = getUserUUID();
-      try {
-        const res = await axios.get(API_BASE_URL + "/users/?user_id=" + userID);
+  const hasChanged = useCallback(() => {
+    if (!userProfileDetails || !initialProfileData.current) return false;
 
-        if (res.status === 200) {
-          const image = res.data.profile_picture || null;
-          setImage(image);
-          console.log("Image", image);
-        }
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.error("Axios error:", error.message);
-        } else {
-          console.error("Unexpected error:", error);
-        }
-      }
-    };
-
-    getUserProfile();
-    fetchUser();
-  }, [getData]);
-
-  useEffect(() => {});
-  console.log("image", image);
-
-  const uploadStagedFile = async (stagedFile: File | Blob, uuid: string) => {
-    const form = new FormData();
-    form.set("file", stagedFile);
-    console.log(stagedFile);
-
-    try {
-      const res = await fetch("/upload", {
-        method: "POST",
-        body: form,
-        headers: {},
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to upload image");
-      }
-
-      const data = await res.json();
-      console.log("Cloudinary Response:", data.imgUrl);
-
-      // Update the user profile with the uploaded image URL
-      try {
-        const url = `${API_BASE_URL}/users/${uuid}`;
-        const response = await fetch(url, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            profile_picture: data.imgUrl,
-          }),
-        });
-
-        const responseData = await response.json();
-
-        if (!response.ok) {
-          console.log(responseData);
-          throw new Error(
-            `An error occurred while updating profile: ${responseData.detail}`
-          );
-        }
-
-        console.log("API Response:", response, responseData);
-
-        toast.success("Image updated successfully", {
-          richColors: true,
-        });
-        await revalidateTagServer("userProfile");
-      } catch (err) {
-        console.error("Error updating profile:", err);
-
-        if (err instanceof Error) {
-          toast.error(`An error occurred: ${err.message}`, {
-            richColors: true,
-          });
-        } else {
-          toast.error("An unknown error occurred", {
-            richColors: true,
-          });
-        }
-      }
-    } catch (err) {
-      console.log("Error uploading image:", err);
-    }
-  };
-
-  const handleFileUpload = () => {
-    if (selectedFile) {
-      uploadStagedFile(selectedFile, uuid as string);
-    } else {
-      console.log("No file selected");
-    }
-  };
+    return Object.keys(userProfileDetails).some(
+      (key) =>
+        userProfileDetails[key as keyof UserData] !==
+        initialProfileData.current?.[key as keyof UserData]
+    );
+  }, [userProfileDetails]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!hasChanged() && !selectedFile) {
+      toast.info("No changes to save", { richColors: true });
+      console.log("No changes to save");
+      return;
+    }
     setIsLoading(true);
     try {
-      await handleFileUpload();
-      await saveUserDetails();
+      if (selectedFile) await handleFileUpload(selectedFile);
+
+      if (hasChanged()) await saveUserDetails(userProfileDetails);
+      initialProfileData.current = userProfileDetails;
     } catch (error) {
       console.error("Error during submission:", error);
     } finally {
