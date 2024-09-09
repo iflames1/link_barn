@@ -75,7 +75,7 @@ export default function Form() {
         if (!response.ok) {
           console.log(responseData);
           throw new Error(
-            `An error occurred while updating profile: ${responseData.detail}`
+            `An error occurred while updating profile: ${responseData.detail}`,
           );
         }
 
@@ -83,6 +83,7 @@ export default function Form() {
 
         toast.success("Image updated successfully", {
           richColors: true,
+          position: "top-center",
         });
         await revalidateTagServer("userProfile");
       } catch (err) {
@@ -90,10 +91,12 @@ export default function Form() {
 
         if (err instanceof Error) {
           toast.error(`An error occurred: ${err.message}`, {
+            position: "top-center",
             richColors: true,
           });
         } else {
           toast.error("An unknown error occurred", {
+            position: "top-center",
             richColors: true,
           });
         }
@@ -127,7 +130,7 @@ export default function Form() {
   return (
     <form
       onSubmit={(e) => handleSubmit(e)}
-      className="bg-white flex flex-col justify-between rounded-xl lg:w-[60%] sm:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-auto"
+      className="bg-white flex flex-col justify-between rounded-xl sm:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-auto"
     >
       <div className="sm:p-10 p-6">
         <div className="pb-10">

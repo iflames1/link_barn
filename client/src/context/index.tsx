@@ -245,7 +245,10 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         return true;
       } else {
         console.log("No changes to synchronize");
-        toast.info("No changes to save", { richColors: true });
+        toast.info("No changes to save", {
+          richColors: true,
+          position: "top-center",
+        });
         return true;
       }
     } catch (error) {
@@ -297,7 +300,10 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
       }
     } else {
       console.log("No changes to save");
-      toast.info("No changes to save", { richColors: true });
+      toast.info("No changes to save", {
+        richColors: true,
+        position: "top-center",
+      });
       return true;
     }
   }, [prevUserProfileDetails, userProfileDetails, UUID]);

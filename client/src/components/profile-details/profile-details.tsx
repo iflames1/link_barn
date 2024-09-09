@@ -17,7 +17,7 @@ export default async function ProfileDetails() {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
-      <div className="hidden h-full w-full">
+      <div className="hidden lg:flex h-full w-full">
         <Preview className="w-full h-full flex">
           <div className="w-full px-6">
             {
