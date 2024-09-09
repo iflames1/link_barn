@@ -19,7 +19,6 @@ interface LayoutProps {
 export function LinkWrapper({ userData, links, children }: LinkWrapperProps) {
   return (
     <>
-      {" "}
       {links ? (
         links.length < 1 ? (
           <div>You have not added any links</div>
@@ -40,7 +39,7 @@ export function LinkWrapper({ userData, links, children }: LinkWrapperProps) {
             })
         )
       ) : (
-        userData.links.map((link, index) => {
+        userData?.links?.map((link, index) => {
           const normalizedLinkName =
             link.platform.toLowerCase() as keyof typeof linkAttributes;
           const attributes =
@@ -152,8 +151,8 @@ export function Layout3({ userData, links }: LayoutProps) {
   return (
     <div className="mx-auto p-6 text-center space-y-6">
       <Image
-        src={userData.profile_picture as string}
-        alt={userData.first_name as string}
+        src={userData?.profile_picture as string}
+        alt={userData?.first_name as string}
         width={120}
         height={120}
         className="rounded-full mx-auto"
@@ -162,7 +161,7 @@ export function Layout3({ userData, links }: LayoutProps) {
         <h1 className="text-2xl font-bold">
           {userData?.first_name} {userData?.last_name}
         </h1>
-        <p className="text-sm text-gray-600 mt-2 text-wrap">{userData.bio}</p>
+        <p className="text-sm text-gray-600 mt-2 text-wrap">{userData?.bio}</p>
       </div>
       <div className="flex justify-center space-x-4">
         <LinkWrapper userData={userData} links={links}>
@@ -179,21 +178,6 @@ export function Layout3({ userData, links }: LayoutProps) {
             </a>
           )}
         </LinkWrapper>
-        {/*{userData.links.map((link) => {
-          const Icon = iconMap[link.icon];
-          return (
-            <a
-              key={link.id}
-              href={"https://example.com"}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 rounded-full bg-gray-200 hover:bg-gray-300"
-              title={link.title}
-            >
-              <Icon className="text-gray-700" />
-            </a>
-          );
-        })}*/}
       </div>
     </div>
   );
@@ -208,8 +192,8 @@ export function Layout4({ userData, links }: LayoutProps) {
           style={{ height: "100px" }}
         />
         <Image
-          src={userData.profile_picture as string}
-          alt={userData.first_name as string}
+          src={userData?.profile_picture as string}
+          alt={userData?.first_name as string}
           width={100}
           height={100}
           className="rounded-full absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 border-4 border-white"
@@ -219,7 +203,7 @@ export function Layout4({ userData, links }: LayoutProps) {
         <h1 className="text-2xl font-bold">
           {userData?.first_name} {userData?.last_name}
         </h1>
-        <p className="text-sm text-gray-600 mt-2 text-wrap">{userData.bio}</p>
+        <p className="text-sm text-gray-600 mt-2 text-wrap">{userData?.bio}</p>
       </div>
       <div className="grid grid-cols-2 gap-4">
         <LinkWrapper userData={userData} links={links}>
@@ -240,21 +224,6 @@ export function Layout4({ userData, links }: LayoutProps) {
             </a>
           )}
         </LinkWrapper>
-        {/*{userData.links.map((link) => {
-          const Icon = iconMap[link.icon];
-          return (
-            <a
-              key={link.id}
-              href={"https://example.com"}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center space-x-2 p-2 border rounded "
-            >
-              <Icon className="text-gray-600" />
-              <span>{link.title}</span>
-            </a>
-          );
-        })}*/}
       </div>
     </div>
   );
@@ -276,7 +245,7 @@ export function Layout5({ userData, links }: LayoutProps) {
         </h1>
       </div>
       <p className="text-center text-sm text-gray-600 text-wrap">
-        {userData.bio}
+        {userData?.bio}
       </p>
       <div className="flex flex-wrap justify-center gap-4">
         <LinkWrapper userData={userData} links={links}>
@@ -299,23 +268,6 @@ export function Layout5({ userData, links }: LayoutProps) {
             </a>
           )}
         </LinkWrapper>
-        {/*{userData.links.map((link) => {
-          const Icon = iconMap[link.icon];
-          return (
-            <a
-              key={link.id}
-              href={"https://example.com"}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center p-2 w-20 text-center"
-            >
-              <div className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 mb-1">
-                <Icon className="text-gray-700" />
-              </div>
-              <span className="text-xs">{link.title}</span>
-            </a>
-          );
-        })}*/}
       </div>
     </div>
   );
