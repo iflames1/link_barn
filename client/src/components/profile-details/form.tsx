@@ -23,17 +23,6 @@ export default function Form() {
   const initialProfileData = useRef<UserData>();
   const { setUserData } = useUserdata();
 
-  const updateUserProfile = useCallback(
-    (updatedProfile: Partial<UserData>) => {
-      setUserProfileDetails((prevDetails) => {
-        if (!prevDetails) return;
-        return { ...prevDetails, ...updatedProfile };
-      });
-      setUserData(userProfileDetails);
-    },
-    [setUserData, userProfileDetails]
-  );
-
   useEffect(() => {
     const fetchUserData = async () => {
       const result = await getUser();
@@ -46,7 +35,18 @@ export default function Form() {
       }
     };
     fetchUserData();
-  }, []);
+  }, [setUserData]);
+
+  const updateUserProfile = useCallback(
+    (updatedProfile: Partial<UserData>) => {
+      setUserProfileDetails((prevDetails) => {
+        if (!prevDetails) return;
+        return { ...prevDetails, ...updatedProfile };
+      });
+      setUserData(userProfileDetails);
+    },
+    [setUserData, userProfileDetails]
+  );
 
   const hasChanged = useCallback(() => {
     if (!userProfileDetails || !initialProfileData.current) return false;
