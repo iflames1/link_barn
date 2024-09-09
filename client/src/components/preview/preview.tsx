@@ -6,15 +6,7 @@ import { cn } from "@/lib/utils";
 import { Loader } from "lucide-react";
 import { FaArrowRight } from "react-icons/fa6";
 import { linkAttributes } from "../common/links-attr";
-
-export interface LinkSchema {
-  uuid: string;
-  platform: string;
-  index: number;
-  url: string;
-  user_id: string;
-  link_title: string | null;
-}
+import { LinkSchema } from "@/types/links";
 
 export default async function Preview({
   userProfileDetails,

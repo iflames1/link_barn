@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { type CookieOptions, createServerClient } from "@supabase/ssr";
 import { API_BASE_URL } from "@/lib/constants";
 import { check_supabase_user } from "@/lib/auth";
+import { checkUserExists } from "@/lib/queries";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
@@ -51,9 +52,12 @@ export async function GET(request: Request) {
             console.log(error);
           }
 
-          const is_user = await check_supabase_user(user?.id as string);
+          const exists = await checkUserExists(
+            "supabase_user_id",
+            user?.id as string,
+          );
 
-          if (!is_user) {
+          if (!exists.status) {
             console.log("I AM NOT HIM");
             const url = `${API_BASE_URL}/users`;
             console.log(url);
@@ -99,25 +103,25 @@ export async function GET(request: Request) {
             });
           } else {
             console.log("I AM HIM");
-            console.log(`${API_BASE_URL}/users/supabase/${user?.id}`);
-            console.log(user?.id);
-            const response = await fetch(
-              `${API_BASE_URL}/users/supabase/${user?.id}`,
-            );
-            if (!response.ok) {
-              console.log("OVE HERE");
-              const errorData = await response.json();
-              console.log(response);
-              console.log(JSON.stringify(errorData, null, 2));
-              console.log(errorData.detail[0].loc);
-              throw new Error("Failed to create user in API");
-            }
-
-            const data = await response.json();
-            console.log(data);
+            // console.log(`${API_BASE_URL}/users/supabase/${user?.id}`);
+            // console.log(user?.id);
+            // const response = await fetch(
+            //   `${API_BASE_URL}/users/supabase/${user?.id}`,
+            // );
+            // if (!response.ok) {
+            //   console.log("OVE HERE");
+            //   const errorData = await response.json();
+            //   console.log(response);
+            //   console.log(JSON.stringify(errorData, null, 2));
+            //   console.log(errorData.detail[0].loc);
+            //   throw new Error("Failed to create user in API");
+            // }
+            //
+            // const data = await response.json();
+            // console.log(data);
             cookieStore.set({
               name: "uuid",
-              value: data?.uuid,
+              value: exists?.message,
               httpOnly: false,
               path: "/",
               sameSite: "strict",

@@ -1,3 +1,4 @@
+import { checkUserExists } from "@/lib/queries";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
@@ -39,22 +40,41 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
   const uuid = cookieStore.get("uuid")?.value;
+  const valid = await checkUserExists("uuid", uuid as string);
+  console.log("IT IS IIII", valid);
   // Allow access to auth callback without redirects
   if (request.nextUrl.pathname.startsWith("/auth/callback")) {
     return supabaseResponse;
   }
 
-  console.log("FROM MEEE", request.nextUrl.clone(), request.nextUrl.pathname);
-  if (uuid && request.nextUrl.pathname.startsWith("/auth/login")) {
-    console.log("EVEN AFTER???");
+  if (
+    uuid &&
+    valid.status &&
+    request.nextUrl.pathname.startsWith("/auth/login")
+  ) {
     const url = request.nextUrl.clone();
-    console.log("HERE???");
     url.pathname = "/user/links";
     return NextResponse.redirect(url);
   }
 
-  const protectedRoutes = ["/user/links", "/user/profile", "/user/preview"];
+  const protectedRoutes = [
+    "/user/links",
+    "/user/profile",
+    "/user/preview",
+    "/user/appearance",
+    "/user/themes",
+  ];
   const pathname = request.nextUrl.pathname;
+  if (
+    uuid &&
+    !valid.status &&
+    protectedRoutes.some((route) => pathname.startsWith(route))
+  ) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/auth/login";
+    return NextResponse.redirect(url);
+  }
+
   if (!uuid && protectedRoutes.some((route) => pathname.startsWith(route))) {
     const url = request.nextUrl.clone();
     url.pathname = "/auth/login";

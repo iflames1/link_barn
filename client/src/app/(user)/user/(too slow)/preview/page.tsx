@@ -3,11 +3,11 @@ import Preview from "@/components/preview/preview";
 import Link from "next/link";
 import { getUserProfile } from "@/lib/queries";
 import { cookies } from "next/headers";
-import { LuLayoutDashboard } from "react-icons/lu";
 
 import type { Metadata } from "next";
 import ResponsiveButton from "@/components/common/responsive-button";
 import { layouts } from "@/components/appearance/layouts";
+import { UserProfileSchema } from "@/types/users";
 
 export const metadata: Metadata = {
   title: "Preview",
@@ -19,10 +19,11 @@ export default async function PreviewPage() {
     cookies().get("uuid")?.value || "",
   );
   console.log(userProfileDetails, "HMMMMM");
-  const links = await userProfileDetails?.links;
+  const links = userProfileDetails?.links;
   console.log(links, userProfileDetails);
   const layout = layouts.find(
-    (layout) => layout.name === userProfileDetails?.appearance || "layout2",
+    // (layout) => layout.name === "layout1",
+    (layout) => layout.name === userProfileDetails?.appearance || "layout1",
   );
   console.log(layout, "WATASHI WA STAR");
 
@@ -35,8 +36,13 @@ export default async function PreviewPage() {
           {/*   userProfileDetails={userProfileDetails} */}
           {/*   links={userProfileDetails && userProfileDetails.links} */}
           {/* /> */}
-          <div className="max-w-[500px]">
-            {layout && <layout.LayoutComponent userData={userProfileDetails} />}
+          <div className="max-w-[500px] mx-auto">
+            {layout && (
+              <layout.LayoutComponent
+                userData={userProfileDetails}
+                links={userProfileDetails.links}
+              />
+            )}
           </div>
           <ResponsiveButton
             path="/user/appearance"
