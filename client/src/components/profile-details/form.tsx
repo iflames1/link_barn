@@ -10,9 +10,10 @@ import ImageInput from "./image-input";
 import { revalidateTagServer } from "@/app/actions";
 import { LoaderCircle } from "lucide-react";
 import { Button } from "../ui/button";
+import axios from "axios";
+import { set } from "zod";
 
 export default function Form() {
-  const [image, setImage] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -20,14 +21,19 @@ export default function Form() {
   const uuid = getUserUUID();
   const { getData, userProfileDetails, updateUserProfile, saveUserDetails } =
     useAppContext();
+  const [image, setImage] = useState<string | null>(
+    userProfileDetails?.profile_picture || null
+  );
 
   useEffect(() => {
     const fetchUser = async () => {
       const userID = getUserUUID();
       if (userID) {
         console.log("UUID", userID);
-        const res = await getData(API_BASE_URL + "/users/?user_id=" + userID);
-        if (res) {
+        const response = await getData(
+          API_BASE_URL + "/users/?user_id=" + userID
+        );
+        if (response) {
           console.log("Successfully fetched user details");
         } else {
           console.log("failed to get user");
@@ -35,8 +41,31 @@ export default function Form() {
       }
     };
 
+    const getUserProfile = async () => {
+      const userID = getUserUUID();
+      try {
+        const res = await axios.get(API_BASE_URL + "/users/?user_id=" + userID);
+
+        if (res.status === 200) {
+          const image = res.data.profile_picture || null;
+          setImage(image);
+          console.log("Image", image);
+        }
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.error("Axios error:", error.message);
+        } else {
+          console.error("Unexpected error:", error);
+        }
+      }
+    };
+
+    getUserProfile();
     fetchUser();
   }, [getData]);
+
+  useEffect(() => {});
+  console.log("image", image);
 
   const uploadStagedFile = async (stagedFile: File | Blob, uuid: string) => {
     const form = new FormData();
