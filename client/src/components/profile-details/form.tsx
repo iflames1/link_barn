@@ -1,51 +1,48 @@
-"use client";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { getUser } from "@/lib/getUser";
 import { UserData } from "@/types/links";
-import { saveUserDetails } from "@/lib/saveUserDetails";
-import { handleFileUpload } from "@/lib/handleFileUpload";
-import { getUserUUID } from "@/lib/auth";
 import Image from "next/image";
 import { IoImageOutline } from "react-icons/io5";
 import { Button } from "../ui/button";
 import { LoaderCircle } from "lucide-react";
+import { ProfileProps } from "./profile";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { getUser } from "@/lib/getUser";
 import { toast } from "sonner";
-import { useUserdata } from "@/lib/useUserdata";
+import { handleFileUpload } from "@/lib/handleFileUpload";
+import { saveUserDetails } from "@/lib/saveUserDetails";
 
-export default function Form() {
+export default function Form({
+  userProfileDetails,
+  setUserProfileDetails,
+}: ProfileProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const uuid = getUserUUID();
-  const [userProfileDetails, setUserProfileDetails] = useState<UserData>();
   const [image, setImage] = useState<string>("");
   const initialProfileData = useRef<UserData>();
-  const { setUserData } = useUserdata();
 
   useEffect(() => {
     const fetchUserData = async () => {
       const result = await getUser();
       if (result) {
-        const { userData, links } = result;
+        const { userData } = result;
         setUserProfileDetails(userData);
-        setUserData(userData);
+        console.log("User data fetched");
         initialProfileData.current = userData;
-        setImage(userData?.profile_picture);
+        setImage(userData?.profile_picture || "");
       }
     };
     fetchUserData();
-  }, [setUserData]);
+  }, []); // Empty dependency array means this effect runs once on mount
 
   const updateUserProfile = useCallback(
     (updatedProfile: Partial<UserData>) => {
       setUserProfileDetails((prevDetails) => {
-        if (!prevDetails) return;
+        if (!prevDetails) return undefined;
         return { ...prevDetails, ...updatedProfile };
       });
-      setUserData(userProfileDetails);
     },
-    [setUserData, userProfileDetails]
+    [setUserProfileDetails]
   );
 
   const hasChanged = useCallback(() => {
@@ -69,10 +66,13 @@ export default function Form() {
     try {
       if (selectedFile) await handleFileUpload(selectedFile);
 
-      if (hasChanged()) await saveUserDetails(userProfileDetails);
+      if (hasChanged() && userProfileDetails)
+        await saveUserDetails(userProfileDetails);
       initialProfileData.current = userProfileDetails;
+      toast.success("Profile updated successfully");
     } catch (error) {
       console.error("Error during submission:", error);
+      toast.error("Failed to update profile");
     } finally {
       setIsLoading(false);
     }
