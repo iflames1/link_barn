@@ -1,12 +1,11 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { layouts, Layout1 } from "./layouts";
 
-import { UserData } from "@/types/appearance";
 import ResponsiveButton from "../common/responsive-button";
 import Preview from "./preview";
-import { LinkData } from "@/types/links";
+import { LinkData, UserData } from "@/types/links";
 
-export const sampleUserData: LinkData = {
+export const sampleUserData: UserData = {
   first_name: "Alex",
   last_name: "Johnson",
   username: "alexj",
@@ -15,6 +14,7 @@ export const sampleUserData: LinkData = {
   uuid: "1",
   bio: "Web developer, coffee enthusiast, and part-time adventurer. Building the future one line of code at a time.",
   profile_picture: "/dp.jpg",
+  appearance: "layout1",
   links: [
     {
       uuid: "1",
@@ -61,7 +61,10 @@ export const sampleUserData: LinkData = {
 
 export default function Themes() {
   return (
-    <Tabs defaultValue="layout1" className="lg:flex gap-6 w-full relative">
+    <Tabs
+      defaultValue={sampleUserData.appearance}
+      className="lg:flex gap-6 w-full relative"
+    >
       <Preview>
         {layouts.map((layout, index) => (
           <TabsContent className="px-6" key={index} value={layout.name} asChild>

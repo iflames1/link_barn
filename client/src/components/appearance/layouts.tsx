@@ -1,18 +1,17 @@
 import Image from "next/image";
 import { linkAttributes } from "../common/links-attr";
 import { Fragment } from "react";
-import { LinkData, LinkSchema } from "@/types/links";
+import { LinkSchema, UserData } from "@/types/links";
 import { FaArrowRight } from "react-icons/fa";
-import { link } from "fs";
 
 interface LinkWrapperProps {
-  userData: LinkData;
+  userData: UserData | undefined;
   links?: LinkSchema[];
   children: (linkData: any) => React.ReactNode;
 }
 
 interface LayoutProps {
-  userData: LinkData;
+  userData: UserData | undefined;
   links?: LinkSchema[];
 }
 

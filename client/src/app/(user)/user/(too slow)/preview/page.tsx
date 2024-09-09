@@ -1,5 +1,5 @@
 import Header from "@/components/header";
-import Preview from "@/components/preview/preview";
+import Preview from "@/components/preview/preview-layout";
 import Link from "next/link";
 import { getUserProfile } from "@/lib/queries";
 import { cookies } from "next/headers";
@@ -16,14 +16,14 @@ export const metadata: Metadata = {
 
 export default async function PreviewPage() {
   const userProfileDetails = await getUserProfile(
-    cookies().get("uuid")?.value || "",
+    cookies().get("uuid")?.value || ""
   );
   console.log(userProfileDetails, "HMMMMM");
   const links = userProfileDetails?.links;
   console.log(links, userProfileDetails);
   const layout = layouts.find(
     // (layout) => layout.name === "layout1",
-    (layout) => layout.name === userProfileDetails?.appearance || "layout1",
+    (layout) => layout.name === userProfileDetails?.appearance || "layout1"
   );
   console.log(layout, "WATASHI WA STAR");
 

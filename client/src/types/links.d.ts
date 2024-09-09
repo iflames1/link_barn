@@ -27,5 +27,6 @@ interface UserData {
   email: string;
   stx_address_mainnet: string;
   bio: string;
+  appearance: string;
   links: LinkSchema[];
 }
