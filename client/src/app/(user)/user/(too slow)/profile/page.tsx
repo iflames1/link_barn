@@ -1,4 +1,5 @@
 import Header from "@/components/header";
+import Profile from "@/components/profile-details/profile";
 import ProfileDetails from "@/components/profile-details/profile-details";
 import type { Metadata } from "next";
 
@@ -12,7 +13,7 @@ export default function ProfilePage() {
     <div className="sm:p-6 w-full max-w-[1440px] mx-auto relative">
       <Header />
       <div className="sm:p-0 sm:pt-6 p-4">
-        <ProfileDetails />
+        <Profile />
       </div>
       {/* <Wallet /> */}
     </div>
