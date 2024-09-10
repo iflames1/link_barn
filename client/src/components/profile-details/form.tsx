@@ -1,137 +1,57 @@
-"use client";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { getUser } from "@/lib/getUser";
 import { UserData } from "@/types/links";
-import { saveUserDetails } from "@/lib/saveUserDetails";
-import { handleFileUpload } from "@/lib/handleFileUpload";
-import { getUserUUID } from "@/lib/auth";
 import Image from "next/image";
 import { IoImageOutline } from "react-icons/io5";
 import { Button } from "../ui/button";
 import { LoaderCircle } from "lucide-react";
+import { ProfileProps } from "./profile";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { getUser } from "@/lib/getUser";
 import { toast } from "sonner";
-import { useUserdata } from "@/lib/useUserdata";
-import { revalidateTagServer } from "@/app/actions";
-import { API_BASE_URL } from "@/lib/constants";
+import { handleFileUpload } from "@/lib/handleFileUpload";
+import { saveUserDetails } from "@/lib/saveUserDetails";
 
-export default function Form() {
+export default function Form({
+  userProfileDetails,
+  setUserProfileDetails,
+}: ProfileProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const uuid = getUserUUID();
-  const [userProfileDetails, setUserProfileDetails] = useState<UserData>();
   const [image, setImage] = useState<string>("");
   const initialProfileData = useRef<UserData>();
-  const { setUserData } = useUserdata();
-
-  const updateUserProfile = useCallback(
-    (updatedProfile: Partial<UserData>) => {
-      setUserProfileDetails((prevDetails) => {
-        if (!prevDetails) return;
-        return { ...prevDetails, ...updatedProfile };
-      });
-      setUserData(userProfileDetails);
-    },
-    [setUserData, userProfileDetails],
-  );
 
   useEffect(() => {
     const fetchUserData = async () => {
       const result = await getUser();
       if (result) {
-        const { userData, links } = result;
+        const { userData } = result;
         setUserProfileDetails(userData);
-        setUserData(userData);
+        console.log("User data fetched");
         initialProfileData.current = userData;
-        setImage(userData?.profile_picture);
+        setImage(userData?.profile_picture || "");
       }
     };
     fetchUserData();
   }, []);
 
+  const updateUserProfile = useCallback(
+    (updatedProfile: Partial<UserData>) => {
+      setUserProfileDetails((prevDetails) => {
+        if (!prevDetails) return undefined;
+        return { ...prevDetails, ...updatedProfile };
+      });
+    },
+    [setUserProfileDetails]
+  );
+
   const hasChanged = useCallback(() => {
     if (!userProfileDetails || !initialProfileData.current) return false;
 
-    const uploadStagedFile = async (stagedFile: File | Blob, uuid: string) => {
-      const form = new FormData();
-      form.set("file", stagedFile);
-      console.log(stagedFile);
-
-      try {
-        const res = await fetch("/upload", {
-          method: "POST",
-          body: form,
-          headers: {},
-        });
-
-        if (!res.ok) {
-          throw new Error("Failed to upload image");
-        }
-
-        const data = await res.json();
-        console.log("Cloudinary Response:", data.imgUrl);
-
-        // Update the user profile with the uploaded image URL
-        try {
-          const url = `${API_BASE_URL}/users/${uuid}`;
-          const response = await fetch(url, {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              profile_picture: data.imgUrl,
-            }),
-          });
-
-          const responseData = await response.json();
-
-          if (!response.ok) {
-            console.log(responseData);
-            throw new Error(
-              `An error occurred while updating profile: ${responseData.detail}`,
-            );
-          }
-
-          console.log("API Response:", response, responseData);
-
-          toast.success("Image updated successfully", {
-            richColors: true,
-            position: "top-center",
-          });
-          await revalidateTagServer("userProfile");
-        } catch (err) {
-          console.error("Error updating profile:", err);
-
-          if (err instanceof Error) {
-            toast.error(`An error occurred: ${err.message}`, {
-              position: "top-center",
-              richColors: true,
-            });
-          } else {
-            toast.error("An unknown error occurred", {
-              position: "top-center",
-              richColors: true,
-            });
-          }
-        }
-      } catch (err) {
-        console.log("Error uploading image:", err);
-      }
-    };
-
-    // const handleFileUpload = () => {
-    //   if (selectedFile) {
-    //     uploadStagedFile(selectedFile, uuid as string);
-    //   } else {
-    //     console.log("No file selected");
-    //   }
-    // };
     return Object.keys(userProfileDetails).some(
       (key) =>
         userProfileDetails[key as keyof UserData] !==
-        initialProfileData.current?.[key as keyof UserData],
+        initialProfileData.current?.[key as keyof UserData]
     );
   }, [userProfileDetails]);
 
@@ -144,12 +64,15 @@ export default function Form() {
     }
     setIsLoading(true);
     try {
-      if (selectedFile) await handleFileUpload(selectedFile, uuid);
+      if (selectedFile) await handleFileUpload(selectedFile);
 
-      if (hasChanged()) await saveUserDetails(userProfileDetails);
+      if (hasChanged() && userProfileDetails)
+        await saveUserDetails(userProfileDetails);
       initialProfileData.current = userProfileDetails;
+      toast.success("Profile updated successfully");
     } catch (error) {
       console.error("Error during submission:", error);
+      toast.error("Failed to update profile");
     } finally {
       setIsLoading(false);
     }
@@ -158,7 +81,7 @@ export default function Form() {
   return (
     <form
       onSubmit={(e) => handleSubmit(e)}
-      className="bg-white flex flex-col justify-between rounded-xl sm:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-auto"
+      className="bg-white flex flex-col justify-between rounded-xl lg:w-[60%] sm:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-auto"
     >
       <div className="sm:p-10 p-6">
         <div className="pb-10">

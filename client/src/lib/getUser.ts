@@ -6,7 +6,7 @@ import { LinkSchema, UserData } from "@/types/links";
 
 export const getUser = async (
   id: string | undefined = getUserUUID()
-): Promise<{ userData: UserData; links: LinkSchema } | undefined> => {
+): Promise<{ userData: UserData; links: LinkSchema[] } | undefined> => {
   if (id) {
     try {
       const response = await axios.get(API_BASE_URL + "/users/?user_id=" + id);
