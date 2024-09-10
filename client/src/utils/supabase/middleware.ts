@@ -96,3 +96,7 @@ export async function updateSession(request: NextRequest) {
 
   return supabaseResponse;
 }
+
+export const config = {
+  matcher: ["/user/:path*", "/auth/:path*"],
+};
