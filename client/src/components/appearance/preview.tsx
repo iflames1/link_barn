@@ -1,28 +1,20 @@
-import { cn } from "@/lib/utils";
+"use client";
+import PreviewLayout from "./preview-layout";
+import { layouts } from "./layouts";
+import { UserData } from "@/types/links";
+interface PreviewProps {
+  userProfileDetails: UserData | undefined;
+}
+export default function Preview({ userProfileDetails }: PreviewProps) {
+  const links = userProfileDetails?.links;
+  const layoutName = userProfileDetails?.appearance || "layout1";
+  const selectedLayout = layouts.find((layout) => layout.name === layoutName);
+  const LayoutComponent =
+    selectedLayout?.LayoutComponent || layouts[0].LayoutComponent;
 
-const Preview = ({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
   return (
-    <div
-      className={cn(
-        "w-[40%] lg:flex hidden p-6 rounded-xl bg-white  justify-center items-center",
-        className
-      )}
-      // className={`lg:flex p-6 rounded-xl bg-white justify-center items-center sm:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] `}
-    >
-      <div className="lg:max-h-[calc(100vh-200px)] overflow-y-auto overflow-x-hidden">
-        <div className="border-[1px] border-gray-dark rounded-[56px] max-w-[100vw] sm:w-[307px] h-[631px] p-[11px] relative">
-          <div className="border border-gray-dark rounded-[45px] w-full h-full pt-[53px] flex flex-col items-center gap-14 overflow-y-auto">
-            {children}
-          </div>
-        </div>
-      </div>
-    </div>
+    <PreviewLayout>
+      <LayoutComponent userData={userProfileDetails} links={links} />
+    </PreviewLayout>
   );
-};
-export default Preview;
+}
