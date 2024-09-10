@@ -83,7 +83,7 @@ export function Layout1({ userData, links }: LayoutProps) {
               target="_blank"
               rel="noopener noreferrer"
               key={linkData.uuid}
-              className={`flex justify-between items-center py-[11px] px-4 rounded-lg w-full border-[1px] border-gray capitalize $${linkData.bg} ${linkData.text}`}
+              className={`flex justify-between items-center py-[11px] px-4 rounded-lg w-full border-[1px] border-gray capitalize ${linkData.bg} ${linkData.text}`}
             >
               <p className="flex items-center justify-start gap-2">
                 {linkData.icon}
