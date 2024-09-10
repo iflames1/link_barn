@@ -1,6 +1,5 @@
 import Header from "@/components/header";
 import Profile from "@/components/profile-details/profile";
-import ProfileDetails from "@/components/profile-details/profile-details";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

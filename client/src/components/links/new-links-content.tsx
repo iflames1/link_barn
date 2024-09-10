@@ -42,7 +42,7 @@ import { Skeleton } from "../ui/skeleton";
 import { layouts } from "../appearance/layouts";
 import { UserProfileSchema } from "@/types/users";
 import { LinkSchema } from "@/types/links";
-import Preview from "../profile-details/preview";
+import Preview from "../appearance/preview";
 
 const formSchema = z.object({
   links: z.array(

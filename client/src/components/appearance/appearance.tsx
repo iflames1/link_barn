@@ -1,9 +1,8 @@
 "use client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { layouts, Layout1 } from "./layouts";
+import { layouts } from "./layouts";
 
 import ResponsiveButton from "../common/responsive-button";
-import Preview from "./preview";
 import { UserData } from "@/types/links";
 import UseAppearanceButton from "./use-appearance";
 import { useEffect, useState } from "react";
@@ -17,6 +16,7 @@ const ChangeAppearance = dynamic(() => import("./use-appearance"), {
   ssr: false,
   loading: () => <span>....</span>,
 });
+import PreviewLayout from "./preview-layout";
 
 export const sampleUserData: UserData = {
   first_name: "Alex",
@@ -147,13 +147,13 @@ export default function Themes({
       defaultValue={sampleUserData.appearance}
       className="lg:flex gap-6 w-full relative"
     >
-      <Preview>
+      <PreviewLayout>
         {layouts.map((layout, index) => (
-          <TabsContent className="px-6" key={index} value={layout.name} asChild>
+          <TabsContent key={index} value={layout.name} asChild>
             <layout.LayoutComponent userData={sampleUserData} />
           </TabsContent>
         ))}
-      </Preview>
+      </PreviewLayout>
       <div className="bg-white rounded-xl lg:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-y-auto lg:w-[60%] w-full p-6">
         <TabsList className="bg-transparent h-full grid grid-cols-1 gap-4">
           {layouts.map((layout, index) => (
@@ -165,15 +165,13 @@ export default function Themes({
               <div className="max-w-[300px]">
                 <layout.LayoutComponent userData={sampleUserData} />
               </div>
+              {/* <layout.LayoutComponent userData={sampleUserData} /> */}
               <ChangeAppearance
                 appearance={layout.name}
                 user={user}
                 tire={tire}
                 txStatus={txStatus}
               />
-              {/*<button className="absolute top-2 left-2 bg-white button py-[11px] px-7 border border-base-dark text-base-dark hover:bg-base-light">
-                Use Appearance
-              </button>*/}
             </TabsTrigger>
           ))}
         </TabsList>

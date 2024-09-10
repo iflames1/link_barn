@@ -43,7 +43,7 @@ export default function ResponsiveButton({ path, title, className }: TabProps) {
   };
 
   return (
-    <div className={className} ref={buttonRef}>
+    <div className={`${className}`} ref={buttonRef}>
       <Link
         href={path}
         className="hidden sm:flex bg-white button py-[11px] px-7 border border-base-dark text-base-dark hover:bg-base-light"

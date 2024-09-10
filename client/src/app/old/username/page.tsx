@@ -103,28 +103,21 @@ export default async function Page({ params }: PageProps) {
   console.log(userProfile);
 
   return (
-    <div className="flex flex-col items-center justify-between min-h-screen gap-14">
-      <div
-        suppressHydrationWarning={true}
-        className="w-full h-full md:px-[18%] pt-[53px] flex flex-col items-center gap-14"
-      >
-        <Suspense
-          fallback={
-            <div className="flex items-center justify-center h-[50vh]">
-              <Loader className="animate-spin" />
-            </div>
-          }
-        >
-          <div className="max-w-[500px] w-full mx-auto px-4 pt6">
-            {layout && (
-              <layout.LayoutComponent
-                userData={userProfile}
-                links={userProfile?.links}
-              />
-            )}
+    <div className="flex flex-col items-center justify-between min-h-screen h-full">
+      <Suspense
+        fallback={
+          <div className="flex items-center justify-center h-[50vh]">
+            <Loader className="animate-spin" />
           </div>
-        </Suspense>
-      </div>
+        }
+      >
+        {layout && (
+          <layout.LayoutComponent
+            userData={userProfile}
+            links={userProfile?.links}
+          />
+        )}
+      </Suspense>
       <div className="pb-4">
         <JoinLinkBarn username={truncUsername} />
       </div>
