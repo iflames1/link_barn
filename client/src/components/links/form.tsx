@@ -3,37 +3,111 @@ import { useAppContext } from "@/context";
 import GetStarted from "./get-started";
 import LinkEditor from "./link-editor";
 import LoadingForm from "./loading";
-import { Suspense, useEffect } from "react";
-import { getUserUUID } from "@/lib/auth";
-import { API_BASE_URL } from "@/lib/constants";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
+import { getUser } from "@/lib/getUser";
+import { LinkSchema, UserData } from "@/types/links";
+import { toast } from "sonner";
+import { saveLinks } from "@/lib/savelinks";
 
-export default function Form() {
-  const { getData, links, addNewLink, saveLinks } = useAppContext();
+interface FormProp {
+  setUserProfileDetails: React.Dispatch<
+    React.SetStateAction<UserData | undefined>
+  >;
+}
+
+export default function Form({ setUserProfileDetails }: FormProp) {
+  const {} = useAppContext();
+  const initialLinks = useRef<LinkSchema[]>();
+  const [links, setLinks] = useState<LinkSchema[]>([]);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const userID = getUserUUID();
-      if (userID) {
-        console.log("UUID", userID);
-        const res = await getData(API_BASE_URL + "/users/?user_id=" + userID);
-        if (res) {
-          console.log("Successfully fetched user details");
-        } else {
-          console.log("failed to get user");
-        }
+    const fetchUserData = async () => {
+      const result = await getUser();
+      if (result) {
+        setUserProfileDetails(result.userData);
+        setLinks(result.links);
+        initialLinks.current = JSON.parse(JSON.stringify(result.links));
+        console.log("User data fetched");
       }
     };
+    fetchUserData();
+  }, []);
 
-    fetchUser();
-  }, [getData]);
+  const addNewLink = (index: number) => {
+    const newID = Date.now().toString();
+    const newLink: LinkSchema = {
+      platform: "",
+      index: index + 1,
+      link_title: "",
+      url: "",
+      user_id: "",
+      uuid: newID,
+    };
+    setLinks((prev) => [...prev, newLink]);
+    return newID;
+  };
+
+  const detectChanges = useCallback(() => {
+    if (!links || !initialLinks.current)
+      return { updatedLinks: [], newLinks: [], deletedLinks: [] };
+
+    const updatedLinks: LinkSchema[] = [];
+    const newLinks: LinkSchema[] = [];
+    const deletedLinks: LinkSchema[] = [];
+
+    // Check for updated and new links
+    links.forEach((link) => {
+      const initialLink = initialLinks.current?.find(
+        (l) => l.uuid === link.uuid
+      );
+      if (initialLink) {
+        if (JSON.stringify(link) !== JSON.stringify(initialLink)) {
+          updatedLinks.push(link);
+        }
+      } else {
+        newLinks.push(link);
+      }
+    });
+
+    // Check for deleted links
+    initialLinks.current.forEach((initialLink) => {
+      if (!links.some((l) => l.uuid === initialLink.uuid)) {
+        deletedLinks.push(initialLink);
+      }
+    });
+
+    return { updatedLinks, newLinks, deletedLinks };
+  }, [links]);
 
   const handleSaveLinks = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    saveLinks();
+    const changes = detectChanges();
+    if (
+      changes.updatedLinks.length === 0 &&
+      changes.newLinks.length === 0 &&
+      changes.deletedLinks.length === 0
+    ) {
+      toast.info("No changes to save", { richColors: true });
+      return;
+    }
+    try {
+      await saveLinks(
+        changes.updatedLinks,
+        changes.newLinks,
+        changes.deletedLinks
+      );
+      initialLinks.current = JSON.parse(JSON.stringify(links)); // Update initial state after successful save
+      toast.success("Links saved successfully", { richColors: true });
+    } catch (error) {
+      console.error("Error saving links:", error);
+      toast.error("Failed to save links. Please try again later", {
+        richColors: true,
+      });
+    }
   };
 
   const handleAddNewLink = () => {
-    const newID = addNewLink(links.length - 1);
+    const newID = addNewLink(links ? links.length - 1 : 0);
     setTimeout(() => {
       const element = document.getElementById(newID);
       if (element) {
