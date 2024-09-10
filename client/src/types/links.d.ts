@@ -18,6 +18,7 @@ interface LinkData {
   bio: string;
   links: LinkSchema[];
 }
+
 interface UserData {
   uuid: string;
   profile_picture: string;
@@ -28,5 +29,6 @@ interface UserData {
   stx_address_mainnet: string;
   bio: string;
   appearance: string;
+  theme: string;
   links: LinkSchema[];
 }
