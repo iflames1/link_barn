@@ -18,7 +18,7 @@ export const sampleUserData: UserData = {
   email: "",
   stx_address_mainnet: "",
   uuid: "1",
-  bio: "Web developer, coffee enthusiast, and part-time adventurer. Building the future one line of code at a time.",
+  bio: `Tell me something I don't know. Tell me something I don't know. Tell me something I don't know. Tell me something I don't know. Tell me something I don't know.`,
   profile_picture: "/dp.jpg",
   appearance: "layout1",
   links: [
@@ -138,7 +138,7 @@ export default function Themes() {
     >
       <Preview>
         {layouts.map((layout, index) => (
-          <TabsContent className="px-6" key={index} value={layout.name} asChild>
+          <TabsContent key={index} value={layout.name} asChild>
             <layout.LayoutComponent userData={sampleUserData} />
           </TabsContent>
         ))}
