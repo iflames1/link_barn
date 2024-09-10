@@ -3,17 +3,23 @@ import Image from "next/image";
 import { IoImageOutline } from "react-icons/io5";
 import { Button } from "../ui/button";
 import { LoaderCircle } from "lucide-react";
-import { ProfileProps } from "./profile";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getUser } from "@/lib/getUser";
 import { toast } from "sonner";
 import { handleFileUpload } from "@/lib/handleFileUpload";
 import { saveUserDetails } from "@/lib/saveUserDetails";
 
+interface FormProps {
+  userProfileDetails: UserData | undefined;
+  setUserProfileDetails: React.Dispatch<
+    React.SetStateAction<UserData | undefined>
+  >;
+}
+
 export default function Form({
   userProfileDetails,
   setUserProfileDetails,
-}: ProfileProps) {
+}: FormProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
