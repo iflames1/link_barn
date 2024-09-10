@@ -1,5 +1,5 @@
 "use client";
-import Preview from "./preview";
+import Preview from "../appearance/preview";
 import Form from "./form";
 import { useState } from "react";
 import { UserData } from "@/types/links";
