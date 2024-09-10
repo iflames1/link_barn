@@ -11,7 +11,6 @@ export default function Preview({ userProfileDetails }: PreviewProps) {
   const selectedLayout = layouts.find((layout) => layout.name === layoutName);
   const LayoutComponent =
     selectedLayout?.LayoutComponent || layouts[0].LayoutComponent;
-  console.log(userData, "HERE");
 
   return (
     <PreviewLayout>

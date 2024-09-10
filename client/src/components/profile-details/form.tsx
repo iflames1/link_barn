@@ -33,7 +33,7 @@ export default function Form({
       }
     };
     fetchUserData();
-  }, []); // Empty dependency array means this effect runs once on mount
+  }, []);
 
   const updateUserProfile = useCallback(
     (updatedProfile: Partial<UserData>) => {
