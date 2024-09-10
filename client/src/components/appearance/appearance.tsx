@@ -151,9 +151,7 @@ export default function Themes() {
               value={layout.name}
               className="rounded-lg border border-gray-200 hover:border-gray-300 transition-colors relative"
             >
-              <div className="max-w-[300px]">
-                <layout.LayoutComponent userData={sampleUserData} />
-              </div>
+              <layout.LayoutComponent userData={sampleUserData} />
               <UseAppearanceButton
                 appearance={layout.name}
                 user={user}
