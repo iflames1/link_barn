@@ -3,9 +3,6 @@ import { linkAttributes } from "../common/links-attr";
 import { Fragment } from "react";
 import { LinkSchema, UserData } from "@/types/links";
 import { FaArrowRight } from "react-icons/fa";
-import { getUser } from "@/lib/getUser";
-import { themes } from "@/data/themes2";
-import ProfileWrapper from "./profile-wrapper";
 
 interface LinkWrapperProps {
   userData: UserData | undefined;
@@ -72,7 +69,7 @@ export function LinkWrapper({ userData, links, children }: LinkWrapperProps) {
 
 export function Layout1({ userData, links }: LayoutProps) {
   return (
-    <ProfileWrapper className="flex flex-col items-center gap-[25px]">
+    <div className="flex flex-col items-center gap-[25px]">
       <Image
         src={userData?.profile_picture as string}
         alt={userData?.first_name as string}
@@ -114,13 +111,13 @@ export function Layout1({ userData, links }: LayoutProps) {
           )}
         </LinkWrapper>
       </div>
-    </ProfileWrapper>
+    </div>
   );
 }
 
 export function Layout2({ userData, links }: LayoutProps) {
   return (
-    <ProfileWrapper className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6">
       <div className="flex items-center text-center gap-4">
         <Image
           src={userData?.profile_picture as string}
@@ -161,13 +158,13 @@ export function Layout2({ userData, links }: LayoutProps) {
           )}
         </LinkWrapper>
       </div>
-    </ProfileWrapper>
+    </div>
   );
 }
 
 export function Layout3({ userData, links }: LayoutProps) {
   return (
-    <ProfileWrapper className="text-center space-y-6">
+    <div className="text-center space-y-6">
       <Image
         src={userData?.profile_picture as string}
         alt={userData?.first_name as string}
@@ -197,13 +194,13 @@ export function Layout3({ userData, links }: LayoutProps) {
           )}
         </LinkWrapper>
       </div>
-    </ProfileWrapper>
+    </div>
   );
 }
 
 export function Layout4({ userData, links }: LayoutProps) {
   return (
-    <ProfileWrapper>
+    <div>
       <div className="relative mb-16">
         <div
           className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 rounded-t-lg"
@@ -243,13 +240,13 @@ export function Layout4({ userData, links }: LayoutProps) {
           )}
         </LinkWrapper>
       </div>
-    </ProfileWrapper>
+    </div>
   );
 }
 
 export function Layout5({ userData, links }: LayoutProps) {
   return (
-    <ProfileWrapper className="space-y-6">
+    <div className="space-y-6">
       <div className="flex flex-col items-center space-y-4">
         <Image
           src={userData?.profile_picture as string}
@@ -287,7 +284,7 @@ export function Layout5({ userData, links }: LayoutProps) {
           )}
         </LinkWrapper>
       </div>
-    </ProfileWrapper>
+    </div>
   );
 }
 

@@ -8,6 +8,8 @@ import { getUser } from "@/lib/getUser";
 import { toast } from "sonner";
 import { handleFileUpload } from "@/lib/handleFileUpload";
 import { saveUserDetails } from "@/lib/saveUserDetails";
+import { revalidateTagServer, revalidateUserProfile } from "@/app/actions";
+import { getUserUUID } from "@/lib/auth";
 
 interface FormProps {
   userProfileDetails: UserData | undefined;
@@ -48,7 +50,7 @@ export default function Form({
         return { ...prevDetails, ...updatedProfile };
       });
     },
-    [setUserProfileDetails]
+    [setUserProfileDetails],
   );
 
   const hasChanged = useCallback(() => {
@@ -57,7 +59,7 @@ export default function Form({
     return Object.keys(userProfileDetails).some(
       (key) =>
         userProfileDetails[key as keyof UserData] !==
-        initialProfileData.current?.[key as keyof UserData]
+        initialProfileData.current?.[key as keyof UserData],
     );
   }, [userProfileDetails]);
 
@@ -74,6 +76,8 @@ export default function Form({
 
       if (hasChanged() && userProfileDetails)
         await saveUserDetails(userProfileDetails);
+      await revalidateUserProfile(getUserUUID() as string);
+      await revalidateTagServer("profile");
       initialProfileData.current = userProfileDetails;
       toast.success("Profile updated successfully");
     } catch (error) {

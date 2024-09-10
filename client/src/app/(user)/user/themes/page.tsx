@@ -1,5 +1,6 @@
 import Header from "@/components/header";
-import Themes from "./themes";
+import Themes from "@/components/themes/themes";
+//import Themes from "./themes";
 
 const ThemesPage = () => {
   return (

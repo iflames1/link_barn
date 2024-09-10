@@ -28,9 +28,8 @@ interface UserData {
 export const useWallet = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [userAddress, setUserAddress] = useState<string | "Connect Wallet">(
-    "Connect Wallet"
+    "Connect Wallet",
   );
-  const { userProfileDetails } = useAppContext();
   const [pending, setPending] = useState(false);
 
   const appConfig = new AppConfig(["store_write", "publish_data"]);
@@ -68,7 +67,8 @@ export const useWallet = () => {
       stx_address_mainnet: userData.profile.stxAddress.mainnet,
       first_name: null,
       last_name: null,
-      theme: null,
+      theme: "theme1",
+      appearance: "layout1",
       profile_picture: null,
       email: null,
       username: userData.profile.stxAddress.mainnet,
@@ -86,7 +86,7 @@ export const useWallet = () => {
 
   const checkUserExists = async (
     field: string = "username",
-    value: string
+    value: string,
   ): Promise<{ status: boolean; message: string }> => {
     try {
       const response = await axios.post(`${API_BASE_URL}/users/check`, {
@@ -156,11 +156,11 @@ export const useWallet = () => {
   };
 
   const holdUnik = async (
-    principal: string = userAddress
+    principal: string = userAddress,
   ): Promise<boolean> => {
     try {
       const response = await axios.get(
-        `https://api.hiro.so/extended/v1/tokens/nft/holdings?principal=${principal}&asset_identifiers=SP3X27NM39MR9HM98D8PEWAHE420JK3X090S1382Q.unikind::unikind&limit=1&unanchored=false`
+        `https://api.hiro.so/extended/v1/tokens/nft/holdings?principal=${principal}&asset_identifiers=SP3X27NM39MR9HM98D8PEWAHE420JK3X090S1382Q.unikind::unikind&limit=1&unanchored=false`,
       );
 
       if (response.data && response.data.total > 0) {
@@ -177,7 +177,7 @@ export const useWallet = () => {
   async function sendSTXTransaction(
     recipientAddress = "SPVT6STGX1AG9E0D8H87HB3N0ZV8SJPCMDMN373D",
     amount = "1",
-    memo = ""
+    memo = "",
   ) {
     const transactionDetails: STXTransferOptions = {
       network: new StacksMainnet(),

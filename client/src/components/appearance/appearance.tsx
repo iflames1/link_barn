@@ -9,64 +9,77 @@ import { useEffect, useState } from "react";
 import { getUser } from "@/lib/getUser";
 import { toast } from "sonner";
 import { saveUserDetails } from "@/lib/saveUserDetails";
+import dynamic from "next/dynamic";
+import { UserProfileSchema } from "@/types/users";
+
+const ChangeAppearance = dynamic(() => import("./use-appearance"), {
+  ssr: false,
+  loading: () => <span>....</span>,
+});
 import PreviewLayout from "./preview-layout";
+import { sampleUserData } from "@/data/sampleUserData";
 
-export const sampleUserData: UserData = {
-  first_name: "Alex",
-  last_name: "Johnson",
-  username: "alexj",
-  email: "",
-  stx_address_mainnet: "",
-  uuid: "1",
-  bio: "Web developer, coffee enthusiast, and part-time adventurer. Building the future one line of code at a time.",
-  profile_picture: "/dp.jpg",
-  appearance: "layout1",
-  links: [
-    {
-      uuid: "1",
-      platform: "Portfolio",
-      index: 0,
-      url: "https://example.com",
-      user_id: "link",
-      link_title: "portfolio",
-    },
-    {
-      uuid: "2",
-      platform: "Twitter",
-      index: 1,
-      url: "https://example.com",
-      user_id: "twitter",
-      link_title: "twitter",
-    },
-    {
-      uuid: "3",
-      platform: "Instagram",
-      index: 2,
-      url: "https://example.com",
-      user_id: "instagram",
-      link_title: "instagram",
-    },
-    {
-      uuid: "4",
-      platform: "LinkedIn",
-      index: 3,
-      url: "https://example.com",
-      user_id: "linkedin",
-      link_title: "linkedin",
-    },
-    {
-      uuid: "5",
-      platform: "GitHub",
-      index: 4,
-      url: "https://example.com",
-      user_id: "github",
-      link_title: "github",
-    },
-  ],
-};
+//export const sampleUserData: UserData = {
+//  first_name: "Alex",
+//  last_name: "Johnson",
+//  username: "alexj",
+//  email: "",
+//  stx_address_mainnet: "",
+//  uuid: "1",
+//  bio: "Web developer, coffee enthusiast, and part-time adventurer. Building the future one line of code at a time.",
+//  profile_picture: "/dp.jpg",
+//  appearance: "layout1",
+//  theme: "theme1",
+//  links: [
+//    {
+//      uuid: "1",
+//      platform: "Portfolio",
+//      index: 0,
+//      url: "https://example.com",
+//      user_id: "link",
+//      link_title: "portfolio",
+//    },
+//    {
+//      uuid: "2",
+//      platform: "Twitter",
+//      index: 1,
+//      url: "https://example.com",
+//      user_id: "twitter",
+//      link_title: "twitter",
+//    },
+//    {
+//      uuid: "3",
+//      platform: "Instagram",
+//      index: 2,
+//      url: "https://example.com",
+//      user_id: "instagram",
+//      link_title: "instagram",
+//    },
+//    {
+//      uuid: "4",
+//      platform: "LinkedIn",
+//      index: 3,
+//      url: "https://example.com",
+//      user_id: "linkedin",
+//      link_title: "linkedin",
+//    },
+//    {
+//      uuid: "5",
+//      platform: "GitHub",
+//      index: 4,
+//      url: "https://example.com",
+//      user_id: "github",
+//      link_title: "github",
+//    },
+//  ],
+//};
 
-export default function Themes() {
-  const [user, setUser] = useState<UserData | undefined>();
+export default function Themes({
+  userProfile,
+}: {
+  userProfile: UserProfileSchema;
+}) {
+  const [user, setUser] = useState<UserData | undefined>(userProfile);
   const [tire, setTire] = useState<string>("free");
   const [prevTxID, setPrevTxID] = useState<string>("");
   const [txStatus, setTxStatus] = useState<string>("");
@@ -80,7 +93,7 @@ export default function Themes() {
         setTire("free");
         //setPrevTxID(result.userData.prevTxID);
         setPrevTxID(
-          "0xa6d228c5f0f6d6d476a6b1522987e6fa3c729438e8bee0831e9b656b8bc8ab0b"
+          "0xa6d228c5f0f6d6d476a6b1522987e6fa3c729438e8bee0831e9b656b8bc8ab0b",
         );
       }
     };
@@ -151,16 +164,16 @@ export default function Themes() {
               value={layout.name}
               className="rounded-lg border border-gray-200 hover:border-gray-300 transition-colors relative"
             >
-              <layout.LayoutComponent userData={sampleUserData} />
-              <UseAppearanceButton
+              <div className="max-w-[300px]">
+                <layout.LayoutComponent userData={sampleUserData} />
+              </div>
+              {/* <layout.LayoutComponent userData={sampleUserData} /> */}
+              <ChangeAppearance
                 appearance={layout.name}
                 user={user}
                 tire={tire}
                 txStatus={txStatus}
               />
-              {/*<button className="absolute top-2 left-2 bg-white button py-[11px] px-7 border border-base-dark text-base-dark hover:bg-base-light">
-                Use Appearance
-              </button>*/}
             </TabsTrigger>
           ))}
         </TabsList>

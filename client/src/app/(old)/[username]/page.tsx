@@ -14,6 +14,10 @@ import { JoinLinkBarn, LogoLink } from "@/components/ui/logo";
 import type { Metadata } from "next";
 import { layouts } from "@/components/appearance/layouts";
 import { API_BASE_URL } from "@/lib/constants";
+import {
+  getProfileByUsernameCached,
+  getUserProfileCached,
+} from "@/lib/caching";
 
 interface PageProps {
   params: { username: string };
@@ -25,7 +29,7 @@ type User = {
 export async function generateStaticParams(): Promise<string[]> {
   const response: User[] = await getAllUsernames();
   const filteredUsers = response.filter(
-    (user: User): user is User & { username: string } => user.username !== null
+    (user: User): user is User & { username: string } => user.username !== null,
   );
   return filteredUsers.map(({ username }) => username);
 }
@@ -86,21 +90,20 @@ export default async function Page({ params }: PageProps) {
   };
 
   if (user_exists.status) {
-    userProfile = await getUserProfileByUsername(username);
+    userProfile = await getProfileByUsernameCached(username);
     links = userProfile && userProfile?.links;
     truncUsername = truncateString(userProfile?.username);
   } else {
     console.log("HERERE");
     notFound();
   }
+  console.log(userProfile);
 
   const layout = layouts.find(
     // (layout) => layout.name === "layout1",
-    (layout) => layout.name === userProfile?.appearance || "layout1"
+    (layout) => layout.name === userProfile?.appearance ?? "layout1",
   );
   console.log(layout, "WATASHI WA STAR");
-
-  console.log(userProfile);
 
   return (
     <div className="flex flex-col items-center justify-between min-h-screen h-full">

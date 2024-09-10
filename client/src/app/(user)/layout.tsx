@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AppWrapper } from "@/context";
+import CookieConsent from "@/components/ui/cookie-consent";
 
 export const metadata: Metadata = {
   title: {
@@ -14,5 +14,10 @@ export default function UserLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <div className="font-instrument bg-gray-light">{children}</div>;
+  return (
+    <div className="font-instrument bg-gray-light">
+      <CookieConsent />
+      {children}
+    </div>
+  );
 }

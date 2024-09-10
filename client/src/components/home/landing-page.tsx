@@ -70,7 +70,7 @@ export async function LandingPage() {
 
   return (
     <div className="h-full flex flex-col gap-16">
-      <HeroScrollDemo />
+      {/* <HeroScrollDemo /> */}
       <div className="max-w-[1150px] mx-10 md:mx-auto w-full">
         {/* <Counters users={users?.length || 100} /> */}
       </div>
@@ -79,7 +79,7 @@ export async function LandingPage() {
         <h3
           className={cn(
             "mt-16 sm:mt-20 text-black px-4 text-center text-xl sm:text-3xl md:text-[36px] lg:text-[48px] max-w-[1240px] font-bold md:leading-[55.68px]",
-            manrope.className
+            manrope.className,
           )}
         >
           Creating Links & Sharing Made Easy
@@ -90,7 +90,7 @@ export async function LandingPage() {
         <h3
           className={cn(
             "text-center text-[#151515] px-4 text-2xl sm:text-3xl md:text-[36px] lg:text-[48px] font-bold md:leading-[55.68px] mb-4 md:mb-12",
-            manrope.className
+            manrope.className,
           )}
         >
           What people say about Link Barn
@@ -101,7 +101,7 @@ export async function LandingPage() {
         <h3
           className={cn(
             "text-center text-[#151515]  px-4 text-2xl sm:text-3xl md:text-3xl md:text-[36px] lg:text-[48px] font-bold md:leading-[55.68px] md:mb-12",
-            manrope.className
+            manrope.className,
           )}
         >
           FAQs
