@@ -32,6 +32,7 @@ interface LinkData {
 }
 
 export interface Link {
+  uuid: string;
   id: string;
   name: string;
   index: number;
@@ -62,7 +63,7 @@ interface AppContextType {
   setLinks: React.Dispatch<React.SetStateAction<Link[]>>;
   saveUsername: (
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
-    setIsEditing: React.Dispatch<React.SetStateAction<boolean>>,
+    setIsEditing: React.Dispatch<React.SetStateAction<boolean>>
   ) => void;
 }
 
@@ -83,7 +84,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
 
   const getData = useCallback(
     async (
-      url: string = `${API_BASE_URL}/users/?user_id=${UUID}`,
+      url: string = `${API_BASE_URL}/users/?user_id=${UUID}`
     ): Promise<boolean> => {
       try {
         const response = await axios.get<LinkData>(url);
@@ -143,7 +144,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         return false;
       }
     },
-    [UUID],
+    [UUID]
   );
 
   const addNewLink = useCallback((index: number) => {
@@ -161,8 +162,8 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
   const updateLink = useCallback((id: string, updatedLink: Partial<Link>) => {
     setLinks((prevLinks) =>
       prevLinks.map((link) =>
-        link.id === id ? { ...link, ...updatedLink } : link,
-      ),
+        link.id === id ? { ...link, ...updatedLink } : link
+      )
     );
   }, []);
 
@@ -173,7 +174,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
         return { ...prevDetails, ...updatedProfile };
       });
     },
-    [],
+    []
   );
 
   const removeLink = useCallback((id: string) => {
@@ -189,7 +190,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
     const updatedLinks = [];
     const newLinks = [];
     const deletedLinks = prevlinks.filter(
-      (pl) => !links.some((l) => l.id === pl.id),
+      (pl) => !links.some((l) => l.id === pl.id)
     );
 
     for (const link of links) {
@@ -215,7 +216,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
               index: link.index,
               url: link.url,
             })
-            .then(() => console.log(`Updated link: ${link.name}`)),
+            .then(() => console.log(`Updated link: ${link.name}`))
         ),
         ...newLinks.map((link) =>
           axios
@@ -225,12 +226,12 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
               url: link.url,
               user_id: UUID,
             })
-            .then(() => console.log(`Added new link: ${link.name}`)),
+            .then(() => console.log(`Added new link: ${link.name}`))
         ),
         ...deletedLinks.map((link) =>
           axios
             .delete(`${API_BASE_URL}/links/${link.id}`)
-            .then(() => console.log(`Deleted: ${link.name}`)),
+            .then(() => console.log(`Deleted: ${link.name}`))
         ),
       ]);
 
@@ -311,7 +312,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
   const saveUsername = async (
     //username = userProfileDetails?.username,
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>,
-    setIsEditing: React.Dispatch<React.SetStateAction<boolean>>,
+    setIsEditing: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
     const username = userProfileDetails?.username;
     if (!username || username.trim() === "") {
@@ -342,7 +343,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
           `${API_BASE_URL}/users/${userProfileDetails?.uuid}`,
           {
             username: username,
-          },
+          }
         );
         const data = await res.data;
         await revalidateTagServer("userProfile");

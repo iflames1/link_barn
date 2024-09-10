@@ -3,14 +3,11 @@ import { useState } from "react";
 import { CgSelect } from "react-icons/cg";
 import { linkAttributes } from "../common/links-attr";
 import { Link } from "@/utils/linkSync";
+import { LinkSchema } from "@/types/links";
 
 interface SelectLinkProps {
-  link: {
-    id: string;
-    name: string;
-    url: string;
-  };
-  updateLink: (id: string, updatedLink: Partial<Link>) => void;
+  link: LinkSchema;
+  updateLink: (uuid: string, updatedLink: Partial<LinkSchema>) => void;
 }
 export const options = Object.entries(linkAttributes).map(([key, value]) => ({
   value: key,
@@ -20,9 +17,9 @@ export const options = Object.entries(linkAttributes).map(([key, value]) => ({
 export function SelectLink({ link, updateLink }: SelectLinkProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string>(
-    link.name ? link.name.toLowerCase() : "link",
+    link.platform ? link.platform.toLowerCase() : "link"
   );
-  const [customLinkName, setCustomLinkName] = useState(link.name);
+  const [customLinkName, setCustomLinkName] = useState(link.platform);
 
   return (
     <div className="relative">
@@ -43,7 +40,7 @@ export function SelectLink({ link, updateLink }: SelectLinkProps) {
                   value={customLinkName}
                   onChange={(e) => {
                     setCustomLinkName(e.target.value);
-                    updateLink(link.id, { name: e.target.value });
+                    updateLink(link.uuid, { platform: e.target.value });
                   }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
@@ -56,7 +53,7 @@ export function SelectLink({ link, updateLink }: SelectLinkProps) {
               ) : (
                 <span className="bM text-black">
                   {options.find((opt) => opt.value === selectedOption)?.label ||
-                    link.name}
+                    link.platform}
                 </span>
               )}
             </div>
@@ -73,7 +70,7 @@ export function SelectLink({ link, updateLink }: SelectLinkProps) {
                 gap-3 text-gray-dark {option.value === selectedOption ? 'text-base-dark' : "text-black"}`}
                 onClick={() => {
                   setSelectedOption(option.value);
-                  updateLink(link.id, { name: option.value });
+                  updateLink(link.uuid, { platform: option.value });
                   setIsOpen(false);
                 }}
               >

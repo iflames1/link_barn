@@ -6,23 +6,46 @@ import { useAppContext } from "@/context";
 import { Sortable, SortableDragHandle, SortableItem } from "../ui/sortable";
 import { Skeleton } from "../ui/skeleton";
 import { DragHandleDots2Icon } from "@radix-ui/react-icons";
+import { LinkSchema } from "@/types/links";
 
-export default function LinkEditor() {
+interface LinkEditorProps {
+  links: LinkSchema[];
+  setLinks: React.Dispatch<React.SetStateAction<LinkSchema[]>>;
+}
+
+export default function LinkEditor({ links, setLinks }: LinkEditorProps) {
   const handleUpdateURL = (
     e: React.ChangeEvent<HTMLInputElement>,
-    id: string
+    uuid: string
   ) => {
-    updateLink(id, { url: e.target.value });
+    updateLink(uuid, { url: e.target.value });
   };
 
-  const { links, removeLink, updateLink, setLinks } = useAppContext();
+  const updateLink = (uuid: string, updatedLink: Partial<LinkSchema>) => {
+    setLinks((prevLinks) =>
+      prevLinks.map((link) =>
+        link.uuid === uuid ? { ...link, updatedLink } : link
+      )
+    );
+  };
 
-  const handleDragEnd = (items: Link[]) => {
+  const handleDragEnd = (items: LinkSchema[]) => {
     const updatedLinks = items.map((link, index) => ({
       ...link,
       index,
     }));
     setLinks(updatedLinks);
+  };
+
+  const removeLink = (uuid: string) => {
+    setLinks((prevLinks) => {
+      const filteredLinks = prevLinks.filter((link) => link.uuid !== uuid);
+
+      return filteredLinks.map((link, index) => ({
+        ...link,
+        index: index,
+      }));
+    });
   };
 
   return (
@@ -48,12 +71,9 @@ export default function LinkEditor() {
       }
     >
       <div className=" flex flex-col gap-6">
-        {links.map((link: Link) => (
-          <SortableItem key={link.id} value={link.id} asChild>
-            <div
-              key={link.id}
-              className="p-5 bg-gray-light rounded-xl flex flex-col gap-3"
-            >
+        {links.map((link: LinkSchema) => (
+          <SortableItem key={link.uuid} value={link.uuid} asChild>
+            <div className="p-5 bg-gray-light rounded-xl flex flex-col gap-3">
               <div className="flex items-center justify-between">
                 <p className="flex items-center gap-2 text-gray-dark">
                   {/*<HiMenuAlt4 className="size-4" />*/}
@@ -73,7 +93,7 @@ export default function LinkEditor() {
                 </p>
                 <button
                   onClick={() => {
-                    removeLink(link.id);
+                    removeLink(link.uuid);
                   }}
                   type="button"
                   className="text-base font-normal text-gray-dark"
@@ -90,15 +110,15 @@ export default function LinkEditor() {
                 <div
                   className={`flex items-center gap-3 px-4 py-3 border-[1px] border-gray rounded-lg bg-white focus-within:shadow-active`}
                 >
-                  <label htmlFor={link.id} className="cursor-pointer">
+                  <label htmlFor={link.uuid} className="cursor-pointer">
                     <FiLink className="size-4 text-gray-dark" />
                   </label>
                   <input
-                    id={link.id}
+                    id={link.uuid}
                     type="text"
                     value={link.url}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      handleUpdateURL(e, link.id)
+                      handleUpdateURL(e, link.uuid)
                     }
                     placeholder="e.g. https://www.portfolio.com/iflames"
                     className="placeholder:text-gray-dark text-black w-full border-none outline-none"

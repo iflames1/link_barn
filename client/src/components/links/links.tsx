@@ -1,3 +1,4 @@
+"use client";
 import Form from "./form";
 import { useState } from "react";
 import { UserData } from "@/types/links";

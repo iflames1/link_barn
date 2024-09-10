@@ -141,7 +141,11 @@ export default function Form({ setUserProfileDetails }: FormProp) {
           </button>
         </div>
         <Suspense fallback={<LoadingForm />}>
-          {links.length < 1 ? <GetStarted /> : <LinkEditor />}
+          {links.length < 1 ? (
+            <GetStarted />
+          ) : (
+            <LinkEditor links={links} setLinks={setLinks} />
+          )}
         </Suspense>
       </div>
       <div>
