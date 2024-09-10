@@ -1,12 +1,13 @@
-"use client";
+// "use client";
 import PreviewLayout from "./preview-layout";
 import { layouts } from "./layouts";
-import { UserData } from "@/types/links";
+import { LinkSchema, UserData } from "@/types/links";
 interface PreviewProps {
   userProfileDetails: UserData | undefined;
+  links?: LinkSchema | undefined;
 }
-export default function Preview({ userProfileDetails }: PreviewProps) {
-  const links = userProfileDetails?.links;
+export default function Preview({ userProfileDetails, links }: PreviewProps) {
+  // const links = userProfileDetails?.links;
   const layoutName = userProfileDetails?.appearance || "layout1";
   const selectedLayout = layouts.find((layout) => layout.name === layoutName);
   const LayoutComponent =
@@ -14,7 +15,11 @@ export default function Preview({ userProfileDetails }: PreviewProps) {
 
   return (
     <PreviewLayout>
-      <LayoutComponent userData={userProfileDetails} links={links} />
+      <LayoutComponent
+        userData={userProfileDetails}
+        // @ts-ignore
+        links={links ? links : userProfileDetails?.links}
+      />
     </PreviewLayout>
   );
 }

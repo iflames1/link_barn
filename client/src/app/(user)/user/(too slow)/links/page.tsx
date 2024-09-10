@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 import type { Metadata } from "next";
 import Links from "@/components/links/links";
 import { getUserProfileCached } from "@/lib/caching";
+import { revalidateUserProfile } from "@/app/actions";
 // import Links from "@/components/links/links";
 
 export const metadata: Metadata = {
@@ -24,7 +25,11 @@ export default async function LinksPage() {
     <div className="min-h-screen max-h-screen overflow-hidden sm:p-6 w-full max-w-[1440px] mx-auto relative">
       <Header />
       <div className="sm:p-0 sm:pt-6 p-4">
-        <NewLinks userProfile={userProfile} defaultLinks={links} />
+        <NewLinks
+          userProfile={userProfile}
+          defaultLinks={links}
+          uuid={uuid as string}
+        />
         {/* <Links /> */}
       </div>
     </div>

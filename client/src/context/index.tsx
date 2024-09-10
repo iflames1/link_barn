@@ -345,6 +345,7 @@ export function AppWrapper({ children }: { children: React.ReactNode }) {
           },
         );
         const data = await res.data;
+        await revalidateTagServer("userProfileUsername");
         await revalidateTagServer("userProfile");
         console.log(data);
 

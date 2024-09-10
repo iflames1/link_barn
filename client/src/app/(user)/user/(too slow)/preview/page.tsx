@@ -14,10 +14,9 @@ export const metadata: Metadata = {
 };
 
 export default async function PreviewPage() {
-  await revalidateTagServer("userProfile");
   const uuid = cookies().get("uuid")?.value;
 
-  const userProfile = await getUserProfile(uuid || "");
+  const userProfile = await getUserProfileCached(uuid || "");
   console.log(userProfile);
   const links = userProfile?.links;
   const layout = layouts.find(

@@ -34,7 +34,7 @@ import {
   SortableItem,
 } from "@/components/ui/sortable";
 import { NewPreview } from "./new-preview";
-import { revalidateTagServer } from "@/app/actions";
+import { revalidateTagServer, revalidateUserProfile } from "@/app/actions";
 import GetStarted from "./get-started";
 import LoadingForm from "./loading";
 import { Skeleton } from "../ui/skeleton";
@@ -51,16 +51,18 @@ const formSchema = z.object({
       url: z.string().url().min(2).max(50),
       index: z.number(),
       link_title: z.string().max(20).optional(),
-    })
+    }),
   ),
 });
 
 export const NewLinks = ({
   userProfile,
   defaultLinks,
+  uuid,
 }: {
   userProfile: any;
   defaultLinks: any;
+  uuid: string;
 }) => {
   const formRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -107,7 +109,7 @@ export const NewLinks = ({
               user_id: getUserUUID(),
             }),
             next: {
-              tags: ["userProfile"],
+              tags: [`userProfile-${uuid}`],
             },
           });
 
@@ -143,7 +145,7 @@ export const NewLinks = ({
               link_title: item.link_title,
             }),
             next: {
-              tags: ["userProfile"],
+              tags: [`userProfile-${uuid}`],
             },
           });
 
@@ -197,7 +199,10 @@ export const NewLinks = ({
         toast.error("An unknown error occurred.");
       }
     } finally {
-      await revalidateTagServer("userProfile");
+      // await revalidateTagServer("userProfileUsername");
+      // await revalidateTagServer("userProfile");
+      await revalidateUserProfile(uuid as string);
+      await revalidateTagServer("profile");
       setIsLoading(false);
     }
   }
@@ -274,18 +279,18 @@ export const NewLinks = ({
       {/* "w-[40%] lg:flex hidden p-6 rounded-xl bg-white  justify-center items-center", */}
       {/* className={`lg:flex p-6 rounded-xl bg-white justify-center items-center sm:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] `} */}
 
-      {/*<Preview className="w-full h-full flex">
-          <div className="w-full px-6">
-            {
-              // @ ts-ignore
-              <layout.LayoutComponent
-                userData={userProfile}
-                links={currentLinks}
-              />
-            }
-          </div>
-        </Preview>*/}
-      <Preview userProfileDetails={userProfile} />
+      {/* <Preview className="w-full h-full flex"> */}
+      {/*     <div className="w-full px-6"> */}
+      {/*       { */}
+      {/*         // @ ts-ignore */}
+      {/*         <layout.LayoutComponent */}
+      {/*           userData={userProfile} */}
+      {/*           links={currentLinks} */}
+      {/*         /> */}
+      {/*       } */}
+      {/*     </div> */}
+      {/*   </Preview> */}
+      <Preview userProfileDetails={userProfile} links={currentLinks} />
 
       <div className="bg-white flex flex-col justify-between rounded-xl z-0 sm:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-auto w-full">
         <div className="sm:p-10 p-6">
@@ -452,7 +457,7 @@ export const NewLinks = ({
                                       <SelectTrigger
                                         disabled={
                                           form.watch(
-                                            `links.${index}.platform`
+                                            `links.${index}.platform`,
                                           ) === "link"
                                         }
                                         className="focus:shadow-active py-5 placeholder:text-black"
