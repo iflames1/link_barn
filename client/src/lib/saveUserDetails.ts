@@ -31,5 +31,7 @@ export const saveUserDetails = async (
       toast.error("Failed to save changes", { richColors: true });
       return false;
     }
+  } else {
+    console.log("id is missing");
   }
 };
