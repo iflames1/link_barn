@@ -4,6 +4,8 @@ export interface UserProfileSchema {
   uuid: string;
   username: string;
   bio: string;
+  tier: string;
+  prevTxID: string;
   appearance: string;
   first_name: string;
   last_name: string;
@@ -26,6 +28,8 @@ export interface UserProfileSchema {
 export interface UserProfileSchemaPublic {
   username: string;
   bio: string;
+  tier: string;
+  prevTxID: string;
   appearance: string;
   first_name: string;
   last_name: string;

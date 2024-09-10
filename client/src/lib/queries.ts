@@ -15,7 +15,7 @@ export const getUserProfile = async (uuid: string) => {
     const url = `${API_BASE_URL}/users?user_id=${uuid}`;
     const response = await fetch(url, {
       next: {
-        tags: ["userProfile"],
+        tags: [`userProfile-${uuid}`],
       },
     });
 
@@ -64,14 +64,25 @@ export const checkUserExists = async (
 };
 
 export const getUserProfileByUsername = async (username: string) => {
+  console.log("AIIIT");
+  console.log("AIIIT");
+  console.log("AIIIT");
+  console.log("AIIIT");
+  console.log("AIIIT");
+  console.log("AIIIT");
+  console.log("AIIIT");
+  console.log("AIIIT");
+  console.log("AIIIT");
+  console.log("AIIIT");
+  console.log("AIIIT");
+  console.log("AIIIT");
+  console.log("AIIIT");
   try {
     const url = `${API_BASE_URL}/users/profile/${username}`;
     const response = await fetch(url, {
-      // next: {
-      //   revalidate: 3600,
-      // },
       next: {
-        tags: ["userProfileUsername"],
+        // revalidate: 0,
+        tags: [`userProfile-${username}`],
       },
     });
 

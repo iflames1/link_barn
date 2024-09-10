@@ -85,6 +85,7 @@ export default function UseAppearanceButton({
   txStatus,
 }: UseAppearanceButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
+  console.log(user, appearance, txStatus, tire);
   //const [user, setUser] = useState<UserData | undefined>();
   //const [tire, setTire] = useState<string>();
   //const [prevTxID, setPrevTxID] = useState<string>("");

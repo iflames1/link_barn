@@ -28,7 +28,6 @@ export default function RootLayout({
         <Progressbar>{children}</Progressbar>
         <GotoTop />
         <Toaster />
-        <CookieConsent />
       </body>
     </html>
   );

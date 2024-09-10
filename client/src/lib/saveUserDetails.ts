@@ -7,18 +7,18 @@ import { revalidateTagServer } from "@/app/actions";
 
 export const saveUserDetails = async (
   userDetails: UserData | undefined,
-  id: string | undefined = getUserUUID()
+  id: string | undefined = getUserUUID(),
 ) => {
   if (id) {
     try {
       const response = await axios.patch(
         API_BASE_URL + "/users/" + id,
-        userDetails
+        userDetails,
       );
-      await revalidateTagServer("userProfile");
 
       if (response.status === 200) {
         console.log("User details updated successfully");
+        await revalidateTagServer("userProfile");
         toast.success("Updated successfully.", { richColors: true });
         return true;
       } else {

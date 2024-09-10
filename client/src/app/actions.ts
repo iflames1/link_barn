@@ -12,6 +12,10 @@ export async function revalidateTagServer(tag: string) {
   revalidateTag(tag);
 }
 
+export const revalidateUserProfile = async (uuid: string) => {
+  revalidateTag(`userProfile-${uuid}`);
+};
+
 export async function signOut() {
   const supabase = createClient();
   const { data } = await supabase.auth.getUser();

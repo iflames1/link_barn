@@ -5,6 +5,8 @@ import type { Metadata } from "next";
 import ResponsiveButton from "@/components/common/responsive-button";
 import { layouts } from "@/components/appearance/layouts";
 import { getUserProfileCached } from "@/lib/caching";
+import { revalidateTagServer } from "@/app/actions";
+import { getUserProfile } from "@/lib/queries";
 
 export const metadata: Metadata = {
   title: "Preview",
@@ -15,10 +17,12 @@ export default async function PreviewPage() {
   const uuid = cookies().get("uuid")?.value;
 
   const userProfile = await getUserProfileCached(uuid || "");
+  console.log(userProfile);
   const links = userProfile?.links;
   const layout = layouts.find(
-    (layout) => layout.name === userProfile?.appearance || "layout1"
+    (layout) => layout.name === userProfile?.appearance ?? "layout1",
   );
+  console.log("Star", layout);
 
   return (
     <div className="sm:p-6 w-full max-w-[1440px] mx-auto">
