@@ -73,15 +73,15 @@ export function Layout1({ userData, links }: LayoutProps) {
           </p>*/}
       </div>
       <p className="text-center px-1 max-w-72 break-words text-wrap">
-        {" "}
         {userData?.bio}
       </p>
-      <div className="flex flex-col items-center gap-3 w-full max-w-60">
+      <div className="grid grid-cols-1 gap-3 w-full max-w-64">
         <LinkWrapper userData={userData} links={links}>
           {(linkData) => (
             <a
               href={linkData.url}
               target="_blank"
+              rel="noopener noreferrer"
               key={linkData.uuid}
               className={`flex justify-between items-center py-[11px] px-4 rounded-lg w-full border-[1px] border-gray capitalize $${linkData.bg} ${linkData.text}`}
             >
@@ -122,7 +122,7 @@ export function Layout2({ userData, links }: LayoutProps) {
           </p>
         </div>
       </div>
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 gap-4 max-w-64 w-full mx-auto">
         <LinkWrapper userData={userData} links={links}>
           {(linkData) => (
             <a
@@ -130,14 +130,17 @@ export function Layout2({ userData, links }: LayoutProps) {
               target="_blank"
               rel="noopener noreferrer"
               key={linkData.uuid}
-              className={`flex items-center space-x-2 p-2 border rounded capitalize ${linkData.bg} ${linkData.text}`}
+              className={`flex justify-between items-center py-[11px] px-4 rounded-lg w-full border-[1px] border-gray capitalize ${linkData.bg} ${linkData.text}`}
             >
-              {linkData.icon}
-              <span>
-                {linkData.platform === "link"
-                  ? linkData.link_title
-                  : linkData.platform}
-              </span>
+              <p className="flex items-center justify-start gap-2">
+                {linkData.icon}
+                <span>
+                  {linkData.platform === "link"
+                    ? linkData.link_title
+                    : linkData.platform}
+                </span>
+              </p>
+              <FaArrowRight className="size-4" />
             </a>
           )}
         </LinkWrapper>
