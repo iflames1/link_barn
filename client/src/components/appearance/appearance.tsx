@@ -93,12 +93,12 @@ export default function Themes({
         setTire("free");
         //setPrevTxID(result.userData.prevTxID);
         setPrevTxID(
-          "0xa6d228c5f0f6d6d476a6b1522987e6fa3c729438e8bee0831e9b656b8bc8ab0b",
+          "0xa6d228c5f0f6d6d476a6b1522987e6fa3c729438e8bee0831e9b656b8bc8ab0b"
         );
       }
     };
     fetchUserData();
-  });
+  }, []);
 
   useEffect(() => {
     async function checkTransactionStatus(txID = "") {

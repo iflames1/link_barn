@@ -59,10 +59,12 @@ export default function ProfileWrapper({
   const userTheme = themes.find((data) => data.name === theme) || themes[0];
 
   return (
-    <main
-      className={`max-w-80 mx-auto py-14 px-4 ${userTheme.bg} ${userTheme.text} ${className}`}
-    >
-      {children}
+    <main className={`${userTheme.bg} w-full h-full`}>
+      <div
+        className={`max-w-80 mx-auto py-14 px-4 ${userTheme.text} ${className}`}
+      >
+        {children}
+      </div>
     </main>
   );
 }
