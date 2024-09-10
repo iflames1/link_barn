@@ -175,7 +175,7 @@ export const useWallet = () => {
   };
 
   async function sendSTXTransaction(
-    recipientAddress = "SP1SQHCJSFNR5020N2HJ8CPW192HF57J3NHNPP5A",
+    recipientAddress = "SPVT6STGX1AG9E0D8H87HB3N0ZV8SJPCMDMN373D",
     amount = "1",
     memo = ""
   ) {
@@ -200,6 +200,7 @@ export const useWallet = () => {
 
     await openSTXTransfer(transactionDetails);
   }
+
   async function checkTransactionStatus(txId = "") {
     const url = `https://stacks-node-api.mainnet.stacks.co/extended/v1/tx/${txId}`;
 

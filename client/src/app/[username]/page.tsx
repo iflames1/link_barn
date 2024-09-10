@@ -25,7 +25,7 @@ type User = {
 export async function generateStaticParams(): Promise<string[]> {
   const response: User[] = await getAllUsernames();
   const filteredUsers = response.filter(
-    (user: User): user is User & { username: string } => user.username !== null,
+    (user: User): user is User & { username: string } => user.username !== null
   );
   return filteredUsers.map(({ username }) => username);
 }
@@ -96,7 +96,7 @@ export default async function Page({ params }: PageProps) {
 
   const layout = layouts.find(
     // (layout) => layout.name === "layout1",
-    (layout) => layout.name === userProfile?.appearance || "layout1",
+    (layout) => layout.name === userProfile?.appearance || "layout1"
   );
   console.log(layout, "WATASHI WA STAR");
 
@@ -115,7 +115,7 @@ export default async function Page({ params }: PageProps) {
             </div>
           }
         >
-          <div className="max-w-[500px] w-full mx-auto">
+          <div className="max-w-[500px] w-full mx-auto px-4 pt6">
             {layout && (
               <layout.LayoutComponent
                 userData={userProfile}
@@ -132,7 +132,7 @@ export default async function Page({ params }: PageProps) {
   );
 }
 
-/* 
+/*
    <div className="flex flex-col items-center gap-3">
             {userProfile ? (
               <>
