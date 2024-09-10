@@ -10,6 +10,7 @@ import { layouts } from "@/components/appearance/layouts";
 import { UserProfileSchema } from "@/types/users";
 import { unstable_cache } from "next/cache";
 import { getUserProfileCached } from "@/lib/caching";
+import { revalidateTagServer } from "@/app/actions";
 
 export const metadata: Metadata = {
   title: "Preview",
@@ -17,18 +18,20 @@ export const metadata: Metadata = {
 };
 
 export default async function PreviewPage() {
+  await revalidateTagServer("userProfile");
   const uuid = cookies().get("uuid")?.value;
 
-  const userProfile = await getUserProfileCached(uuid || "");
+  const userProfile = await getUserProfile(uuid || "");
+  console.log(userProfile);
   const links = userProfile?.links;
   // console.log(userProfile, "HIMMMv2", links);
   // console.log(userProfile, "HMMMMM");
   // const links = userProfileDetails?.links;
   // console.log(links, userProfile);
   const layout = layouts.find(
-    // (layout) => layout.name === "layout1",
-    (layout) => layout.name === userProfile?.appearance || "layout1",
+    (layout) => layout.name === userProfile?.appearance ?? "layout1",
   );
+  console.log("Star", layout);
 
   return (
     <div className="sm:p-6 w-full max-w-[1440px] mx-auto">
