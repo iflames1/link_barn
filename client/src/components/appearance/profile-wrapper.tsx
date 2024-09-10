@@ -1,6 +1,7 @@
 "use client";
 import { themes } from "@/data/themes2";
 import { getUser } from "@/lib/getUser";
+import { checkUserExists } from "@/lib/queries";
 import { UserData } from "@/types/links";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -27,18 +28,33 @@ export default function ProfileWrapper({
   className,
 }: ProfileWrapperProps) {
   const [theme, setTheme] = useState("theme1");
+  const [UUID, setUUID] = useState<string | undefined>(undefined);
   const pathname = usePathname();
+  console.log(pathname);
 
   useEffect(() => {
+    const checkUser = async () => {
+      if (!pathname.startsWith("/user")) {
+        const username = pathname.split("/").pop();
+        if (username) {
+          const userExists = await checkUserExists("username", username);
+          if (userExists.status) {
+            setUUID(userExists.message);
+          }
+        }
+      }
+    };
+
     const fetchUserData = async () => {
-      const result = await getUser();
+      const result = await getUser(UUID);
       if (result) {
         setTheme(result.userData.theme);
       }
     };
 
+    checkUser();
     fetchUserData();
-  });
+  }, [pathname, UUID]);
 
   const userTheme = themes.find((data) => data.name === theme) || themes[0];
 
