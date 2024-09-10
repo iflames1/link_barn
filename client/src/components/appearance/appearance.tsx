@@ -18,7 +18,7 @@ export const sampleUserData: UserData = {
   email: "",
   stx_address_mainnet: "",
   uuid: "1",
-  bio: `Tell me something I don't know. Tell me something I don't know. Tell me something I don't know. Tell me something I don't know. Tell me something I don't know.`,
+  bio: "Web developer, coffee enthusiast, and part-time adventurer. Building the future one line of code at a time.",
   profile_picture: "/dp.jpg",
   appearance: "layout1",
   links: [
