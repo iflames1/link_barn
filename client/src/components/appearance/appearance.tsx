@@ -11,8 +11,11 @@ import { UserProfileSchema } from "@/types/users";
 const ChangeAppearance = dynamic(() => import("./change-appearance"), {
   ssr: false,
   loading: () => (
-    <Button className="absolute top-2 left-2 bg-white border border-base-dark text-base-dark hover:bg-base-light">
-      Use Theme
+    <Button
+      variant="default"
+      className="absolute top-2 left-2 text-white bg-base-dark"
+    >
+      <Skeleton className="w-20 h-6" />
     </Button>
   ),
 });
@@ -20,6 +23,7 @@ import PreviewLayout from "./preview-layout";
 import { sampleUserData } from "@/data/sampleUserData";
 import { checkTransactionStatus } from "@/lib/checkTransactionStatus";
 import { Button } from "../ui/button";
+import { Skeleton } from "../ui/skeleton";
 
 export default function Themes({
   userProfile,
@@ -62,12 +66,12 @@ export default function Themes({
         ))}
       </PreviewLayout>
       <div className="bg-white rounded-xl lg:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-y-auto lg:w-[60%] w-full p-6">
-        <TabsList className="bg-transparent h-full grid grid-cols-1 gap-4">
+        <TabsList className="bg-transparent h-full grid grid-cols-1 sm:grid-cols-2 gap-4">
           {layouts.map((layout, index) => (
             <TabsTrigger
               key={index}
               value={layout.name}
-              className="rounded-lg border border-gray-200 hover:border-gray-300 transition-colors relative"
+              className="rounded-lg h-full border border-gray-200 hover:border-gray-300 transition-colors relative"
             >
               <layout.LayoutComponent userData={sampleUserData} />
               <ChangeAppearance

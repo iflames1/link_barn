@@ -2,23 +2,20 @@ import { sampleUserData } from "@/data/sampleUserData";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import PreviewLayout from "../appearance/preview-layout";
 import { themes } from "@/data/themes2";
-import { UserData } from "@/types/links";
-import { useEffect, useState } from "react";
-import { getUser } from "@/lib/getUser";
 import { layouts } from "@/components/appearance/layoutsForThemes";
 import { UserProfileSchema } from "@/types/users";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
-import EditTheme from "../appearance/edit-theme";
 import { ThemeSelector } from "./wrapper";
 import dynamic from "next/dynamic";
 import ResponsiveButton from "../common/responsive-button";
+import { Skeleton } from "../ui/skeleton";
 
 const ChangeTheme = dynamic(() => import("./change-theme"), {
   ssr: false,
   loading: () => (
     <Button className="absolute top-2 left-2 bg-white border border-base-dark text-base-dark hover:bg-base-light">
-      Use Theme
+      <Skeleton className="w-20 h-6" />
     </Button>
   ),
 });
