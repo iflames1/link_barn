@@ -39,13 +39,13 @@ export default function Counters({ users }: { users: number }) {
 
   return (
     <div
-      className="flex w-full flex-wrap items-center justify-center gap-8 border-b border-b-gray max-w-[1280px] mx-auto pb-5"
+      className="flex w-full flex-wrap items-center justify-center gap-8 border-b border-b-gray max-w-[1280px] mx-auto pb-5 px-4"
       ref={ref}
     >
       {counters.map((counter) => (
         <div key={counter.id} className="text-center">
           <AnimatedNumber
-            className="inline-flex items-center font-mono text-4xl font-light text-zinc-800 dark:text-zinc-50"
+            className="inline-flex items-center font-mono text-2xl sm:text-4xl font-light text-zinc-800 dark:text-zinc-50"
             springOptions={{
               bounce: 0,
               duration: counter.duration,

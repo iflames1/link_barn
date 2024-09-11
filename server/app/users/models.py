@@ -26,12 +26,14 @@ class UserProfile(UserUsername):
     first_name: str | None = Field(default=None)
     last_name: str | None = Field(default=None)
     theme: str | None = Field(default=None)
+    tier: str | None = Field(default=None)
     profile_picture: str | None = Field(default=None)
     email: str | None = Field(default=None)
 
 
 class UserBase(UserProfile):
     auth_type: str = Field(sa_column=Column("auth_type", auth_type))
+    prevTxID: str | None = Field(default=None)
     supabase_user_id: str | None = Field(default=None)
     decentralized_id: str | None = Field(default=None)
     stx_address_testnet: str | None = Field(default=None)
@@ -67,6 +69,8 @@ class UserUpdate(SQLModel):
     theme: Optional[str] = None
     appearance: Optional[str] = None
     bio: Optional[str] = None
+    prevTxID: Optional[str] = None
+    tier: Optional[str] = None
     username: Optional[str] = None
     email: Optional[str] = None
     decentralized_id: Optional[str] = None
