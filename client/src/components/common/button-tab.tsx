@@ -12,20 +12,17 @@ interface TabProps {
   path: string;
   title: string;
 }
-const ShareLink = dynamic(
-  () => import("@/components/preview/share").then((mod) => mod.ShareLink),
-  {
-    ssr: false,
-    loading: () => (
-      <button className="button py-[11px] sm:px-7 px-4 border-[1px] border-base-dark text-base-dark  hover:bg-base-light">
-        <span className="hidden sm:flex">
-          <Skeleton className="w-[76.5px] h-6" />
-        </span>
-        <FaShareAlt className="flex sm:hidden size-4" />
-      </button>
-    ),
-  }
-);
+const ShareLink = dynamic(() => import("@/components/preview/share"), {
+  ssr: false,
+  loading: () => (
+    <button className="button py-[11px] sm:px-7 px-4 border-[1px] border-base-dark text-base-dark  hover:bg-base-light">
+      <span className="hidden sm:flex">
+        <Skeleton className="w-[76.5px] h-6" />
+      </span>
+      <FaShareAlt className="flex sm:hidden size-4" />
+    </button>
+  ),
+});
 
 export default function ButtonTab({ path, title }: TabProps) {
   const pathname = usePathname();
