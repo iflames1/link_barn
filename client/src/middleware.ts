@@ -4,7 +4,7 @@ import { validateuser } from "./utils/auth/validate";
 export async function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
 
-  if (url.pathname.startsWith("/user") || url.pathname.startsWith("/auth")) {
+  if (url.pathname.startsWith("/user/") || url.pathname.startsWith("/auth/")) {
     return await validateuser(req);
   }
 

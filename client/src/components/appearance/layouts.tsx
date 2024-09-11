@@ -86,15 +86,6 @@ export function Layout1({ userData, links, className }: LayoutProps) {
       className={cn("flex flex-col items-center gap-[25px]", className)}
       theme={userData?.theme}
     >
-<<<<<<< HEAD
-      <Image
-        src={(userData?.profile_picture as string) ?? "/unik.png"}
-        alt={userData?.first_name as string}
-        width={104}
-        height={104}
-        className="rounded-full border-4 size-28 border-base-dark object-cover"
-      />{" "}
-=======
       {userData?.profile_picture ? (
         <Image
           src={userData?.profile_picture as string}
@@ -109,7 +100,6 @@ export function Layout1({ userData, links, className }: LayoutProps) {
         </div>
       )}
 
->>>>>>> a319f31ad406ef46798836fbe382fab17181dacb
       <div className="flex flex-col items-center gap-2">
         <p className="text-xl font-bold">
           {userData?.first_name} {userData?.last_name}
