@@ -72,7 +72,10 @@ export function LinkWrapper({ userData, links, children }: LinkWrapperProps) {
 
 export function Layout1({ userData, links }: LayoutProps) {
   return (
-    <ProfileWrapper className="flex flex-col items-center gap-[25px]">
+    <ProfileWrapper
+      className="flex flex-col items-center gap-[25px]"
+      theme={userData?.theme}
+    >
       <Image
         src={userData?.profile_picture as string}
         alt={userData?.first_name as string}
@@ -120,7 +123,7 @@ export function Layout1({ userData, links }: LayoutProps) {
 
 export function Layout2({ userData, links }: LayoutProps) {
   return (
-    <ProfileWrapper className="flex flex-col gap-6">
+    <ProfileWrapper className="flex flex-col gap-6" theme={userData?.theme}>
       <div className="flex items-center text-center gap-4">
         <Image
           src={userData?.profile_picture as string}
@@ -167,7 +170,7 @@ export function Layout2({ userData, links }: LayoutProps) {
 
 export function Layout3({ userData, links }: LayoutProps) {
   return (
-    <ProfileWrapper className="text-center space-y-6">
+    <ProfileWrapper className="text-center space-y-6" theme={userData?.theme}>
       <Image
         src={userData?.profile_picture as string}
         alt={userData?.first_name as string}
@@ -203,7 +206,7 @@ export function Layout3({ userData, links }: LayoutProps) {
 
 export function Layout4({ userData, links }: LayoutProps) {
   return (
-    <ProfileWrapper>
+    <ProfileWrapper theme={userData?.theme}>
       <div className="relative mb-16">
         <div
           className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 rounded-t-lg"
@@ -249,7 +252,7 @@ export function Layout4({ userData, links }: LayoutProps) {
 
 export function Layout5({ userData, links }: LayoutProps) {
   return (
-    <ProfileWrapper className="space-y-6">
+    <ProfileWrapper className="space-y-6" theme={userData?.theme}>
       <div className="flex flex-col items-center space-y-4">
         <Image
           src={userData?.profile_picture as string}

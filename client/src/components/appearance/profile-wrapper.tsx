@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 interface ProfileWrapperProps {
   children: React.ReactNode;
   className?: string;
+  theme?: string;
 }
 
 //let userData: UserData | undefined;
@@ -26,35 +27,36 @@ interface ProfileWrapperProps {
 export default function ProfileWrapper({
   children,
   className,
+  theme,
 }: ProfileWrapperProps) {
-  const [theme, setTheme] = useState("theme1");
-  const [UUID, setUUID] = useState<string | undefined>(undefined);
-  const pathname = usePathname();
-  console.log(pathname);
-
-  useEffect(() => {
-    const checkUser = async () => {
-      if (!pathname.startsWith("/user")) {
-        const username = pathname.split("/").pop();
-        if (username) {
-          const userExists = await checkUserExists("username", username);
-          if (userExists.status) {
-            setUUID(userExists.message);
-          }
-        }
-      }
-    };
-
-    const fetchUserData = async () => {
-      const result = await getUser(UUID);
-      if (result) {
-        setTheme(result.userData.theme);
-      }
-    };
-
-    checkUser();
-    fetchUserData();
-  }, [pathname, UUID]);
+  // const [theme, setTheme] = useState("theme1");
+  // const [UUID, setUUID] = useState<string | undefined>(undefined);
+  // const pathname = usePathname();
+  // console.log(pathname);
+  //
+  // useEffect(() => {
+  //   const checkUser = async () => {
+  //     if (!pathname.startsWith("/user")) {
+  //       const username = pathname.split("/").pop();
+  //       if (username) {
+  //         const userExists = await checkUserExists("username", username);
+  //         if (userExists.status) {
+  //           setUUID(userExists.message);
+  //         }
+  //       }
+  //     }
+  //   };
+  //
+  //   const fetchUserData = async () => {
+  //     const result = await getUser(UUID);
+  //     if (result) {
+  //       setTheme(result.userData.theme);
+  //     }
+  //   };
+  //
+  //   checkUser();
+  //   fetchUserData();
+  // }, [pathname, UUID]);
 
   const userTheme = themes.find((data) => data.name === theme) || themes[0];
 
