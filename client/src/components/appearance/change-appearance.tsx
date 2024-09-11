@@ -120,9 +120,11 @@ export default function UseAppearanceButton({
       user.appearance = appearance;
       await saveUserDetails(user);
       console.log("new layout = ", user.appearance);
-      setIsOpen(false);
+    } else {
+      toast.success("Updated successfully.", { richColors: true });
     }
     setLoading(false);
+    setIsOpen(false);
   };
 
   return (
