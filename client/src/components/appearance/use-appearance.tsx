@@ -16,6 +16,7 @@ import { useWallet } from "@/utils/wallet";
 import { toast } from "sonner";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import { cn } from "@/lib/utils";
 
 interface PremiumOptionProps {
   title: string;
@@ -31,25 +32,6 @@ export function PremiumOption({ title, price, txStatus }: PremiumOptionProps) {
   };
   return (
     <div className="border rounded-lg p-4 mb-4">
-      <p>
-        {txStatus === "success" ? (
-          <span className="">
-            your previous transaction was success please refresh this page to
-            continue <IoMdCheckmarkCircleOutline className="text-green-500" />
-          </span>
-        ) : txStatus === "pending" ? (
-          <span>
-            your previous transaction is still pending{" "}
-            <LoaderCircle className="animate-spin" size={16} />
-          </span>
-        ) : txStatus === "failed" ? (
-          <span className="text-red">
-            your previous transaction failed <AiOutlineInfoCircle />
-          </span>
-        ) : (
-          ""
-        )}
-      </p>
       <h3 className="text-lg font-semibold mb-2">{title}</h3>
       <p className="text-2xl font-bold mb-4">{price}stx one time payment</p>
       <ul className="space-y-2">
@@ -64,7 +46,14 @@ export function PremiumOption({ title, price, txStatus }: PremiumOptionProps) {
           </li>
         ))}
       </ul>
-      <Button className="w-full mt-4 bg-base-dark" onClick={handlePayment}>
+      <Button
+        className={cn(
+          "w-full mt-4 bg-base-dark",
+          txStatus === "success" && "cursor-not-allowed"
+        )}
+        onClick={handlePayment}
+        disabled={txStatus === "success" || txStatus === "pending"}
+      >
         Choose {title}
       </Button>
     </div>
@@ -120,6 +109,27 @@ export default function UseAppearanceButton({
           </div>
         ) : tire === "free" ? (
           <div>
+            <p className="">
+              {txStatus === "success" ? (
+                <span className="">
+                  Your previous transaction was success please refresh this page
+                  to continue{" "}
+                  <IoMdCheckmarkCircleOutline className="text-green-500 inline-flex items-center" />
+                </span>
+              ) : txStatus === "pending" ? (
+                <span className="">
+                  Your previous transaction is still pending{" "}
+                  <LoaderCircle
+                    className="animate-spin inline-flex"
+                    size={16}
+                  />
+                </span>
+              ) : (
+                <span className="text-red">
+                  Your previous transaction failed <AiOutlineInfoCircle />
+                </span>
+              )}
+            </p>
             <DialogTitle className="text-xl font-semibold mb-4">
               Upgrade to Use This Appearance
             </DialogTitle>
