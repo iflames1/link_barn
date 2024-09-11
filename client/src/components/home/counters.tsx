@@ -11,12 +11,17 @@ interface CounterData {
   value: number;
 }
 
-export default function Counters({ users }: { users: number }) {
+export default function Counters({ stats }: { stats: any }) {
   const counterData: CounterData[] = [
-    { id: "Sign up", finalValue: users, duration: 10000, value: 0 },
-    { id: "Links Created", finalValue: 150, duration: 8000, value: 0 },
-    { id: "Visited", finalValue: 200, duration: 12000, value: 0 },
-    { id: "Active Users", finalValue: users - 5, duration: 6000, value: 0 },
+    { id: "Sign up", finalValue: stats?.users, duration: 10000, value: 0 },
+    { id: "Links Created", finalValue: stats?.links, duration: 8000, value: 0 },
+    { id: "Visited", finalValue: stats?.users + 4, duration: 12000, value: 0 },
+    {
+      id: "Active Users",
+      finalValue: stats?.users > 5 ? stats?.users - 5 : stats?.users,
+      duration: 6000,
+      value: 0,
+    },
   ];
 
   const [counters, setCounters] = useState<CounterData[]>(
