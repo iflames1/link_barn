@@ -82,7 +82,7 @@ export default function Themes({
       </div>
       <ResponsiveButton
         path="/user/themes"
-        title="Change Theme"
+        title="Change theme"
         className="absolute sm:bottom-2 bottom-0 right-6"
       />
     </Tabs>

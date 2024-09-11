@@ -12,6 +12,7 @@ import { Button } from "../ui/button";
 import EditTheme from "../appearance/edit-theme";
 import { ThemeSelector } from "./wrapper";
 import dynamic from "next/dynamic";
+import ResponsiveButton from "../common/responsive-button";
 
 const ChangeTheme = dynamic(() => import("./change-theme"), {
   ssr: false,
@@ -59,7 +60,7 @@ export default function Themes({
           </TabsContent>
         ))}
       </div>
-      <div className="bg-white rounded-xl lg:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-y-auto w-full p-6">
+      <div className="bg-white rounded-xl lg:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-y-auto w-full p-6 relative">
         <TabsList className="bg-transparent h-full grid grid-cols-1 sm:grid-cols-2 gap-4">
           {themes.map((theme, index) => (
             <TabsTrigger
@@ -83,6 +84,11 @@ export default function Themes({
             </TabsTrigger>
           ))}
         </TabsList>
+        <ResponsiveButton
+          path="/user/appearance"
+          title="Go back"
+          className="absolute sm:bottom-2 bottom-0 right-6"
+        />
       </div>
     </ThemeSelector>
   );
