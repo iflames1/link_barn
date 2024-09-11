@@ -79,7 +79,7 @@ export function Layout1({ userData, links, className }: LayoutProps) {
       theme={userData?.theme}
     >
       <Image
-        src={userData?.profile_picture as string}
+        src={(userData?.profile_picture as string) ?? "/unik.png"}
         alt={userData?.first_name as string}
         width={104}
         height={104}

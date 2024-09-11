@@ -19,9 +19,9 @@ export default async function PreviewPage() {
   const userProfile = await getUserProfileCached(uuid || "");
   console.log(userProfile);
   const links = userProfile?.links;
-  const layout = layouts.find(
-    (layout) => layout.name === userProfile?.appearance ?? "layout1",
-  );
+  const layout =
+    layouts.find((layout) => layout.name === userProfile?.appearance) ||
+    layouts[0];
   console.log("Star", layout);
 
   return (

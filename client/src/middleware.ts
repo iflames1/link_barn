@@ -1,15 +1,17 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/utils/supabase/middleware";
 import { getUserProfileByUsername } from "./lib/queries";
+import { validateuser } from "./utils/auth/validate";
 
 export async function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
   // Only run updateSession() for /user and /auth paths
-  if (url.pathname.startsWith("/user") || url.pathname.startsWith("/auth")) {
-    return await updateSession(req);
-  }
+  // if (url.pathname.startsWith("/user") || url.pathname.startsWith("/auth")) {
+  // return await updateSession(req);
+  // }
 
-  return NextResponse.next();
+  return await validateuser(req);
+  // return NextResponse.next();
 }
 
 export const config = {
