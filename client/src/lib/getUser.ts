@@ -28,7 +28,6 @@ export const getUser = async (
     }
   } else {
     console.log("User id is missing");
-    toast.warning("User id is missing");
     return;
   }
 };
