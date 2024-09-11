@@ -42,19 +42,19 @@ export default function Themes({
             key={index}
             value={theme.name}
             className={cn(
-              "max-w-80 mx-auto py-14 px-4",
-              `
-               ${theme.text}
+              "max-w-80 mx-auto",
+              `${theme.text}
                 data-[state=active]:${theme.bg}
                 data-[state=active]:${theme.text}
                 data-[state=active]:shadow-sm
-                transition-all
-`,
+                transition-all`
             )}
             asChild
           >
             <PreviewLayout className="max-w-none w-full" bg={theme.bg}>
-              <LayoutComponent userData={sampleUserData} />
+              <div className="py-14 px-4">
+                <LayoutComponent userData={sampleUserData} />
+              </div>
             </PreviewLayout>
           </TabsContent>
         ))}
