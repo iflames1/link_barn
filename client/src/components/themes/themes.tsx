@@ -11,6 +11,16 @@ import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import EditTheme from "../appearance/edit-theme";
 import { ThemeSelector } from "./wrapper";
+import dynamic from "next/dynamic";
+
+const ChangeTheme = dynamic(() => import("./change-theme"), {
+  ssr: false,
+  loading: () => (
+    <Button className="absolute top-2 left-2 bg-white border border-base-dark text-base-dark hover:bg-base-light">
+      Use Theme
+    </Button>
+  ),
+});
 
 export default function Themes({
   userProfileDetails,
@@ -24,16 +34,6 @@ export default function Themes({
   const LayoutComponent =
     selectedLayout?.LayoutComponent || layouts[0].LayoutComponent;
 
-  {
-    /* <Tabs */
-  }
-  {
-    /* defaultValue={themes[0].name} */
-  }
-  {
-    /* className="lg:flex gap-6 w-full grid grid-cols-1" */
-  }
-  // >
   return (
     <ThemeSelector defaultValue={selectedTheme}>
       <div className="w-full">
@@ -76,8 +76,9 @@ export default function Themes({
               `}
             >
               <>
-                <EditTheme />
+                {/*<EditTheme />*/}
                 <LayoutComponent userData={sampleUserData} />
+                <ChangeTheme user={userProfileDetails} theme={theme.name} />
               </>
             </TabsTrigger>
           ))}
