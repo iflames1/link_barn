@@ -18,61 +18,7 @@ const ChangeAppearance = dynamic(() => import("./use-appearance"), {
 });
 import PreviewLayout from "./preview-layout";
 import { sampleUserData } from "@/data/sampleUserData";
-
-//export const sampleUserData: UserData = {
-//  first_name: "Alex",
-//  last_name: "Johnson",
-//  username: "alexj",
-//  email: "",
-//  stx_address_mainnet: "",
-//  uuid: "1",
-//  bio: "Web developer, coffee enthusiast, and part-time adventurer. Building the future one line of code at a time.",
-//  profile_picture: "/dp.jpg",
-//  appearance: "layout1",
-//  theme: "theme1",
-//  links: [
-//    {
-//      uuid: "1",
-//      platform: "Portfolio",
-//      index: 0,
-//      url: "https://example.com",
-//      user_id: "link",
-//      link_title: "portfolio",
-//    },
-//    {
-//      uuid: "2",
-//      platform: "Twitter",
-//      index: 1,
-//      url: "https://example.com",
-//      user_id: "twitter",
-//      link_title: "twitter",
-//    },
-//    {
-//      uuid: "3",
-//      platform: "Instagram",
-//      index: 2,
-//      url: "https://example.com",
-//      user_id: "instagram",
-//      link_title: "instagram",
-//    },
-//    {
-//      uuid: "4",
-//      platform: "LinkedIn",
-//      index: 3,
-//      url: "https://example.com",
-//      user_id: "linkedin",
-//      link_title: "linkedin",
-//    },
-//    {
-//      uuid: "5",
-//      platform: "GitHub",
-//      index: 4,
-//      url: "https://example.com",
-//      user_id: "github",
-//      link_title: "github",
-//    },
-//  ],
-//};
+import { checkTransactionStatus } from "@/lib/checkTransactionStatus";
 
 export default function Themes({
   userProfile,
@@ -80,8 +26,6 @@ export default function Themes({
   userProfile: UserProfileSchema;
 }) {
   const [user, setUser] = useState<UserData | undefined>(userProfile);
-  const [tire, setTire] = useState<string>("free");
-  const [prevTxID, setPrevTxID] = useState<string>("");
   const [txStatus, setTxStatus] = useState<string>("");
 
   useEffect(() => {
@@ -89,59 +33,32 @@ export default function Themes({
       const result = await getUser();
       if (result) {
         setUser(result.userData);
-        //setTire(result.userData.tire);
-        setTire("free");
-        //setPrevTxID(result.userData.prevTxID);
-        setPrevTxID(
-          "0xa6d228c5f0f6d6d476a6b1522987e6fa3c729438e8bee0831e9b656b8bc8ab0b"
-        );
+        if (result.userData.tier === "free") {
+          if (
+            result.userData &&
+            result.userData.prevTxID &&
+            result.userData.prevTxID !== ""
+          ) {
+            const status = await checkTransactionStatus(
+              result.userData.prevTxID
+            );
+            setTxStatus(status);
+
+            if (status === "success") {
+              const updatedUser = {
+                ...result.userData,
+                prevTxID: "",
+                tier: "premium",
+              };
+              setUser(updatedUser);
+              await saveUserDetails(updatedUser);
+              toast.success("Transaction successful", { richColors: true });
+            }
+          }
+        }
       }
     };
     fetchUserData();
-  }, []);
-
-  useEffect(() => {
-    async function checkTransactionStatus(txID = "") {
-      if (txID === "") return "no prev tx made";
-      const url = `https://stacks-node-api.mainnet.stacks.co/extended/v1/tx/${txID}`;
-
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-        console.log("Transaction Status:", data.tx_status);
-
-        handleTx(data.tx_status);
-        //if (data.tx_status === "success") {
-        //  console.log("Transaction confirmed!");
-        //  return "success";
-        //} else if (data.tx_status === "pending") {
-        //  console.log("Transaction is pending...");
-        //  return "pending";
-        //} else {
-        //  console.log("Transaction failed:", data);
-        //  return "failed";
-        //}
-      } catch (error) {
-        console.error("Error fetching transaction status:", error);
-        toast.error("error checking previous transaction status");
-      }
-    }
-
-    async function handleTx(txStatus: string) {
-      if (txStatus === "success") {
-        //user.prevTxID = "";
-        //user.tire = "premium";
-        console.log(user);
-        await saveUserDetails(user);
-        setTxStatus("successful");
-      } else if (txStatus == "pending") {
-        setTxStatus("pending");
-      } else {
-        setTxStatus("failed");
-      }
-    }
-
-    checkTransactionStatus(prevTxID);
   }, []);
 
   return (
@@ -164,14 +81,11 @@ export default function Themes({
               value={layout.name}
               className="rounded-lg border border-gray-200 hover:border-gray-300 transition-colors relative"
             >
-              <div className="max-w-[300px]">
-                <layout.LayoutComponent userData={sampleUserData} />
-              </div>
-              {/* <layout.LayoutComponent userData={sampleUserData} /> */}
+              <layout.LayoutComponent userData={sampleUserData} />
               <ChangeAppearance
                 appearance={layout.name}
                 user={user}
-                tire={tire}
+                tier={user?.tier || "free"}
                 txStatus={txStatus}
               />
             </TabsTrigger>
