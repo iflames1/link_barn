@@ -5,8 +5,6 @@ import { cn } from "@/lib/utils";
 import { IconType } from "react-icons";
 import { IoEyeOutline } from "react-icons/io5";
 import dynamic from "next/dynamic";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { LoaderCircle } from "lucide-react";
 import { FaShareAlt } from "react-icons/fa";
 import { Skeleton } from "../ui/skeleton";
 

@@ -1,16 +1,37 @@
+import { getUser } from "@/lib/getUser";
 import { UserData } from "@/types/links";
 
+let userData: UserData | undefined;
+
+const fetchUserData = async () => {
+  const result = await getUser();
+  userData = result?.userData;
+};
+
+fetchUserData();
+
+const truncateString = (str: string | undefined): string => {
+  if (str && str.length > 15) {
+    return `${str.slice(0, 5)}...${str.slice(-5)}`;
+  }
+  return str ?? "Alexj";
+};
+
+let username = truncateString(userData?.username);
+
 export const sampleUserData: UserData = {
-  first_name: "Alex",
+  first_name: userData?.first_name || "Johnson",
   last_name: "Johnson",
-  username: "alexj",
+  username: username,
   email: "",
   stx_address_mainnet: "",
   uuid: "1",
-  bio: "Web developer, coffee enthusiast, and part-time adventurer. Building the future one line of code at a time.",
-  profile_picture: "",
-  appearance: "layout1",
-  theme: "theme1",
+  bio:
+    userData?.bio ||
+    "Web developer, coffee enthusiast, and part-time adventurer. Building the future one line of code at a time.",
+  profile_picture: userData?.profile_picture || "",
+  appearance: userData?.appearance || "layout1",
+  theme: userData?.theme || "theme1",
   prevTxID: "",
   tier: "free",
   links: [
