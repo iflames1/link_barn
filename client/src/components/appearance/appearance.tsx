@@ -11,8 +11,11 @@ import { UserProfileSchema } from "@/types/users";
 const ChangeAppearance = dynamic(() => import("./change-appearance"), {
   ssr: false,
   loading: () => (
-    <Button className="absolute top-2 left-2 bg-white border border-base-dark text-base-dark hover:bg-base-light">
-      Use Theme
+    <Button
+      variant="default"
+      className="absolute top-2 left-2 text-white bg-base-dark"
+    >
+      <Skeleton className="w-20 h-6" />
     </Button>
   ),
 });
@@ -20,6 +23,7 @@ import PreviewLayout from "./preview-layout";
 import { sampleUserData } from "@/data/sampleUserData";
 import { checkTransactionStatus } from "@/lib/checkTransactionStatus";
 import { Button } from "../ui/button";
+import { Skeleton } from "../ui/skeleton";
 
 export default function Themes({
   userProfile,
