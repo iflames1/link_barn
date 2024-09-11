@@ -38,35 +38,6 @@ const faqs = [
       "Link Barn is a versatile tool for managing, organizing, and sharing your links. Similar to LinkTree, it allows you to create a personalized page with multiple links. What sets Link Barn apart is its use of wallet connection for account creation and sign-in, providing enhanced security and seamless integration with blockchain technology.",
   },
   {
-    question: "How do I create an account on Link Barn?",
-    answer:
-      "To create an account on Link Barn, you need to connect your stacks wallet. Simply click on the 'sign in with wallet' button, choose your preferred wallet (e.g., Leather, Xverse, Orange), and follow the prompts to complete the connection. Once your wallet is connected, your account is automatically created.",
-  },
-  {
-    question: "What types of wallets are supported for sign-in?",
-    answer:
-      "Link Barn supports all that supports Stacks blockchain. We're constantly working on expanding our list of supported wallets to provide more options for our users.",
-  },
-  {
-    question: "Is my personal information safe when using wallet connection?",
-    answer:
-      "Yes, your personal information is safe. By using wallet connection, Link Barn doesn't store your private keys or sensitive wallet information. The connection only provides a secure way to verify your identity without sharing unnecessary personal data.",
-  },
-  {
-    question: "How do I add links to my Link Barn page?",
-    answer: `After signing in, you'll be redirected to a "/user/links" page. Click on the 'Add New Link' button, enter the URL and a title for your link, and save. You can add as many links as you need and easily reorder them by dragging and dropping.`,
-  },
-  {
-    question: "Can I customize the appearance of my Link Barn page?",
-    answer:
-      "Yes, Link Barn offers various customization options. You can change your page's theme, add a profile picture, customize colors, and even add a background image to make your page unique and reflective of your brand or personality.",
-  },
-  {
-    question: "How do I share my Link Barn page with others?",
-    answer:
-      "Once you've set up your links, you'll receive a unique URL for your Link Barn page. You can share this URL on your social media profiles, email signature, or anywhere else you want to provide easy access to your collection of links.",
-  },
-  {
     question: "Is Link Barn free to use?",
     answer:
       "Link Barn offers both free and premium tiers. The free tier provides basic functionality, while the premium tier offers advanced features such as advance appearance customization removable Link Barn branding. Check our pricing page for more details.",
@@ -80,87 +51,6 @@ const faqs = [
     question: "What if I lose access to my wallet?",
     answer:
       "If you lose access to your wallet, you'll need to regain access to it using your wallet's recovery methods (e.g., seed phrase). Once you've regained access to your wallet, you can simply connect it to Link Barn again. We recommend always keeping your wallet recovery information in a safe place.",
-  },
-];
-
-const planFeatures: PlanFeature[] = [
-  {
-    type: "Financial data",
-    features: [
-      {
-        name: "Open/High/Low/Close",
-        free: true,
-        startup: true,
-        team: true,
-        enterprise: true,
-      },
-      {
-        name: "Price-volume difference indicator	",
-        free: true,
-        startup: true,
-        team: true,
-        enterprise: true,
-      },
-    ],
-  },
-  {
-    type: "On-chain data",
-    features: [
-      {
-        name: "Network growth",
-        free: true,
-        startup: false,
-        team: true,
-        enterprise: true,
-      },
-      {
-        name: "Average token age consumed",
-        free: true,
-        startup: false,
-        team: true,
-        enterprise: true,
-      },
-      {
-        name: "Exchange flow",
-        free: false,
-        startup: false,
-        team: true,
-        enterprise: true,
-      },
-      {
-        name: "Total ERC20 exchange funds flow",
-        free: false,
-        startup: false,
-        team: true,
-        enterprise: true,
-      },
-    ],
-  },
-  {
-    type: "Social data",
-    features: [
-      {
-        name: "Dev activity",
-        free: false,
-        startup: true,
-        team: false,
-        enterprise: true,
-      },
-      {
-        name: "Topic search",
-        free: true,
-        startup: true,
-        team: true,
-        enterprise: true,
-      },
-      {
-        name: "Relative social dominance",
-        free: true,
-        startup: true,
-        team: false,
-        enterprise: true,
-      },
-    ],
   },
 ];
 
@@ -352,13 +242,12 @@ export default function PricingSectionCards() {
             <h3
               className={cn(
                 "text-[#151515] text-xxl sm:text-2xl md:text-3xl font-bold md:leading-[55.68px]",
-                manrope.className
+                manrope.className,
               )}
             >
               Frequently Aked Questions
             </h3>
             <span className="my-1 block">Have more questions?</span>
-            <ContactUs />
           </div>
           <FAQs
             className="bg-[#fafafa] py-4 rounded-md flex-1"
@@ -368,6 +257,7 @@ export default function PricingSectionCards() {
         </div>
       </div>
       {/* End Pricing */}
+      <ContactUs />
     </>
   );
 }

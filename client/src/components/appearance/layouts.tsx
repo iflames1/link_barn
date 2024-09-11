@@ -6,6 +6,7 @@ import { FaArrowRight } from "react-icons/fa";
 import { getUser } from "@/lib/getUser";
 import { themes } from "@/data/themes2";
 import ProfileWrapper from "./profile-wrapper";
+import { cn } from "@/lib/utils";
 
 interface LinkWrapperProps {
   userData: UserData | undefined;
@@ -16,6 +17,7 @@ interface LinkWrapperProps {
 interface LayoutProps {
   userData: UserData | undefined;
   links?: LinkSchema[];
+  className?: string;
 }
 
 interface ProfileWrapperProps {
@@ -70,10 +72,10 @@ export function LinkWrapper({ userData, links, children }: LinkWrapperProps) {
   );
 }
 
-export function Layout1({ userData, links }: LayoutProps) {
+export function Layout1({ userData, links, className }: LayoutProps) {
   return (
     <ProfileWrapper
-      className="flex flex-col items-center gap-[25px]"
+      className={cn("flex flex-col items-center gap-[25px]", className)}
       theme={userData?.theme}
     >
       <Image

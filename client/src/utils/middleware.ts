@@ -1,7 +1,7 @@
 import { getUserProfileByUsername } from "@/lib/queries";
 import { NextRequest, NextResponse } from "next/server";
 
-export const premiumRedirect = (req: NextRequest) => {
+export const premiumRedirect = async (req: NextRequest) => {
   const hostname = req.headers.get("host") || "";
   const premium = false;
   const url = req.nextUrl.clone();
@@ -81,6 +81,7 @@ export const premiumRedirect = (req: NextRequest) => {
       const newUrl = req.url.replace(`${username}.`, "");
       console.log(newUrl, "new");
 
+      // @ts-ignore
       if (host.startsWith(`${username}.${base}`)) {
         console.log("loops");
         return NextResponse.rewrite(newUrl);
