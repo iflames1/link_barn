@@ -47,11 +47,11 @@ export default function Themes({
     checkStatus();
   });
 
-  console.log("current layout = ", userProfile.appearance);
+  console.log("current layout = ", userProfile?.appearance);
 
   return (
     <Tabs
-      defaultValue={userProfile.appearance}
+      defaultValue={userProfile?.appearance}
       className="lg:flex gap-6 w-full relative"
     >
       <PreviewLayout>

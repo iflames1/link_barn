@@ -8,7 +8,7 @@ export const sampleUserData: UserData = {
   stx_address_mainnet: "",
   uuid: "1",
   bio: "Web developer, coffee enthusiast, and part-time adventurer. Building the future one line of code at a time.",
-  profile_picture: "/dp.jpg",
+  profile_picture: "",
   appearance: "layout1",
   theme: "theme1",
   prevTxID: "",
