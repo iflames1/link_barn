@@ -66,12 +66,12 @@ export default function Themes({
         ))}
       </PreviewLayout>
       <div className="bg-white rounded-xl lg:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-y-auto lg:w-[60%] w-full p-6">
-        <TabsList className="bg-transparent h-full grid grid-cols-1 gap-4">
+        <TabsList className="bg-transparent h-full grid grid-cols-1 sm:grid-cols-2 gap-4">
           {layouts.map((layout, index) => (
             <TabsTrigger
               key={index}
               value={layout.name}
-              className="rounded-lg border border-gray-200 hover:border-gray-300 transition-colors relative"
+              className="rounded-lg h-full border border-gray-200 hover:border-gray-300 transition-colors relative"
             >
               <layout.LayoutComponent userData={sampleUserData} />
               <ChangeAppearance
