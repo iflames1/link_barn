@@ -1,5 +1,5 @@
 from sqlmodel import SQLModel, Field, Relationship
-from sqlalchemy import event, Column, Enum
+from sqlalchemy import event, Column, Enum, table
 from typing import Optional, List, TYPE_CHECKING
 from app.core.models import TimestampModel, UUIDModel
 
@@ -17,8 +17,10 @@ def _create_enums(metadata, conn, **kw):
     # Create the enum
     auth_type.create(conn, checkfirst=True)
 
+
 class UserUsername(SQLModel):
     username: str | None = Field(default=None)
+
 
 class UserProfile(UserUsername):
     bio: str | None = Field(default=None)
