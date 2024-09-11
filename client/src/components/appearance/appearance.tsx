@@ -39,7 +39,23 @@ export default function Themes({
             result.userData.prevTxID &&
             result.userData.prevTxID !== ""
           ) {
-            setTxStatus(await checkTransactionStatus(result.userData.prevTxID));
+            const status = await checkTransactionStatus(
+              result.userData.prevTxID
+            );
+            setTxStatus(status);
+
+            if (status === "success") {
+              const updatedUser = {
+                ...result.userData,
+                prevTxID: "",
+                tier: "premium",
+              };
+              setUser(updatedUser);
+              await saveUserDetails(updatedUser);
+              toast.success("Transaction successful", { richColors: true });
+            } else {
+              await saveUserDetails(result.userData);
+            }
           }
         }
       }
