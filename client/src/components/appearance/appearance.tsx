@@ -18,6 +18,7 @@ const ChangeAppearance = dynamic(() => import("./use-appearance"), {
 });
 import PreviewLayout from "./preview-layout";
 import { sampleUserData } from "@/data/sampleUserData";
+import axios from "axios";
 
 export default function Themes({
   userProfile,
@@ -43,41 +44,31 @@ export default function Themes({
       }
     };
     fetchUserData();
-  }, []);
 
-  useEffect(() => {
-    async function checkTransactionStatus(txID = "") {
-      if (txID === "") return "no prev tx made";
+    async function checkTransactionStatus(txID: string) {
+      if (txID === "") {
+        console.log("No transaction ID provided");
+        return "no prev tx made";
+      }
       const url = `https://stacks-node-api.mainnet.stacks.co/extended/v1/tx/${txID}`;
 
       try {
-        const response = await fetch(url);
-        const data = await response.json();
+        const response = await axios.get(url);
+        console.log("response ....", response.data);
+        const data = response.data;
+        console.log("tx data", data);
         console.log("Transaction Status:", data.tx_status);
 
-        handleTx(data.tx_status);
+        setTxStatus(data.tx_status);
+        console.log("after handleTx");
       } catch (error) {
         console.error("Error fetching transaction status:", error);
-        toast.error("error checking previous transaction status");
-      }
-    }
-
-    async function handleTx(txStatus: string) {
-      if (txStatus === "success") {
-        //user.prevTxID = "";
-        //user.tire = "premium";
-        console.log(user);
-        await saveUserDetails(user);
-        setTxStatus("successful");
-      } else if (txStatus == "pending") {
-        setTxStatus("pending");
-      } else {
-        setTxStatus("failed");
+        toast.error("Error checking previous transaction status");
       }
     }
 
     checkTransactionStatus(prevTxID);
-  }, []);
+  }, [prevTxID]);
 
   return (
     <Tabs

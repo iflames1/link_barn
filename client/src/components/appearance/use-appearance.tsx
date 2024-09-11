@@ -86,6 +86,7 @@ export default function UseAppearanceButton({
 }: UseAppearanceButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   console.log(user, appearance, txStatus, tire);
+  console.log("txStatus", txStatus);
 
   const handleConfirm = async () => {
     if (user) {
