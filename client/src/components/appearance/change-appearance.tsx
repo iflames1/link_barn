@@ -130,7 +130,7 @@ export default function UseAppearanceButton({
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button className="absolute top-2 left-2 bg-white border border-base-dark text-base-dark hover:bg-base-light">
+        <Button className="absolute top-2 left-2 text-white bg-base-dark">
           Use Appearance
         </Button>
       </DialogTrigger>
