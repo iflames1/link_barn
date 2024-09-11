@@ -1,6 +1,5 @@
 // import "server-only";
 import isUUID from "is-uuid";
-import axios from "axios";
 import { API_BASE_URL } from "./constants";
 
 export const getUserProfile = async (uuid: string) => {
@@ -46,13 +45,23 @@ export const checkUserExists = async (
         message: "You think you are smart abi :joy:",
       };
     }
-    const response = await axios.post(`${API_BASE_URL}/users/check`, {
-      field,
-      value,
+
+    const response = await fetch(`${API_BASE_URL}/users/check`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ field, value }),
     });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
     return {
-      status: response.data.status,
-      message: response.data.message,
+      status: data.status,
+      message: data.message,
     };
   } catch (error) {
     console.error("Error checking user existence:", error);

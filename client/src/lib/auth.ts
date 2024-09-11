@@ -1,6 +1,9 @@
 import { parseCookies, setCookie, destroyCookie } from "nookies";
 import { API_BASE_URL } from "./constants";
 import { toast } from "sonner";
+import { SignJWT, jwtVerify } from "jose";
+
+const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 
 export const setUserUUID = (uuid: string) => {
   setCookie(null, "uuid", uuid, {
@@ -21,6 +24,14 @@ export const isAdmin = (): boolean => {
 export const clearUUID = () => {
   destroyCookie(null, "uuid");
 };
+
+export async function createToken(uuid: string): Promise<string> {
+  const token = await new SignJWT({ uuid })
+    .setProtectedHeader({ alg: "HS256" })
+    .setExpirationTime("1h")
+    .sign(new TextEncoder().encode(JWT_SECRET));
+  return token;
+}
 
 export const check_supabase_user = async (supabase_user_id: string) => {
   try {

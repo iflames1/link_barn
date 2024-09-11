@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { Progressbar } from "@/components/miscellaneous/LenisProvider";
@@ -25,6 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={` bg-white`}>
+        <SpeedInsights />
         <Progressbar>{children}</Progressbar>
         <GotoTop />
         <Toaster />
