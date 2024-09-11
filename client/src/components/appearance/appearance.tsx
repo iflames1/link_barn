@@ -19,6 +19,7 @@ const ChangeAppearance = dynamic(() => import("./use-appearance"), {
 import PreviewLayout from "./preview-layout";
 import { sampleUserData } from "@/data/sampleUserData";
 import axios from "axios";
+import { checkTransactionStatus } from "@/lib/checkTransactionStatus";
 
 export default function Themes({
   userProfile,
@@ -27,7 +28,6 @@ export default function Themes({
 }) {
   const [user, setUser] = useState<UserData | undefined>(userProfile);
   const [tier, setTier] = useState<string>("free");
-  const [prevTxID, setPrevTxID] = useState<string>();
   const [txStatus, setTxStatus] = useState<string>("");
 
   useEffect(() => {
@@ -35,7 +35,6 @@ export default function Themes({
       const result = await getUser();
       if (result) {
         setUser(result.userData);
-        //setTier("free");
         if (
           result.userData &&
           result.userData.tier &&
@@ -43,47 +42,21 @@ export default function Themes({
         ) {
           setTier(result.userData.tier);
         }
-        if (
-          result.userData &&
-          result.userData.prevTxID &&
-          result.userData.prevTxID !== ""
-        ) {
-          setPrevTxID(result.userData.prevTxID);
+        if (tier === "free") {
+          if (
+            result.userData &&
+            result.userData.prevTxID &&
+            result.userData.prevTxID !== ""
+          ) {
+            setTxStatus(await checkTransactionStatus(result.userData.prevTxID));
+          }
         }
-        //setPrevTxID(
-        //  "0xa6d228c5f0f6d6d476a6b1522987e6fa3c729438e8bee0831e9b656b8bc8ab0b"
-        //);
       }
     };
     fetchUserData();
 
-    async function checkTransactionStatus(txID: string | undefined) {
-      if (!txID || txID === "") {
-        console.log("no prev tx found");
-        return "no prev tx made";
-      }
-      const url = `https://stacks-node-api.mainnet.stacks.co/extended/v1/tx/${txID}`;
-
-      try {
-        const response = await axios.get(url);
-        console.log("response ....", response.data);
-        const data = response.data;
-        console.log("tx data", data);
-        console.log("Transaction Status:", data.tx_status);
-
-        setTxStatus(data.tx_status);
-        console.log("after handleTx");
-      } catch (error) {
-        console.error("Error fetching transaction status:", error);
-        toast.error("Error checking previous transaction status");
-      }
-    }
-
-    if (tier === "free") {
-      checkTransactionStatus(prevTxID);
-    }
     console.log("tier", tier);
-  }, [prevTxID, tier]);
+  }, [tier]);
 
   return (
     <Tabs
@@ -105,10 +78,7 @@ export default function Themes({
               value={layout.name}
               className="rounded-lg border border-gray-200 hover:border-gray-300 transition-colors relative"
             >
-              <div className="max-w-[300px]">
-                <layout.LayoutComponent userData={sampleUserData} />
-              </div>
-              {/* <layout.LayoutComponent userData={sampleUserData} /> */}
+              <layout.LayoutComponent userData={sampleUserData} />
               <ChangeAppearance
                 appearance={layout.name}
                 user={user}
