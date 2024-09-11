@@ -118,12 +118,18 @@ export default async function Page({ params }: PageProps) {
           <layout.LayoutComponent
             userData={userProfile}
             links={userProfile?.links}
+            className="min-h-screen"
           />
         )}
       </Suspense>
-      <div className="pb-4">
-        <JoinLinkBarn username={truncUsername} />
-      </div>
+      <>
+        {!userProfile.tier ||
+          (userProfile?.tier === "free" && (
+            <div className="pb-4">
+              <JoinLinkBarn username={truncUsername} />
+            </div>
+          ))}
+      </>
     </div>
   );
 }

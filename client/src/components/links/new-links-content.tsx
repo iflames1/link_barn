@@ -206,6 +206,7 @@ export const NewLinks = ({
       setIsLoading(false);
     }
   }
+  console.log(userProfile);
 
   const links = form.watch("links");
 

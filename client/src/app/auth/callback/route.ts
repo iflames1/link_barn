@@ -69,6 +69,7 @@ export async function GET(request: Request) {
               body: JSON.stringify({
                 auth_type: "supabase",
                 appearance: "layout1",
+                tier: "free",
                 email: user?.user_metadata?.email,
                 first_name: firstName || null,
                 last_name: lastName || null,

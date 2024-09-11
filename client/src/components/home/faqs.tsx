@@ -52,7 +52,7 @@ const FAQ = ({
     >
       <AccordionTrigger
         className={cn(
-          "px-4 hover:no-underline ",
+          "px-4 hover:no-underline text-left",
           type === "landing" ? "text-lg rounded-md" : "",
         )}
       >
