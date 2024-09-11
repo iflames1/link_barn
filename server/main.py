@@ -33,7 +33,7 @@ origins = [
     "http://localhost:3000",
     "https://linkbarn.vercel.app",
     "https://www.linkbarn.tech",
-    "https://api.linkbarn.tech"
+    "https://api.linkbarn.tech",
 ]
 app = FastAPI(title=settings.project_name, openapi_url=f"{settings.api_v1_prefix}/openapi.json", debug=settings.debug,
               version=settings.version, lifespan=lifespan)
