@@ -34,26 +34,19 @@ export default function Themes({
       if (result) {
         setUser(result.userData);
         if (result.userData.tier === "free") {
-          if (
-            result.userData &&
-            result.userData.prevTxID &&
-            result.userData.prevTxID !== ""
-          ) {
-            const status = await checkTransactionStatus(
-              result.userData.prevTxID
-            );
-            setTxStatus(status);
+          const status = await checkTransactionStatus(result.userData.prevTxID);
+          setTxStatus(status);
+          console.log("status = ", status);
 
-            if (status === "success") {
-              const updatedUser = {
-                ...result.userData,
-                prevTxID: "",
-                tier: "premium",
-              };
-              setUser(updatedUser);
-              await saveUserDetails(updatedUser);
-              toast.success("Transaction successful", { richColors: true });
-            }
+          if (status === "success") {
+            const updatedUser = {
+              ...result.userData,
+              prevTxID: "",
+              tier: "premium",
+            };
+            setUser(updatedUser);
+            await saveUserDetails(updatedUser);
+            toast.success("Transaction successful", { richColors: true });
           }
         }
       }
