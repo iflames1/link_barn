@@ -50,8 +50,7 @@ export function PremiumOption({
       console.log("tx data", data);
       console.log("Transaction Status:", data.tx_status);
 
-      txStatus = data.tx_status;
-      console.log("after handleTx");
+      return data.tx_status;
     } catch (error) {
       console.error("Error fetching transaction status:", error);
       toast.error("Error checking previous transaction status");
@@ -68,11 +67,16 @@ export function PremiumOption({
       await sendSTXTransaction(undefined, price, title);
       if (user && txId) {
         user.prevTxID = txId;
+        console.log("user new TxID", user.prevTxID);
         await saveUserDetails(user);
-        checkTransactionStatus(txId);
+        const status = await checkTransactionStatus(txId);
+        toast.success("Your transaction is pending");
+        console.log("status", status);
       }
     }
+    setLoading(false);
   };
+
   return (
     <div className="border rounded-lg p-4 mb-4">
       <h3 className="text-lg font-semibold mb-2">{title}</h3>
@@ -91,11 +95,11 @@ export function PremiumOption({
       </ul>
       <Button
         className={cn(
-          "w-full mt-4 bg-base-dark",
+          "w-full mt-4 bg-base-dark gap-4",
           txStatus === "success" && "cursor-not-allowed"
         )}
         onClick={handlePayment}
-        disabled={txStatus === "success" || txStatus === "pending"}
+        disabled={txStatus === "success" || txStatus === "pending" || loading}
       >
         Choose {title}{" "}
         <LoaderCircle
@@ -156,7 +160,7 @@ export default function UseAppearanceButton({
             <Button
               onClick={handleConfirm}
               disabled={loading}
-              className="bg-base-dark"
+              className="bg-base-dark gap-4"
             >
               Confirm Change{" "}
               <LoaderCircle
@@ -221,7 +225,7 @@ export default function UseAppearanceButton({
             <Button
               onClick={handleConfirm}
               disabled={loading}
-              className="bg-base-dark"
+              className="bg-base-dark gap-4"
             >
               Confirm Change{" "}
               <LoaderCircle
