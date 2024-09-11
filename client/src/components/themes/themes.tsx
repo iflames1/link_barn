@@ -84,12 +84,12 @@ export default function Themes({
             </TabsTrigger>
           ))}
         </TabsList>
-        <ResponsiveButton
-          path="/user/appearance"
-          title="Go back"
-          className="absolute sm:bottom-2 bottom-0 right-6"
-        />
       </div>
+      <ResponsiveButton
+        path="/user/appearance"
+        title="Go back"
+        className="absolute sm:bottom-8 bottom-6 right-12"
+      />
     </ThemeSelector>
   );
 }
