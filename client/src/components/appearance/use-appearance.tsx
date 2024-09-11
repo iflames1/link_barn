@@ -32,7 +32,7 @@ export function PremiumOption({
   txStatus,
   user,
 }: PremiumOptionProps) {
-  const { sendSTXTransaction, txId } = useWallet();
+  const { sendSTXTransaction, txId, holdUnik } = useWallet();
   const [loading, setLoading] = useState(false);
 
   async function checkTransactionStatus(txID: string) {
@@ -59,11 +59,17 @@ export function PremiumOption({
 
   const handlePayment = async () => {
     setLoading(true);
-    await sendSTXTransaction(undefined, price, title);
-    if (user && txId) {
-      user.prevTxID = txId;
-      await saveUserDetails(user);
-      checkTransactionStatus(txId);
+    if (price === "3" && !(await holdUnik(user?.stx_address_mainnet))) {
+      toast.error("You need to hold UNIK to use this option");
+      setLoading(false);
+      return;
+    } else {
+      await sendSTXTransaction(undefined, price, title);
+      if (user && txId) {
+        user.prevTxID = txId;
+        await saveUserDetails(user);
+        checkTransactionStatus(txId);
+      }
     }
   };
   return (
