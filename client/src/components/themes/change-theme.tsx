@@ -9,10 +9,15 @@ import {
 import { Button } from "../ui/button";
 import { LoaderCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UserData } from "@/types/links";
 import { saveUserDetails } from "@/lib/saveUserDetails";
 import { toast } from "sonner";
+import { checkTransactionStatus } from "@/lib/checkTransactionStatus";
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import { AiOutlineInfoCircle } from "react-icons/ai";
+import { CgSmileSad } from "react-icons/cg";
+import { PremiumOption } from "../premium-option";
 
 export default function ChangeTheme({
   user,
@@ -23,6 +28,26 @@ export default function ChangeTheme({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [txStatus, setTxStatus] = useState<string>("");
+
+  useEffect(() => {
+    const checkStatus = async () => {
+      if (user) {
+        const status = await checkTransactionStatus(user.prevTxID);
+        setTxStatus(status);
+        if (status === "success") {
+          user.prevTxID = "";
+          user.tier = "premium";
+          console.log("userProfile before = ", user);
+          await saveUserDetails(user);
+          console.log("userProfile after = ", user);
+          toast.success("Transaction successful", { richColors: true });
+        }
+      }
+    };
+
+    checkStatus();
+  });
 
   const handleConfirm = async () => {
     setLoading(true);
@@ -45,25 +70,92 @@ export default function ChangeTheme({
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <div className="text-center">
-          <DialogTitle className="text-xl font-semibold mb-4">
-            Confirm Theme Change
-          </DialogTitle>
-          <DialogDescription className="mb-4">
-            Are you sure you want to use this theme?
-          </DialogDescription>{" "}
-          <Button
-            onClick={handleConfirm}
-            disabled={loading}
-            className="bg-base-dark gap-4"
-          >
-            Confirm Change{" "}
-            <LoaderCircle
-              className={cn(`animate-spin`, loading ? "flex" : "hidden")}
-              size={16}
+        {theme === "theme1" ? (
+          <div className="text-center">
+            <DialogTitle className="text-xl font-semibold mb-4">
+              Confirm Theme Change
+            </DialogTitle>
+            <DialogDescription className="mb-4">
+              Are you sure you want to use this theme?
+            </DialogDescription>{" "}
+            <Button
+              onClick={handleConfirm}
+              disabled={loading}
+              className="bg-base-dark gap-4"
+            >
+              Confirm Change
+              <LoaderCircle
+                className={cn(`animate-spin`, loading ? "flex" : "hidden")}
+                size={16}
+              />
+            </Button>
+          </div>
+        ) : user.tier === "free" ? (
+          <div>
+            <p className="">
+              {txStatus === "success" ? (
+                <span className="flex items-center gap-1">
+                  Your previous transaction was success please refresh this page
+                  to continue{" "}
+                  <IoMdCheckmarkCircleOutline className="text-green-500 inline-flex items-center" />
+                </span>
+              ) : txStatus === "pending" ? (
+                <span className="flex items-center gap-1">
+                  Your previous transaction is still pending{" "}
+                  <LoaderCircle
+                    className="animate-spin inline-flex"
+                    size={16}
+                  />
+                </span>
+              ) : txStatus === "failed" ? (
+                <span className="text-red flex items-center gap-1">
+                  Your previous transaction failed <AiOutlineInfoCircle />
+                </span>
+              ) : txStatus === "dropped" ? (
+                <span>
+                  Your previous transaction was dropped <CgSmileSad />
+                </span>
+              ) : (
+                ""
+              )}
+            </p>
+            <DialogTitle className="text-xl font-semibold mb-4">
+              Upgrade to Use This Theme
+            </DialogTitle>
+            <PremiumOption
+              title="Link Barn Premium (UNIKIND-holders)"
+              price="3"
+              txStatus={txStatus}
+              user={user}
             />
-          </Button>
-        </div>
+            <PremiumOption
+              title="Link Barn Premium"
+              price="5"
+              txStatus={txStatus}
+              user={user}
+            />
+          </div>
+        ) : (
+          <div className="text-center">
+            <DialogTitle className="text-xl font-semibold mb-4">
+              Confirm Appearance Change
+            </DialogTitle>
+            <p className="mb-4">
+              Are you sure you want to use this appearance?
+            </p>
+            <Button
+              onClick={handleConfirm}
+              disabled={loading}
+              className="bg-base-dark gap-4"
+            >
+              Confirm Change{" "}
+              <LoaderCircle
+                className={cn(`animate-spin`, loading ? "flex" : "hidden")}
+                size={16}
+              />
+            </Button>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );
