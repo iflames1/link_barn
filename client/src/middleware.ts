@@ -10,8 +10,10 @@ export async function middleware(req: NextRequest) {
   // return await updateSession(req);
   // }
 
-  return await validateuser(req);
-  // return NextResponse.next();
+  if (url.pathname.startsWith("/user") || url.pathname.startsWith("/auth")) {
+    return await validateuser(req);
+  }
+  return NextResponse.next();
 }
 
 export const config = {
