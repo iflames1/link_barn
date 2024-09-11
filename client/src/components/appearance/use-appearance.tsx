@@ -8,48 +8,57 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
 import { CheckCircle, LoaderCircle } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { saveUserDetails } from "@/lib/saveUserDetails";
-import { getUser } from "@/lib/getUser";
 import { UserData } from "@/types/links";
-import { useWallet } from "@/utils/wallet";
 import { toast } from "sonner";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import { cn } from "@/lib/utils";
+import { CgSmileSad } from "react-icons/cg";
+import { sendSTXTransaction } from "@/lib/sendSTXTransaction";
+import { checkTransactionStatus } from "@/lib/checkTransactionStatus";
+import { holdsUnik } from "@/lib/holdsUnik";
 
 interface PremiumOptionProps {
   title: string;
   price: string;
   txStatus: string;
+  user: UserData | undefined;
 }
 
-export function PremiumOption({ title, price, txStatus }: PremiumOptionProps) {
-  const { sendSTXTransaction } = useWallet();
+export function PremiumOption({
+  title,
+  price,
+  txStatus,
+  user,
+}: PremiumOptionProps) {
+  const [loading, setLoading] = useState(false);
 
-  const handlePayment = () => {
-    sendSTXTransaction(undefined, price, title);
+  const handlePayment = async () => {
+    setLoading(true);
+    if (price === "3" && !(await holdsUnik(user?.stx_address_mainnet))) {
+      toast.error("You need to hold UNIK to use this option", {
+        richColors: true,
+      });
+      setLoading(false);
+      return;
+    } else {
+      const txId = await sendSTXTransaction(price, title);
+      if (user && txId) {
+        user.prevTxID = txId;
+        await saveUserDetails(user);
+        console.log("tx ID = ", user.prevTxID);
+        const status = await checkTransactionStatus(txId);
+        toast.success("Your transaction have been sent", { richColors: true });
+        console.log("tx status = ", status);
+      }
+    }
+    setLoading(false);
   };
+
   return (
     <div className="border rounded-lg p-4 mb-4">
-      <p>
-        {txStatus === "success" ? (
-          <span className="">
-            your previous transaction was success please refresh this page to
-            continue <IoMdCheckmarkCircleOutline className="text-green-500" />
-          </span>
-        ) : txStatus === "pending" ? (
-          <span>
-            your previous transaction is still pending{" "}
-            <LoaderCircle className="animate-spin" size={16} />
-          </span>
-        ) : txStatus === "failed" ? (
-          <span className="text-red">
-            your previous transaction failed <AiOutlineInfoCircle />
-          </span>
-        ) : (
-          ""
-        )}
-      </p>
       <h3 className="text-lg font-semibold mb-2">{title}</h3>
       <p className="text-2xl font-bold mb-4">{price}stx one time payment</p>
       <ul className="space-y-2">
@@ -64,8 +73,22 @@ export function PremiumOption({ title, price, txStatus }: PremiumOptionProps) {
           </li>
         ))}
       </ul>
-      <Button className="w-full mt-4 bg-base-dark" onClick={handlePayment}>
-        Choose {title}
+      <Button
+        className={cn(
+          "w-full mt-4 bg-base-dark gap-4",
+          txStatus === "success" && "cursor-not-allowed"
+        )}
+        onClick={handlePayment}
+        disabled={txStatus === "success" || txStatus === "pending" || loading}
+      >
+        Choose {title}{" "}
+        <LoaderCircle
+          className={cn(
+            `animate-spin`,
+            loading || txStatus === "pending" ? "flex" : "hidden"
+          )}
+          size={16}
+        />
       </Button>
     </div>
   );
@@ -74,91 +97,30 @@ export function PremiumOption({ title, price, txStatus }: PremiumOptionProps) {
 interface UseAppearanceButtonProps {
   appearance: string;
   user: UserData | undefined;
-  tire: string;
+  tier: string;
   txStatus: string;
 }
 
 export default function UseAppearanceButton({
   appearance,
   user,
-  tire,
+  tier,
   txStatus,
 }: UseAppearanceButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
-  console.log(user, appearance, txStatus, tire);
-  //const [user, setUser] = useState<UserData | undefined>();
-  //const [tire, setTire] = useState<string>();
-  //const [prevTxID, setPrevTxID] = useState<string>("");
-  //const [txStatus, setTxStatus] = useState<string>("");
-
-  //useEffect(() => {
-  //  const fetchUserData = async () => {
-  //    const result = await getUser();
-  //    if (result) {
-  //      setUser(result.userData);
-  //      //setTire(result.userData.tire);
-  //      setTire("free");
-  //      //setPrevTxID(result.userData.prevTxID);
-  //      setPrevTxID(
-  //        "0xa6d228c5f0f6d6d476a6b1522987e6fa3c729438e8bee0831e9b656b8bc8ab0b"
-  //      );
-  //    }
-  //  };
-  //  fetchUserData();
-  //});
-
-  //useEffect(() => {
-  //  async function checkTransactionStatus(txID = "") {
-  //    if (txID === "") return "no prev tx made";
-  //    const url = `https://stacks-node-api.mainnet.stacks.co/extended/v1/tx/${txID}`;
-
-  //    try {
-  //      const response = await fetch(url);
-  //      const data = await response.json();
-  //      console.log("Transaction Status:", data.tx_status);
-
-  //      handleTx(data.tx_status);
-  //      //if (data.tx_status === "success") {
-  //      //  console.log("Transaction confirmed!");
-  //      //  return "success";
-  //      //} else if (data.tx_status === "pending") {
-  //      //  console.log("Transaction is pending...");
-  //      //  return "pending";
-  //      //} else {
-  //      //  console.log("Transaction failed:", data);
-  //      //  return "failed";
-  //      //}
-  //    } catch (error) {
-  //      console.error("Error fetching transaction status:", error);
-  //      toast.error("error checking previous transaction status");
-  //    }
-  //  }
-
-  //  async function handleTx(txStatus: string) {
-  //    if (txStatus === "success") {
-  //      //user.prevTxID = "";
-  //      //user.tire = "premium";
-  //      console.log(user);
-  //      await saveUserDetails(user);
-  //      setTxStatus("successful");
-  //    } else if (txStatus == "pending") {
-  //      setTxStatus("pending");
-  //    } else {
-  //      setTxStatus("failed");
-  //    }
-  //  }
-
-  //  checkTransactionStatus(prevTxID);
-  //}, []);
+  console.log(user, appearance, txStatus, tier);
+  const [loading, setLoading] = useState(false);
+  console.log("tx status = ", txStatus);
 
   const handleConfirm = async () => {
-    if (user) {
+    setLoading(true);
+    if (user && user.appearance !== appearance) {
       user.appearance = appearance;
-      console.log(user);
       await saveUserDetails(user);
-      console.log(`Appearance changed to ${appearance}`);
+      console.log("new layout = ", user.appearance);
       setIsOpen(false);
     }
+    setLoading(false);
   };
 
   return (
@@ -177,21 +139,62 @@ export default function UseAppearanceButton({
             <DialogDescription className="mb-4">
               Are you sure you want to use this appearance?
             </DialogDescription>
-            <Button onClick={handleConfirm} className="bg-base-dark">
-              Confirm Change
+            <Button
+              onClick={handleConfirm}
+              disabled={loading}
+              className="bg-base-dark gap-4"
+            >
+              Confirm Change{" "}
+              <LoaderCircle
+                className={cn(`animate-spin`, loading ? "flex" : "hidden")}
+                size={16}
+              />
             </Button>
           </div>
-        ) : tire === "free" ? (
+        ) : tier === "free" ? (
           <div>
+            <p className="">
+              {txStatus === "success" ? (
+                <span className="flex items-center gap-1">
+                  Your previous transaction was success please refresh this page
+                  to continue{" "}
+                  <IoMdCheckmarkCircleOutline className="text-green-500 inline-flex items-center" />
+                </span>
+              ) : txStatus === "pending" ? (
+                <span className="flex items-center gap-1">
+                  Your previous transaction is still pending{" "}
+                  <LoaderCircle
+                    className="animate-spin inline-flex"
+                    size={16}
+                  />
+                </span>
+              ) : txStatus === "failed" ? (
+                <span className="text-red flex items-center gap-1">
+                  Your previous transaction failed <AiOutlineInfoCircle />
+                </span>
+              ) : txStatus === "dropped" ? (
+                <span>
+                  Your previous transaction was dropped <CgSmileSad />
+                </span>
+              ) : (
+                ""
+              )}
+            </p>
             <DialogTitle className="text-xl font-semibold mb-4">
               Upgrade to Use This Appearance
             </DialogTitle>
             <PremiumOption
-              title="Premium (UNIKIND-holders)"
+              title="Link Barn Premium (UNIKIND-holders)"
               price="3"
               txStatus={txStatus}
+              user={user}
             />
-            <PremiumOption title="Premium" price="5" txStatus={txStatus} />
+            <PremiumOption
+              title="Link Barn Premium"
+              price="5"
+              txStatus={txStatus}
+              user={user}
+            />
           </div>
         ) : (
           <div className="text-center">
@@ -201,8 +204,16 @@ export default function UseAppearanceButton({
             <p className="mb-4">
               Are you sure you want to use this appearance?
             </p>
-            <Button className="bg-base-dark" onClick={handleConfirm}>
-              Confirm Change
+            <Button
+              onClick={handleConfirm}
+              disabled={loading}
+              className="bg-base-dark gap-4"
+            >
+              Confirm Change{" "}
+              <LoaderCircle
+                className={cn(`animate-spin`, loading ? "flex" : "hidden")}
+                size={16}
+              />
             </Button>
           </div>
         )}

@@ -6,7 +6,7 @@ export const theme1 = {
 
 export const theme2 = {
   name: "Dark",
-  bg: "bg-gray-900",
+  bg: "bg-[#111827]",
   text: "text-white",
 };
 

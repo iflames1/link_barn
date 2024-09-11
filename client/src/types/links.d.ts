@@ -30,5 +30,7 @@ interface UserData {
   bio: string;
   appearance: string;
   theme: string;
+  prevTxID: string;
+  tier: string;
   links: LinkSchema[];
 }

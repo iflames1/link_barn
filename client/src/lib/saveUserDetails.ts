@@ -3,22 +3,23 @@ import axios from "axios";
 import { API_BASE_URL } from "./constants";
 import { getUserUUID } from "./auth";
 import { toast } from "sonner";
-import { revalidateTagServer } from "@/app/actions";
+import { revalidateTagServer, revalidateUserProfile } from "@/app/actions";
 
 export const saveUserDetails = async (
   userDetails: UserData | undefined,
-  id: string | undefined = getUserUUID(),
+  id: string | undefined = getUserUUID()
 ) => {
   if (id) {
     try {
       const response = await axios.patch(
         API_BASE_URL + "/users/" + id,
-        userDetails,
+        userDetails
       );
 
       if (response.status === 200) {
         console.log("User details updated successfully");
         await revalidateTagServer("userProfile");
+        //await revalidateUserProfile(`userProfile-${id}`);
         toast.success("Updated successfully.", { richColors: true });
         return true;
       } else {
