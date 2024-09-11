@@ -11,7 +11,7 @@ export const sendSTXTransaction = async (
   const transactionDetails: STXTransferOptions = {
     network: new StacksMainnet(),
     recipient: recipientAddress,
-    amount: amount,
+    amount: amount + "000000",
     memo: memo,
     appDetails: {
       name: "Link Barn",
