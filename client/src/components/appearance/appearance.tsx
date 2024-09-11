@@ -18,7 +18,6 @@ const ChangeAppearance = dynamic(() => import("./use-appearance"), {
 });
 import PreviewLayout from "./preview-layout";
 import { sampleUserData } from "@/data/sampleUserData";
-import axios from "axios";
 import { checkTransactionStatus } from "@/lib/checkTransactionStatus";
 
 export default function Themes({
@@ -27,7 +26,6 @@ export default function Themes({
   userProfile: UserProfileSchema;
 }) {
   const [user, setUser] = useState<UserData | undefined>(userProfile);
-  const [tier, setTier] = useState<string>("free");
   const [txStatus, setTxStatus] = useState<string>("");
 
   useEffect(() => {
@@ -35,14 +33,7 @@ export default function Themes({
       const result = await getUser();
       if (result) {
         setUser(result.userData);
-        if (
-          result.userData &&
-          result.userData.tier &&
-          result.userData.tier !== ""
-        ) {
-          setTier(result.userData.tier);
-        }
-        if (tier === "free") {
+        if (result.userData.tier === "free") {
           if (
             result.userData &&
             result.userData.prevTxID &&
@@ -54,9 +45,7 @@ export default function Themes({
       }
     };
     fetchUserData();
-
-    console.log("tier", tier);
-  }, [tier]);
+  }, []);
 
   return (
     <Tabs
@@ -82,7 +71,7 @@ export default function Themes({
               <ChangeAppearance
                 appearance={layout.name}
                 user={user}
-                tier={tier}
+                tier={user?.tier || "free"}
                 txStatus={txStatus}
               />
             </TabsTrigger>
