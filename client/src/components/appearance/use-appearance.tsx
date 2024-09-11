@@ -19,6 +19,8 @@ import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { cn } from "@/lib/utils";
 import axios from "axios";
 import { CgSmileSad } from "react-icons/cg";
+import { sendSTXTransaction } from "@/lib/sendSTXTransaction";
+import { checkTransactionStatus } from "@/lib/checkTransactionStatus";
 
 interface PremiumOptionProps {
   title: string;
@@ -33,45 +35,26 @@ export function PremiumOption({
   txStatus,
   user,
 }: PremiumOptionProps) {
-  const { sendSTXTransaction, txId, holdUnik } = useWallet();
+  const { holdUnik } = useWallet();
   const [loading, setLoading] = useState(false);
-
-  async function checkTransactionStatus(txID: string) {
-    if (txID === "") {
-      console.log("No transaction ID provided");
-      return "no prev tx made";
-    }
-    const url = `https://stacks-node-api.mainnet.stacks.co/extended/v1/tx/${txID}`;
-
-    try {
-      const response = await axios.get(url);
-      console.log("response ....", response.data);
-      const data = response.data;
-      console.log("tx data", data);
-      console.log("Transaction Status:", data.tx_status);
-
-      return data.tx_status;
-    } catch (error) {
-      console.error("Error fetching transaction status:", error);
-      toast.error("Error checking previous transaction status");
-    }
-  }
 
   const handlePayment = async () => {
     setLoading(true);
     if (price === "3" && !(await holdUnik(user?.stx_address_mainnet))) {
-      toast.error("You need to hold UNIK to use this option");
+      toast.error("You need to hold UNIK to use this option", {
+        richColors: true,
+      });
       setLoading(false);
       return;
     } else {
-      await sendSTXTransaction(undefined, price, title);
+      const txId = await sendSTXTransaction(price, title);
       if (user && txId) {
         user.prevTxID = txId;
-        console.log("user new TxID", user.prevTxID);
         await saveUserDetails(user);
+        console.log("tx ID = ", user.prevTxID);
         const status = await checkTransactionStatus(txId);
-        toast.success("Your transaction is pending");
-        console.log("status", status);
+        toast.success("Your transaction have been sent", { richColors: true });
+        console.log("tx status = ", status);
       }
     }
     setLoading(false);
@@ -103,7 +86,10 @@ export function PremiumOption({
       >
         Choose {title}{" "}
         <LoaderCircle
-          className={cn(`animate-spin`, loading ? "flex" : "hidden")}
+          className={cn(
+            `animate-spin`,
+            loading || txStatus === "pending" ? "flex" : "hidden"
+          )}
           size={16}
         />
       </Button>
@@ -127,15 +113,14 @@ export default function UseAppearanceButton({
   const [isOpen, setIsOpen] = useState(false);
   console.log(user, appearance, txStatus, tier);
   const [loading, setLoading] = useState(false);
-  console.log("txStatus", txStatus);
+  console.log("tx status = ", txStatus);
 
   const handleConfirm = async () => {
     setLoading(true);
-    if (user) {
+    if (user && user.appearance !== appearance) {
       user.appearance = appearance;
-      console.log("user after change", user);
       await saveUserDetails(user);
-      console.log(`Appearance changed to ${appearance}`);
+      console.log("new layout = ", user.appearance);
       setIsOpen(false);
     }
     setLoading(false);
