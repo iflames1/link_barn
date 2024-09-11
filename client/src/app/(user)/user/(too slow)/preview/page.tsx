@@ -19,9 +19,9 @@ export default async function PreviewPage() {
   const userProfile = await getUserProfileCached(uuid || "");
   console.log(userProfile);
   const links = userProfile?.links;
-  const layout = layouts.find(
-    (layout) => layout.name === userProfile?.appearance ?? "layout1"
-  );
+  const layout = userProfile?.appearance
+    ? layouts.find((layout) => layout.name === userProfile?.appearance)
+    : layouts[0];
   console.log("Star", layout);
 
   return (
@@ -29,8 +29,10 @@ export default async function PreviewPage() {
       <Header />
       <div className="sm:p-0 sm:pt-6 p-4 relative">
         <div className="bg-white rounded-xl sm:sm:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-y-auto">
-          {layout && (
+          {layout ? (
             <layout.LayoutComponent userData={userProfile} links={links} />
+          ) : (
+            <p>We are currently experiencing some issues</p>
           )}
         </div>
         <ResponsiveButton

@@ -26,10 +26,7 @@ import { useAppContext } from "@/context";
 import { getUserUUID } from "@/lib/auth";
 import { FaShareAlt } from "react-icons/fa";
 
-export function ShareLink() {
-  // const { getData, userProfileDetails, updateUserProfile, saveUserDetails } =
-  //   useAppContext();
-  // const { checkUserExists } = useWallet();
+export default function ShareLink() {
   const { userProfileDetails, saveUsername, updateUserProfile, getData } =
     useAppContext();
   console.log(userProfileDetails);
@@ -137,13 +134,13 @@ export function ShareLink() {
         </button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Share link</DialogTitle>
+          <DialogDescription>
+            Anyone who has this link will be able to view your link barn.
+          </DialogDescription>
+        </DialogHeader>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <DialogHeader>
-            <DialogTitle>Share link</DialogTitle>
-            <DialogDescription>
-              Anyone who has this link will be able to view your link barn.
-            </DialogDescription>
-          </DialogHeader>
           <div className="flex items-center gap-2">
             <div className="grid flex-1 gap-2">
               <Label htmlFor="link" className="sr-only">
@@ -195,29 +192,6 @@ export function ShareLink() {
             </ConfettiSideCannons>
           </div>
           <DialogFooter className="justify-end">
-            {/* {isEditing ? ( */}
-            {/*   <Button */}
-            {/*     type="submit" */}
-            {/*     variant={"outline"} */}
-            {/*     className="button py-[11px] hover:text-base-light sm:px-7 px-4 border-[1px] border-base-dark text-base-dark  hover:bg-base-dark" */}
-            {/*   > */}
-            {/*     Save changes */}
-            {/*   </Button> */}
-            {/* ) : ( */}
-            {/*   <Button */}
-            {/*     className="button py-[11px] hover:text-base-light sm:px-7 px-4 border-[1px] border-base-dark text-base-dark  hover:bg-base-dark" */}
-            {/*     type="button" */}
-            {/*     variant={"outline"} */}
-            {/*     onClick={(e) => { */}
-            {/*       setIsEditing(true); */}
-            {/*       e.preventDefault(); */}
-            {/*     }} */}
-            {/*   > */}
-            {/*     {userProfileDetails?.username */}
-            {/*       ? "Change Username" */}
-            {/*       : "Add Username"} */}
-            {/*   </Button> */}
-            {/* )} */}
             {userProfileDetails?.username !== username && (
               <Button
                 type="submit"
@@ -231,11 +205,6 @@ export function ShareLink() {
                 Save changes
               </Button>
             )}
-            {/* <DialogClose asChild> */}
-            {/*   <Button type="button" variant="secondary"> */}
-            {/*     Close */}
-            {/*   </Button> */}
-            {/* </DialogClose> */}
           </DialogFooter>
         </form>
       </DialogContent>

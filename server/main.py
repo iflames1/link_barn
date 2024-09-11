@@ -18,6 +18,7 @@ async def create_tables():
     """
     from app.links.models import Link
     from app.users.models import User
+    from app.transactions.models import Transaction
     async with async_engine.begin() as conn:
         await conn.run_sync(SQLModel.metadata.create_all)
 
@@ -32,6 +33,7 @@ origins = [
     "http://localhost:3000",
     "https://linkbarn.vercel.app",
     "https://www.linkbarn.tech",
+    "https://api.linkbarn.tech",
 ]
 app = FastAPI(title=settings.project_name, openapi_url=f"{settings.api_v1_prefix}/openapi.json", debug=settings.debug,
               version=settings.version, lifespan=lifespan)
