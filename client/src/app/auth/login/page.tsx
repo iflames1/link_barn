@@ -54,11 +54,11 @@ const LoginContent = () => {
         </motion.p>
       </Link>
       <div className="flex items-center justify-center flex-col gap-4 !w-full">
-        {searchParams.get("superdupersecret") && (
-          <form action={signInWithGoogle} className="w-full max-w-[300px]">
-            <Submit />
-          </form>
-        )}
+        {/* {searchParams.get("superdupersecret") && ( */}
+        {/*   <form action={signInWithGoogle} className="w-full max-w-[300px]"> */}
+        {/*     <Submit /> */}
+        {/*   </form> */}
+        {/* )} */}
         <AppWrapper>
           <ConnectWallet />
         </AppWrapper>

@@ -72,6 +72,25 @@ export const checkUserExists = async (
   }
 };
 
+export const getStats = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/stats`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error("Error checking user existence:", error);
+    return {
+      status: false,
+      message: "Error checking user existence",
+    };
+  }
+};
+
 export const getUserProfileByUsername = async (username: string) => {
   console.log("AIIIT");
   console.log("AIIIT");
