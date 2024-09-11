@@ -262,7 +262,7 @@ export function Layout4({ userData, links }: LayoutProps) {
         </h1>
         <p className="text-sm text-gray-600 mt-2 text-wrap">{userData?.bio}</p>
       </div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-4 mt-9">
         <LinkWrapper userData={userData} links={links}>
           {(linkData) => (
             <a

@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import ResponsiveButton from "@/components/common/responsive-button";
 import { layouts } from "@/components/appearance/layouts";
 import { getUserProfileCached } from "@/lib/caching";
-import { revalidateTagServer } from "@/app/actions";
+import { revalidateTagServer, revalidateUserProfile } from "@/app/actions";
 import { getUserProfile } from "@/lib/queries";
 
 export const metadata: Metadata = {
@@ -16,6 +16,8 @@ export const metadata: Metadata = {
 export default async function PreviewPage() {
   const uuid = cookies().get("uuid")?.value;
 
+  // await revalidateUserProfile(uuid as string);
+  // await revalidateTagServer("profile");
   const userProfile = await getUserProfileCached(uuid || "");
   console.log(userProfile);
   const links = userProfile?.links;
@@ -37,7 +39,7 @@ export default async function PreviewPage() {
         </div>
         <ResponsiveButton
           path="/user/appearance"
-          title="Customize pppearance"
+          title="Customize apppearance"
           className="absolute bottom-4 right-4"
         />
       </div>
