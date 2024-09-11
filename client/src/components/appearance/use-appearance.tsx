@@ -8,19 +8,17 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
 import { CheckCircle, LoaderCircle } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { saveUserDetails } from "@/lib/saveUserDetails";
-import { getUser } from "@/lib/getUser";
 import { UserData } from "@/types/links";
-import { useWallet } from "@/utils/wallet";
 import { toast } from "sonner";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { cn } from "@/lib/utils";
-import axios from "axios";
 import { CgSmileSad } from "react-icons/cg";
 import { sendSTXTransaction } from "@/lib/sendSTXTransaction";
 import { checkTransactionStatus } from "@/lib/checkTransactionStatus";
+import { holdsUnik } from "@/lib/holdsUnik";
 
 interface PremiumOptionProps {
   title: string;
@@ -35,12 +33,11 @@ export function PremiumOption({
   txStatus,
   user,
 }: PremiumOptionProps) {
-  const { holdUnik } = useWallet();
   const [loading, setLoading] = useState(false);
 
   const handlePayment = async () => {
     setLoading(true);
-    if (price === "3" && !(await holdUnik(user?.stx_address_mainnet))) {
+    if (price === "3" && !(await holdsUnik(user?.stx_address_mainnet))) {
       toast.error("You need to hold UNIK to use this option", {
         richColors: true,
       });
