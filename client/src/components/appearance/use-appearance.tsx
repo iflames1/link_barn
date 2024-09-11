@@ -17,18 +17,54 @@ import { toast } from "sonner";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { cn } from "@/lib/utils";
+import axios from "axios";
 
 interface PremiumOptionProps {
   title: string;
   price: string;
   txStatus: string;
+  user: UserData | undefined;
 }
 
-export function PremiumOption({ title, price, txStatus }: PremiumOptionProps) {
-  const { sendSTXTransaction } = useWallet();
+export function PremiumOption({
+  title,
+  price,
+  txStatus,
+  user,
+}: PremiumOptionProps) {
+  const { sendSTXTransaction, txId } = useWallet();
+  const [loading, setLoading] = useState(false);
 
-  const handlePayment = () => {
-    sendSTXTransaction(undefined, price, title);
+  async function checkTransactionStatus(txID: string) {
+    if (txID === "") {
+      console.log("No transaction ID provided");
+      return "no prev tx made";
+    }
+    const url = `https://stacks-node-api.mainnet.stacks.co/extended/v1/tx/${txID}`;
+
+    try {
+      const response = await axios.get(url);
+      console.log("response ....", response.data);
+      const data = response.data;
+      console.log("tx data", data);
+      console.log("Transaction Status:", data.tx_status);
+
+      txStatus = data.tx_status;
+      console.log("after handleTx");
+    } catch (error) {
+      console.error("Error fetching transaction status:", error);
+      toast.error("Error checking previous transaction status");
+    }
+  }
+
+  const handlePayment = async () => {
+    setLoading(true);
+    await sendSTXTransaction(undefined, price, title);
+    if (user && txId) {
+      user.prevTxID = txId;
+      await saveUserDetails(user);
+      checkTransactionStatus(txId);
+    }
   };
   return (
     <div className="border rounded-lg p-4 mb-4">
@@ -54,7 +90,11 @@ export function PremiumOption({ title, price, txStatus }: PremiumOptionProps) {
         onClick={handlePayment}
         disabled={txStatus === "success" || txStatus === "pending"}
       >
-        Choose {title}
+        Choose {title}{" "}
+        <LoaderCircle
+          className={cn(`animate-spin`, loading ? "flex" : "hidden")}
+          size={16}
+        />
       </Button>
     </div>
   );
@@ -75,16 +115,19 @@ export default function UseAppearanceButton({
 }: UseAppearanceButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   console.log(user, appearance, txStatus, tire);
+  const [loading, setLoading] = useState(false);
   console.log("txStatus", txStatus);
 
   const handleConfirm = async () => {
+    setLoading(true);
     if (user) {
       user.appearance = appearance;
-      console.log(user);
+      console.log("user after change", user);
       await saveUserDetails(user);
       console.log(`Appearance changed to ${appearance}`);
       setIsOpen(false);
     }
+    setLoading(false);
   };
 
   return (
@@ -103,8 +146,16 @@ export default function UseAppearanceButton({
             <DialogDescription className="mb-4">
               Are you sure you want to use this appearance?
             </DialogDescription>
-            <Button onClick={handleConfirm} className="bg-base-dark">
-              Confirm Change
+            <Button
+              onClick={handleConfirm}
+              disabled={loading}
+              className="bg-base-dark"
+            >
+              Confirm Change{" "}
+              <LoaderCircle
+                className={cn(`animate-spin`, loading ? "flex" : "hidden")}
+                size={16}
+              />
             </Button>
           </div>
         ) : tire === "free" ? (
@@ -134,11 +185,17 @@ export default function UseAppearanceButton({
               Upgrade to Use This Appearance
             </DialogTitle>
             <PremiumOption
-              title="Premium (UNIKIND-holders)"
+              title="Link Barn Premium (UNIKIND-holders)"
               price="3"
               txStatus={txStatus}
+              user={user}
             />
-            <PremiumOption title="Premium" price="5" txStatus={txStatus} />
+            <PremiumOption
+              title="Link Barn Premium"
+              price="5"
+              txStatus={txStatus}
+              user={user}
+            />
           </div>
         ) : (
           <div className="text-center">
@@ -148,8 +205,16 @@ export default function UseAppearanceButton({
             <p className="mb-4">
               Are you sure you want to use this appearance?
             </p>
-            <Button className="bg-base-dark" onClick={handleConfirm}>
-              Confirm Change
+            <Button
+              onClick={handleConfirm}
+              disabled={loading}
+              className="bg-base-dark"
+            >
+              Confirm Change{" "}
+              <LoaderCircle
+                className={cn(`animate-spin`, loading ? "flex" : "hidden")}
+                size={16}
+              />
             </Button>
           </div>
         )}

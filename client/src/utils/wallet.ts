@@ -27,6 +27,7 @@ interface UserData {
 
 export const useWallet = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
+  const [txId, setTxId] = useState<string>();
   const [userAddress, setUserAddress] = useState<string | "Connect Wallet">(
     "Connect Wallet"
   );
@@ -189,6 +190,7 @@ export const useWallet = () => {
         icon: "/images/unik.png",
       },
       onFinish: async (response: { txId: string }) => {
+        setTxId(response.txId);
         console.log("Transaction Result:", response);
         console.log("Transaction ID:", response.txId);
       },
@@ -232,5 +234,6 @@ export const useWallet = () => {
     holdUnik,
     sendSTXTransaction,
     checkTransactionStatus,
+    txId,
   };
 };
