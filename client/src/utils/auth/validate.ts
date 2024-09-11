@@ -11,10 +11,6 @@ export const validateuser = async (request: NextRequest) => {
   const uuid = cookieStore.get("uuid")?.value;
   const valid = await checkUserExists("uuid", uuid as string);
   console.log("IT IS IIII", valid);
-  // Allow access to auth callback without redirects
-  // if (request.nextUrl.pathname.startsWith("/auth/callback")) {
-  //   return supabaseResponse;
-  // }
 
   if (
     uuid &&

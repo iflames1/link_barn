@@ -19,6 +19,8 @@ const ChangeAppearance = dynamic(() => import("./use-appearance"), {
 import PreviewLayout from "./preview-layout";
 import { sampleUserData } from "@/data/sampleUserData";
 import { checkTransactionStatus } from "@/lib/checkTransactionStatus";
+import { themes } from "@/data/themes2";
+import { cn } from "@/lib/utils";
 
 export default function Themes({
   userProfile,
@@ -27,9 +29,12 @@ export default function Themes({
 }) {
   const [user, setUser] = useState<UserData | undefined>(userProfile);
   const [txStatus, setTxStatus] = useState<string>("");
+  const userData = { ...sampleUserData, theme: userProfile.theme };
 
   useEffect(() => {
+    console.log("Ohayo");
     const fetchUserData = async () => {
+      console.log("Im fetching");
       const result = await getUser();
       if (result) {
         setUser(result.userData);
@@ -54,19 +59,46 @@ export default function Themes({
     fetchUserData();
   }, []);
 
+  const theme =
+    themes.find((theme) => theme.name === userProfile?.theme) || themes[0];
+
   return (
     <Tabs
       defaultValue={sampleUserData.appearance}
-      className="lg:flex gap-6 w-full relative"
+      className="lg:flex gap-6 w-full relative grid grid-cols-2"
     >
-      <PreviewLayout>
+      {/* <PreviewLayout bg={theme.bg}> */}
+      {/*   {layouts.map((layout, index) => ( */}
+      {/*     <TabsContent key={index} value={layout.name} asChild> */}
+      {/*       <layout.LayoutComponent userData={sampleUserData} /> */}
+      {/*     </TabsContent> */}
+      {/*   ))} */}
+      {/* </PreviewLayout> */}
+      <div className="w-full">
         {layouts.map((layout, index) => (
-          <TabsContent key={index} value={layout.name} asChild>
-            <layout.LayoutComponent userData={sampleUserData} />
+          <TabsContent
+            key={index}
+            value={layout.name}
+            className={cn(
+              "max-w-80 mx-auto",
+              `${theme.text}
+                data-[state=active]:${theme.bg}
+                data-[state=active]:${theme.text}
+                data-[state=active]:shadow-sm
+                transition-all`,
+            )}
+            asChild
+          >
+            <PreviewLayout className="max-w-none w-full" bg={theme.bg}>
+              <div className="py-14 px-4">
+                <layout.LayoutComponent userData={userData} />
+              </div>
+            </PreviewLayout>
           </TabsContent>
         ))}
-      </PreviewLayout>
-      <div className="bg-white rounded-xl lg:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-y-auto lg:w-[60%] w-full p-6">
+      </div>
+      {/* <div className="bg-white rounded-xl lg:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-y-auto lg:w-[60%] w-full p-6"> */}
+      <div className="bg-white rounded-xl lg:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-y-auto w-full p-6">
         <TabsList className="bg-transparent h-full grid grid-cols-1 gap-4">
           {layouts.map((layout, index) => (
             <TabsTrigger

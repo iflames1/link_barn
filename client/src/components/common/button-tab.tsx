@@ -12,19 +12,11 @@ interface TabProps {
   path: string;
   title: string;
 }
-const ShareLink = dynamic(
-  () => import("@/components/preview/share").then((mod) => mod.ShareLink),
-  {
-    ssr: false,
-    loading: () => (
-      <Dialog open>
-        <DialogContent>
-          <LoaderCircle className="animate-spin" />
-        </DialogContent>
-      </Dialog>
-    ),
-  },
-);
+
+const ShareLink = dynamic(() => import("@/components/preview/share"), {
+  ssr: false,
+  loading: () => <div>....</div>,
+});
 //const ShareLink = dynamic(
 //  () => import("@/components/preview/share").then((mod) => mod.ShareLink),
 //  {
