@@ -1,14 +1,4 @@
-import { getUser } from "@/lib/getUser";
 import { UserData } from "@/types/links";
-
-let userData: UserData | undefined;
-
-const fetchUserData = async () => {
-  const result = await getUser();
-  userData = result?.userData;
-};
-
-fetchUserData();
 
 export const sampleUserData: UserData = {
   first_name: "Alex",
@@ -19,8 +9,10 @@ export const sampleUserData: UserData = {
   uuid: "1",
   bio: "Web developer, coffee enthusiast, and part-time adventurer. Building the future one line of code at a time.",
   profile_picture: "/dp.jpg",
-  appearance: userData?.appearance || "layout1",
-  theme: userData?.theme || "theme1",
+  appearance: "layout1",
+  theme: "theme1",
+  prevTxID: "",
+  tier: "free",
   links: [
     {
       uuid: "1",

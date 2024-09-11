@@ -11,8 +11,6 @@ export const checkTransactionStatus = async (txID: string | undefined) => {
   try {
     const response = await axios.get(url);
     const res = response.data;
-    console.log("tx data", res);
-
     return res.tx_status;
   } catch (error) {
     console.error("Error fetching transaction status:", error);

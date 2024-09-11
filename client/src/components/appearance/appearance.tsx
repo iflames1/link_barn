@@ -1,12 +1,8 @@
 "use client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { layouts } from "./layouts";
-
 import ResponsiveButton from "../common/responsive-button";
-import { UserData } from "@/types/links";
-import UseAppearanceButton from "./use-appearance";
 import { useEffect, useState } from "react";
-import { getUser } from "@/lib/getUser";
 import { toast } from "sonner";
 import { saveUserDetails } from "@/lib/saveUserDetails";
 import dynamic from "next/dynamic";
@@ -25,45 +21,32 @@ export default function Themes({
 }: {
   userProfile: UserProfileSchema;
 }) {
-  const [user, setUser] = useState<UserData | undefined>(userProfile);
   const [txStatus, setTxStatus] = useState<string>("");
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      const result = await getUser();
-      if (result) {
-        setUser(result.userData);
-        if (result.userData.tier === "free") {
-          if (
-            result.userData &&
-            result.userData.prevTxID &&
-            result.userData.prevTxID !== ""
-          ) {
-            const status = await checkTransactionStatus(
-              result.userData.prevTxID
-            );
-            setTxStatus(status);
-
-            if (status === "success") {
-              const updatedUser = {
-                ...result.userData,
-                prevTxID: "",
-                tier: "premium",
-              };
-              setUser(updatedUser);
-              await saveUserDetails(updatedUser);
-              toast.success("Transaction successful", { richColors: true });
-            }
-          }
+    const checkStatus = async () => {
+      if (userProfile) {
+        const status = await checkTransactionStatus(userProfile.prevTxID);
+        setTxStatus(status);
+        if (status === "success") {
+          userProfile.prevTxID = "";
+          userProfile.tier = "premium";
+          console.log("userProfile before = ", userProfile);
+          await saveUserDetails(userProfile);
+          console.log("userProfile after = ", userProfile);
+          toast.success("Transaction successful", { richColors: true });
         }
       }
     };
-    fetchUserData();
-  }, []);
+
+    checkStatus();
+  });
+
+  console.log("current layout = ", userProfile.appearance);
 
   return (
     <Tabs
-      defaultValue={sampleUserData.appearance}
+      defaultValue={userProfile.appearance}
       className="lg:flex gap-6 w-full relative"
     >
       <PreviewLayout>
@@ -84,8 +67,8 @@ export default function Themes({
               <layout.LayoutComponent userData={sampleUserData} />
               <ChangeAppearance
                 appearance={layout.name}
-                user={user}
-                tier={user?.tier || "free"}
+                user={userProfile}
+                tier={userProfile?.tier}
                 txStatus={txStatus}
               />
             </TabsTrigger>

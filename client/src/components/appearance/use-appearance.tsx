@@ -47,10 +47,14 @@ export function PremiumOption({
       const txId = await sendSTXTransaction(price, title);
       if (user && txId) {
         user.prevTxID = txId;
+        console.log(user);
         await saveUserDetails(user);
-        console.log("tx ID = ", user.prevTxID);
+        console.log("tx ID handle payment = ", user.prevTxID);
         const status = await checkTransactionStatus(txId);
-        toast.success("Your transaction have been sent", { richColors: true });
+        toast.success(
+          "Your transaction have been sent, please refresh this page",
+          { richColors: true }
+        );
         console.log("tx status = ", status);
       }
     }
@@ -108,9 +112,7 @@ export default function UseAppearanceButton({
   txStatus,
 }: UseAppearanceButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
-  console.log(user, appearance, txStatus, tier);
   const [loading, setLoading] = useState(false);
-  console.log("tx status = ", txStatus);
 
   const handleConfirm = async () => {
     setLoading(true);

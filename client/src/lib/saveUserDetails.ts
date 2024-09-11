@@ -18,8 +18,8 @@ export const saveUserDetails = async (
 
       if (response.status === 200) {
         console.log("User details updated successfully");
-        await revalidateTagServer("userProfile");
-        //await revalidateUserProfile(`userProfile-${id}`);
+        await revalidateTagServer("profile");
+        await revalidateUserProfile(id);
         toast.success("Updated successfully.", { richColors: true });
         return true;
       } else {
