@@ -49,7 +49,7 @@ export function PremiumOption({
         user.prevTxID = txId;
         console.log(user);
         await saveUserDetails(user);
-        console.log("tx ID = ", user.prevTxID);
+        console.log("tx ID handle payment = ", user.prevTxID);
         const status = await checkTransactionStatus(txId);
         toast.success(
           "Your transaction have been sent, please refresh this page",
@@ -112,9 +112,7 @@ export default function UseAppearanceButton({
   txStatus,
 }: UseAppearanceButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
-  console.log(user, appearance, txStatus, tier);
   const [loading, setLoading] = useState(false);
-  console.log("tx status = ", txStatus);
 
   const handleConfirm = async () => {
     setLoading(true);
@@ -122,15 +120,17 @@ export default function UseAppearanceButton({
       user.appearance = appearance;
       await saveUserDetails(user);
       console.log("new layout = ", user.appearance);
-      setIsOpen(false);
+    } else {
+      toast.success("Updated successfully.", { richColors: true });
     }
     setLoading(false);
+    setIsOpen(false);
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button className="absolute top-2 left-2 bg-white border border-base-dark text-base-dark hover:bg-base-light">
+        <Button className="absolute top-2 left-2 text-white bg-base-dark">
           Use Appearance
         </Button>
       </DialogTrigger>

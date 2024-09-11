@@ -37,7 +37,7 @@ export default async function PreviewPage() {
         </div>
         <ResponsiveButton
           path="/user/appearance"
-          title="Customize Appearance"
+          title="Customize pppearance"
           className="absolute bottom-4 right-4"
         />
       </div>
