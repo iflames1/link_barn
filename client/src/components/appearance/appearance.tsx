@@ -8,13 +8,18 @@ import { saveUserDetails } from "@/lib/saveUserDetails";
 import dynamic from "next/dynamic";
 import { UserProfileSchema } from "@/types/users";
 
-const ChangeAppearance = dynamic(() => import("./use-appearance"), {
+const ChangeAppearance = dynamic(() => import("./change-appearance"), {
   ssr: false,
-  loading: () => <span>....</span>,
+  loading: () => (
+    <Button className="absolute top-2 left-2 bg-white border border-base-dark text-base-dark hover:bg-base-light">
+      Use Theme
+    </Button>
+  ),
 });
 import PreviewLayout from "./preview-layout";
 import { sampleUserData } from "@/data/sampleUserData";
 import { checkTransactionStatus } from "@/lib/checkTransactionStatus";
+import { Button } from "../ui/button";
 
 export default function Themes({
   userProfile,
@@ -77,7 +82,7 @@ export default function Themes({
       </div>
       <ResponsiveButton
         path="/user/themes"
-        title="Change Theme"
+        title="Change theme"
         className="absolute sm:bottom-2 bottom-0 right-6"
       />
     </Tabs>

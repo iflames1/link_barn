@@ -120,15 +120,17 @@ export default function UseAppearanceButton({
       user.appearance = appearance;
       await saveUserDetails(user);
       console.log("new layout = ", user.appearance);
-      setIsOpen(false);
+    } else {
+      toast.success("Updated successfully.", { richColors: true });
     }
     setLoading(false);
+    setIsOpen(false);
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button className="absolute top-2 left-2 bg-white border border-base-dark text-base-dark hover:bg-base-light">
+        <Button className="absolute top-2 left-2 text-white bg-base-dark">
           Use Appearance
         </Button>
       </DialogTrigger>

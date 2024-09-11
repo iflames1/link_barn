@@ -20,7 +20,7 @@ export default async function PreviewPage() {
   console.log(userProfile);
   const links = userProfile?.links;
   const layout = layouts.find(
-    (layout) => layout.name === userProfile?.appearance ?? "layout1",
+    (layout) => layout.name === userProfile?.appearance ?? "layout1"
   );
   console.log("Star", layout);
 
@@ -35,7 +35,7 @@ export default async function PreviewPage() {
         </div>
         <ResponsiveButton
           path="/user/appearance"
-          title="Customize Appearance"
+          title="Customize pppearance"
           className="absolute bottom-4 right-4"
         />
       </div>
