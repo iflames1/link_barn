@@ -70,6 +70,8 @@ export const useWallet = () => {
       last_name: null,
       theme: "theme1",
       appearance: "layout1",
+      tier: "free",
+      prevTxID: "",
       profile_picture: null,
       email: null,
       username: userData.profile.stxAddress.mainnet,
