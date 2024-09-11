@@ -71,7 +71,7 @@ export const useWallet = () => {
       theme: "theme1",
       appearance: "layout1",
       tier: "free",
-      prevTxID: "",
+      prevTxID: null,
       profile_picture: null,
       email: null,
       username: userData.profile.stxAddress.mainnet,

@@ -26,8 +26,8 @@ export default function Themes({
   userProfile: UserProfileSchema;
 }) {
   const [user, setUser] = useState<UserData | undefined>(userProfile);
-  const [tire, setTire] = useState<string>("free");
-  const [prevTxID, setPrevTxID] = useState<string>("");
+  const [tier, setTier] = useState<string>("free");
+  const [prevTxID, setPrevTxID] = useState<string>();
   const [txStatus, setTxStatus] = useState<string>("");
 
   useEffect(() => {
@@ -35,19 +35,31 @@ export default function Themes({
       const result = await getUser();
       if (result) {
         setUser(result.userData);
-        //setTire(result.userData.tire);
-        setTire("free");
-        //setPrevTxID(result.userData.prevTxID);
-        setPrevTxID(
-          "0xa6d228c5f0f6d6d476a6b1522987e6fa3c729438e8bee0831e9b656b8bc8ab0b"
-        );
+        //setTier("free");
+        if (
+          result.userData &&
+          result.userData.tier &&
+          result.userData.tier !== ""
+        ) {
+          setTier(result.userData.tier);
+        }
+        if (
+          result.userData &&
+          result.userData.prevTxID &&
+          result.userData.prevTxID !== ""
+        ) {
+          setPrevTxID(result.userData.prevTxID);
+        }
+        //setPrevTxID(
+        //  "0xa6d228c5f0f6d6d476a6b1522987e6fa3c729438e8bee0831e9b656b8bc8ab0b"
+        //);
       }
     };
     fetchUserData();
 
-    async function checkTransactionStatus(txID: string) {
-      if (txID === "") {
-        console.log("No transaction ID provided");
+    async function checkTransactionStatus(txID: string | undefined) {
+      if (!txID || txID === "") {
+        console.log("no prev tx found");
         return "no prev tx made";
       }
       const url = `https://stacks-node-api.mainnet.stacks.co/extended/v1/tx/${txID}`;
@@ -67,8 +79,11 @@ export default function Themes({
       }
     }
 
-    checkTransactionStatus(prevTxID);
-  }, [prevTxID]);
+    if (tier === "free") {
+      checkTransactionStatus(prevTxID);
+    }
+    console.log("tier", tier);
+  }, [prevTxID, tier]);
 
   return (
     <Tabs
@@ -97,7 +112,7 @@ export default function Themes({
               <ChangeAppearance
                 appearance={layout.name}
                 user={user}
-                tire={tire}
+                tier={tier}
                 txStatus={txStatus}
               />
             </TabsTrigger>

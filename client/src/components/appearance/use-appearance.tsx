@@ -18,6 +18,7 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { cn } from "@/lib/utils";
 import axios from "axios";
+import { CgSmileSad } from "react-icons/cg";
 
 interface PremiumOptionProps {
   title: string;
@@ -109,18 +110,18 @@ export function PremiumOption({
 interface UseAppearanceButtonProps {
   appearance: string;
   user: UserData | undefined;
-  tire: string;
+  tier: string;
   txStatus: string;
 }
 
 export default function UseAppearanceButton({
   appearance,
   user,
-  tire,
+  tier,
   txStatus,
 }: UseAppearanceButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
-  console.log(user, appearance, txStatus, tire);
+  console.log(user, appearance, txStatus, tier);
   const [loading, setLoading] = useState(false);
   console.log("txStatus", txStatus);
 
@@ -164,27 +165,33 @@ export default function UseAppearanceButton({
               />
             </Button>
           </div>
-        ) : tire === "free" ? (
+        ) : tier === "free" ? (
           <div>
             <p className="">
               {txStatus === "success" ? (
-                <span className="">
+                <span className="flex items-center gap-1">
                   Your previous transaction was success please refresh this page
                   to continue{" "}
                   <IoMdCheckmarkCircleOutline className="text-green-500 inline-flex items-center" />
                 </span>
               ) : txStatus === "pending" ? (
-                <span className="">
+                <span className="flex items-center gap-1">
                   Your previous transaction is still pending{" "}
                   <LoaderCircle
                     className="animate-spin inline-flex"
                     size={16}
                   />
                 </span>
-              ) : (
-                <span className="text-red">
+              ) : txStatus === "failed" ? (
+                <span className="text-red flex items-center gap-1">
                   Your previous transaction failed <AiOutlineInfoCircle />
                 </span>
+              ) : txStatus === "dropped" ? (
+                <span>
+                  Your previous transaction was dropped <CgSmileSad />
+                </span>
+              ) : (
+                ""
               )}
             </p>
             <DialogTitle className="text-xl font-semibold mb-4">
