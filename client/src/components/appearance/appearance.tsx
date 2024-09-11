@@ -53,8 +53,6 @@ export default function Themes({
               setUser(updatedUser);
               await saveUserDetails(updatedUser);
               toast.success("Transaction successful", { richColors: true });
-            } else {
-              await saveUserDetails(result.userData);
             }
           }
         }
