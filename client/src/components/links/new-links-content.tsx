@@ -43,6 +43,7 @@ import { layouts } from "../appearance/layouts";
 import { UserProfileSchema } from "@/types/users";
 import { LinkSchema } from "@/types/links";
 import Preview from "../appearance/preview";
+import dynamic from "next/dynamic";
 
 const formSchema = z.object({
   links: z.array(
@@ -51,7 +52,16 @@ const formSchema = z.object({
       url: z.string().url().min(2).max(50),
       index: z.number(),
       link_title: z.string().max(20).optional(),
-    }),
+    })
+  ),
+});
+
+const SaveLinks = dynamic(() => import("./save-links"), {
+  ssr: false,
+  loading: () => (
+    <Button className="text-white bg-base-dark self-end gap-3 hS button">
+      <Skeleton className="h-6 w-14" />
+    </Button>
   ),
 });
 
@@ -458,7 +468,7 @@ export const NewLinks = ({
                                       <SelectTrigger
                                         disabled={
                                           form.watch(
-                                            `links.${index}.platform`,
+                                            `links.${index}.platform`
                                           ) === "link"
                                         }
                                         className="focus:shadow-active py-5 placeholder:text-black"
@@ -523,6 +533,7 @@ export const NewLinks = ({
                       )}
                       Save
                     </Button>
+                    {/*<SaveLinks />*/}
                   </div>
                 </form>
               </Form>

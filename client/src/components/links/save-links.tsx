@@ -18,19 +18,12 @@ import { CgSmileSad } from "react-icons/cg";
 import { PremiumOption } from "../premium-option";
 import { LoaderCircle } from "lucide-react";
 import { checkTransactionStatus } from "@/lib/checkTransactionStatus";
-import { handleFileUpload } from "@/lib/handleFileUpload";
 
-interface UseAppearanceButtonProps {
+interface SaveLinksProps {
   user: UserData | undefined;
-  initialProfileData: React.MutableRefObject<UserData | undefined>;
-  selectedFile: File | null;
 }
 
-export default function SaveProfileDetails({
-  user,
-  initialProfileData,
-  selectedFile,
-}: UseAppearanceButtonProps) {
+export default function SaveLinks({ user }: SaveLinksProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [txStatus, setTxStatus] = useState<string>("");
@@ -51,40 +44,6 @@ export default function SaveProfileDetails({
 
     checkStatus();
   });
-
-  const hasChanged = useCallback(() => {
-    if (!user || !initialProfileData.current) return false;
-
-    return Object.keys(user).some(
-      (key) =>
-        user[key as keyof UserData] !==
-        initialProfileData.current?.[key as keyof UserData]
-    );
-  }, [initialProfileData, user]);
-
-  const handleSubmit = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.preventDefault();
-    if (!hasChanged() && !selectedFile) {
-      toast.info("No changes to save", { richColors: true });
-      console.log("No changes to save");
-      return;
-    }
-    setLoading(true);
-    try {
-      if (selectedFile) await handleFileUpload(selectedFile);
-
-      if (hasChanged() && user) await saveUserDetails(user);
-      initialProfileData.current = user;
-      toast.success("Profile updated successfully");
-    } catch (error) {
-      console.error("Error during submission:", error);
-      toast.error("Failed to update profile");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
