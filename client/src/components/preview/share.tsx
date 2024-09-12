@@ -96,8 +96,10 @@ export default function ShareLink() {
     }
 
     if (user) {
-      const userExist = await checkUserExists("username", username);
-      if (userExist.status && userExist.message !== "User does not exist") {
+      const userExist: { status: boolean; message?: string } =
+        await checkUserExists("username", username);
+      console.log(userExist);
+      if (!userExist.status && userExist.message !== "User does not exist") {
         user.username = username;
         await saveUserDetails(user);
         setPrevUsername(username);
@@ -116,7 +118,6 @@ export default function ShareLink() {
 
     setLoading(false);
   };
-
   return (
     <Dialog>
       <DialogTrigger asChild>
