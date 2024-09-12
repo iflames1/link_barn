@@ -73,11 +73,14 @@ export default function SaveProfileDetails({
     }
     setLoading(true);
     try {
+      if (hasChanged() && user) await saveUserDetails(user);
+
       if (selectedFile) await handleFileUpload(selectedFile);
 
-      if (hasChanged() && user) await saveUserDetails(user);
       initialProfileData.current = user;
+
       toast.success("Profile updated successfully");
+      setIsOpen(false);
     } catch (error) {
       console.error("Error during submission:", error);
       toast.error("Failed to update profile");
