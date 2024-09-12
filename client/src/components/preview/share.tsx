@@ -14,111 +14,45 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRef, useState, useEffect } from "react";
-import { API_BASE_URL } from "@/lib/constants";
 import { toast } from "sonner";
 import { IoCheckmarkSharp } from "react-icons/io5";
 import { checkUserExists } from "@/lib/queries";
-import axios from "axios";
-import { revalidateTagServer } from "@/app/actions";
 import { ConfettiSideCannons } from "../ui/confetti-side";
-import { getUserProfile } from "@/lib/queries";
-import { useAppContext } from "@/context";
-import { getUserUUID } from "@/lib/auth";
 import { FaShareAlt } from "react-icons/fa";
+import { getUser } from "@/lib/getUser";
+import { saveUserDetails } from "@/lib/saveUserDetails";
+import { UserData } from "@/types/links";
 
 export default function ShareLink() {
-  const { userProfileDetails, saveUsername, updateUserProfile, getData } =
-    useAppContext();
-  //console.log(userProfileDetails);
-  //const userProfileDetails = await getUserProfile(UUID);
   const [isEditing, setIsEditing] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [username, setUsername] = useState(userProfileDetails?.username);
+  const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [username, setUsername] = useState("");
+  const [prevUsername, setPrevUsername] = useState("");
+  const [user, setUser] = useState<UserData>();
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
-      const userID = getUserUUID();
-      if (userID) {
-        console.log("UUID", userID);
-        const res = await getData(API_BASE_URL + "/users/?user_id=" + userID);
-        if (res) {
-          console.log("Successfully fetched user details");
-          setUsername(userProfileDetails?.username || "");
-          console.log(username);
-        } else {
-          console.log("failed to get user");
-        }
+      const res = await getUser();
+      if (res) {
+        setUser(res.userData);
+        setUsername(res.userData.username);
+        setPrevUsername(res.userData.username);
       }
     };
-
     fetchUser();
-  }, [getData]);
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
-    saveUsername(setIsLoading, setIsEditing);
-    //const validate = async () => {
-    //  if (!username || username.trim() === "") {
-    //    toast.warning("Username can't be empty", {
-    //      richColors: true,
-    //    });
-    //    setIsLoading(false);
-    //    return;
-    //  }
-
-    //  // this is to reserve bns names
-    //  if (username.toLowerCase().endsWith(".btc")) {
-    //    toast.error("Usernames ending with '.btc' are reserved for BTC names", {
-    //      richColors: true,
-    //    });
-    //    setIsLoading(false);
-    //    return;
-    //  }
-
-    //  const res = await checkUserExists("username", username);
-    //  if (res.status && userProfileDetails?.username !== username) {
-    //    console.log("User with that username already exist");
-    //    toast.error("User with that username already exist, try another");
-    //    setIsLoading(false);
-    //  } else {
-    //    try {
-    //      const res = await axios.patch(
-    //        `${API_BASE_URL}/users/${userProfileDetails?.uuid}`,
-    //        {
-    //          username: username,
-    //        }
-    //      );
-    //      const data = await res.data;
-    //      await revalidateTagServer("userProfile");
-    //      console.log(data);
-
-    //      toast.success("Username updated successfully", {
-    //        richColors: true,
-    //      });
-    //    } catch (err) {
-    //      console.log(err);
-    //    } finally {
-    //      setIsLoading(false);
-    //    }
-    //    setIsEditing(false);
-    //  }
-    //};
-    //validate();
-  };
+  }, []);
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
-    updateUserProfile({ username: e.target.value });
   };
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(
       process.env.NODE_ENV === "development"
         ? `localhost://3000/${username}`
-        : `https://www.linkbarn.tech/${username}`,
+        : `https://www.linkbarn.tech/${username}`
     );
     console.log("Link copied to clipboard!");
     setCopied(true);
@@ -129,6 +63,58 @@ export default function ShareLink() {
     }, 2000);
   };
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    if (!username || username.trim() === "") {
+      toast.warning("Username can't be empty", {
+        richColors: true,
+      });
+      setLoading(false);
+      return;
+    }
+
+    if (username.toLowerCase().endsWith(".btc")) {
+      toast.error(
+        "Usernames ending with '.btc' are reserved for future bns feature",
+        {
+          richColors: true,
+        }
+      );
+      setLoading(false);
+      return;
+    }
+
+    if (username === prevUsername) {
+      toast.info("No changes to save", { richColors: true });
+      setLoading(false);
+      return;
+    }
+
+    if (user) {
+      const userExist: { status: boolean; message?: string } =
+        await checkUserExists("username", username);
+      if (!userExist.status && userExist.message === "User does not exist") {
+        user.username = username;
+        await saveUserDetails(user);
+        setPrevUsername(username);
+        setIsEditing(false);
+        setLoading(false);
+        return;
+      } else if (userExist.status && username !== prevUsername) {
+        toast.error("User with that username already exist, try another");
+        setLoading(false);
+        return;
+      } else {
+        toast.error("Something went wrong, please try again later");
+        setLoading(false);
+      }
+      return;
+    }
+    console.log("return here");
+    setIsEditing(false);
+    setLoading(false);
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -156,7 +142,7 @@ export default function ShareLink() {
                   <Input
                     id="link"
                     ref={inputRef}
-                    defaultValue={userProfileDetails?.username}
+                    defaultValue={username}
                     readOnly={!isEditing}
                     onChange={handleUsernameChange}
                     className="border-none outline-none flex-grow text-black p-0 h-fit focus-within:ring-0 focus-within:ring-offset-0"
@@ -178,7 +164,7 @@ export default function ShareLink() {
               </div>
             </div>
             <ConfettiSideCannons
-              disabled={isLoading}
+              disabled={loading}
               onClick={() => {
                 isEditing
                   ? toast.info("Save Changes to copy link")
@@ -196,16 +182,16 @@ export default function ShareLink() {
             </ConfettiSideCannons>
           </div>
           <DialogFooter className="justify-end">
-            {userProfileDetails?.username !== username && (
+            {prevUsername !== username && (
               <Button
                 type="submit"
                 variant={"outline"}
-                disabled={isLoading}
+                disabled={
+                  loading || !username || username.trim() === "" || !user
+                }
                 className="button py-[11px] hover:text-base-light gap-4 sm:px-7 px-4 border-[1px] border-base-dark text-base-dark  hover:bg-base-dark"
               >
-                {isLoading && (
-                  <LoaderCircle className="animate-spin" size={18} />
-                )}
+                {loading && <LoaderCircle className="animate-spin" size={18} />}
                 Save changes
               </Button>
             )}
