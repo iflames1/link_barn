@@ -7,7 +7,7 @@ import { UserData } from "@/types/links";
 export default function Profile() {
   const [userProfileDetails, setUserProfileDetails] = useState<UserData>();
 
-  console.log("rerender", userProfileDetails);
+  console.log("rerender");
 
   return (
     <div className="lg:flex gap-6 w-full">

@@ -161,7 +161,7 @@ export const NewLinks = ({
       });
 
       const deletePromises = deletedEntries.map(async (uuid) => {
-        console.log("DELETING", uuid);
+        //console.log("DELETING", uuid);
         const url = `${API_BASE_URL}/links/${uuid}`;
         const response = await fetch(url, {
           method: "DELETE",
@@ -206,7 +206,7 @@ export const NewLinks = ({
       setIsLoading(false);
     }
   }
-  console.log(userProfile);
+  //console.log(userProfile);
 
   const links = form.watch("links");
 

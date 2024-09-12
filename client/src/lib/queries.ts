@@ -4,12 +4,6 @@ import { API_BASE_URL } from "./constants";
 
 export const getUserProfile = async (uuid: string) => {
   console.log("IM BEING CALLED :sob:");
-  console.log("IM BEING CALLED :sob:");
-  console.log("IM BEING CALLED :sob:");
-  console.log("IM BEING CALLED :sob:");
-  console.log("IM BEING CALLED :sob:");
-  console.log("IM BEING CALLED :sob:");
-  console.log("IM BEING CALLED :sob:");
   try {
     const url = `${API_BASE_URL}/users?user_id=${uuid}`;
     const response = await fetch(url, {
@@ -35,7 +29,7 @@ export const getUserProfile = async (uuid: string) => {
 
 export const checkUserExists = async (
   field: string = "username",
-  value: string,
+  value: string
 ): Promise<{ status: boolean; message: string }> => {
   console.log("Im BEING CALLED");
   try {
@@ -92,18 +86,6 @@ export const getStats = async () => {
 };
 
 export const getUserProfileByUsername = async (username: string) => {
-  console.log("AIIIT");
-  console.log("AIIIT");
-  console.log("AIIIT");
-  console.log("AIIIT");
-  console.log("AIIIT");
-  console.log("AIIIT");
-  console.log("AIIIT");
-  console.log("AIIIT");
-  console.log("AIIIT");
-  console.log("AIIIT");
-  console.log("AIIIT");
-  console.log("AIIIT");
   console.log("AIIIT");
   try {
     const url = `${API_BASE_URL}/users/profile/${username}`;

@@ -16,10 +16,8 @@ export const metadata: Metadata = {
 export default async function PreviewPage() {
   const uuid = cookies().get("uuid")?.value;
 
-  // await revalidateUserProfile(uuid as string);
-  // await revalidateTagServer("profile");
   const userProfile = await getUserProfileCached(uuid || "");
-  console.log(userProfile);
+  //console.log(userProfile);
   const links = userProfile?.links;
   const layout = userProfile?.appearance
     ? layouts.find((layout) => layout.name === userProfile?.appearance)
