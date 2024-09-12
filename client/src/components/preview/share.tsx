@@ -45,7 +45,6 @@ export default function ShareLink() {
   }, []);
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //setUsername(e.target.value);
     setUsername(e.target.value);
   };
 
