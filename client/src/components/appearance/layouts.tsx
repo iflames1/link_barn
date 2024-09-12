@@ -46,7 +46,7 @@ export function LinkWrapper({ userData, links, children }: LinkWrapperProps) {
     <>
       {links ? (
         links.length < 1 ? (
-          <div>You have not added any links</div>
+          <div>It looks like you haven&apos;t added any links yet.</div>
         ) : (
           links
             .slice()
@@ -57,9 +57,9 @@ export function LinkWrapper({ userData, links, children }: LinkWrapperProps) {
               const attributes =
                 linkAttributes[normalizedLinkName] || linkAttributes.link;
               return (
-                <Fragment key={index}>
+                <div key={index} className="capitalize">
                   {children({ ...link, ...attributes })}
-                </Fragment>
+                </div>
               );
             })
         )
@@ -70,9 +70,9 @@ export function LinkWrapper({ userData, links, children }: LinkWrapperProps) {
           const attributes =
             linkAttributes[normalizedLinkName] || linkAttributes.link;
           return (
-            <Fragment key={index}>
+            <div key={index} className="capitalize">
               {children({ ...link, ...attributes })}
-            </Fragment>
+            </div>
           );
         })
       )}

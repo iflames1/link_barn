@@ -67,7 +67,7 @@ export const linkAttributes = {
     icon: <FaTelegram className="size-4" />,
   },
   velar: {
-    text: "text-orange-500",
+    text: "text-[#df861b]",
     text2: "text-[#000000]",
     bg: "bg-[#000000]",
     icon: (
@@ -81,12 +81,12 @@ export const linkAttributes = {
     ),
   },
   alex: {
-    text: "text-[#e5e7eb]",
+    text: "text-[#1c4bff]",
     text2: "white",
-    bg: "bg-blue-600",
+    bg: "bg-white",
     icon: (
       <Image
-        src="/images/alex.png"
+        src="/images/alex.webp"
         alt="alex"
         width={16}
         height={16}
@@ -103,8 +103,8 @@ export const linkAttributes = {
         src="/images/stackswap.png"
         alt="stackswap"
         width={16}
-        height={16}
-        className="size-4"
+        height={8}
+        className="w-4 h-2 my-1"
       />
     ),
   },

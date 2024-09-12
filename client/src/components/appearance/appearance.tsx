@@ -13,7 +13,7 @@ const ChangeAppearance = dynamic(() => import("./change-appearance"), {
   ),
 });
 import PreviewLayout from "./preview-layout";
-import { sampleUserData } from "@/data/sampleUserData";
+import { sampleUserData } from "@/data/sample-user-data";
 import { Button } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
 
