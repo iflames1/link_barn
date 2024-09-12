@@ -52,7 +52,7 @@ const formSchema = z.object({
       url: z.string().url().min(2).max(50),
       index: z.number(),
       link_title: z.string().max(20).optional(),
-    })
+    }),
   ),
 });
 
@@ -60,7 +60,7 @@ const SaveLinks = dynamic(() => import("./save-links"), {
   ssr: false,
   loading: () => (
     <Button className="text-white bg-base-dark self-end gap-3 hS button">
-      <Skeleton className="h-6 w-14" />
+      Save
     </Button>
   ),
 });
@@ -171,7 +171,6 @@ export const NewLinks = ({
       });
 
       const deletePromises = deletedEntries.map(async (uuid) => {
-        //console.log("DELETING", uuid);
         const url = `${API_BASE_URL}/links/${uuid}`;
         const response = await fetch(url, {
           method: "DELETE",
@@ -284,6 +283,10 @@ export const NewLinks = ({
     layouts.find((layout) => layout.name === userProfile?.appearance) ||
     layouts[0];
 
+  const handleSave = async () => {
+    form.handleSubmit(onSubmit)();
+  };
+
   return (
     <main className="lg:flex gap-6 w-full">
       {/* <NewPreview links={currentLinks} userProfileDetails={userProfile} /> */}
@@ -327,7 +330,7 @@ export const NewLinks = ({
             ) : (
               <Form {...form}>
                 <form
-                  onSubmit={form.handleSubmit(onSubmit)}
+                  // onSubmit={form.handleSubmit(onSubmit)}
                   className="justify-between flex flex-col gap-4 w-full"
                 >
                   <Sortable
@@ -468,7 +471,7 @@ export const NewLinks = ({
                                       <SelectTrigger
                                         disabled={
                                           form.watch(
-                                            `links.${index}.platform`
+                                            `links.${index}.platform`,
                                           ) === "link"
                                         }
                                         className="focus:shadow-active py-5 placeholder:text-black"
@@ -523,16 +526,21 @@ export const NewLinks = ({
                     </div>
                   </Sortable>
                   <div className="flex w-full items-end self-end border-t border-t-gray pt-4 flex-col">
-                    <Button
-                      className="self-end gap-3 hS button text-white bg-base-dark hover:bg-opacity-90"
-                      type="submit"
-                      disabled={isLoading}
-                    >
-                      {isLoading && (
-                        <LoaderCircle className="animate-spin" size={17} />
-                      )}
-                      Save
-                    </Button>
+                    {/* <Button */}
+                    {/*   className="self-end gap-3 hS button text-white bg-base-dark hover:bg-opacity-90" */}
+                    {/*   type="submit" */}
+                    {/*   disabled={isLoading} */}
+                    {/* > */}
+                    {/*   {isLoading && ( */}
+                    {/*     <LoaderCircle className="animate-spin" size={17} /> */}
+                    {/*   )} */}
+                    {/*   Save */}
+                    <SaveLinks
+                      user={userProfile}
+                      onSave={handleSave}
+                      isLoading={isLoading}
+                    />
+                    {/* </Button> */}
                     {/*<SaveLinks />*/}
                   </div>
                 </form>

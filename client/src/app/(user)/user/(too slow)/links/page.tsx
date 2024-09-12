@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 import type { Metadata } from "next";
 import Links from "@/components/links/links";
 import { getUserProfileCached } from "@/lib/caching";
-import { revalidateUserProfile } from "@/app/actions";
+import { revalidateTagServer, revalidateUserProfile } from "@/app/actions";
 // import Links from "@/components/links/links";
 
 export const metadata: Metadata = {
@@ -17,6 +17,8 @@ export const metadata: Metadata = {
 export default async function LinksPage() {
   const uuid = cookies().get("uuid")?.value;
   // const userProfile = await getUserProfile(uuid || "");
+  await revalidateUserProfile(uuid as string);
+  await revalidateTagServer("profile");
   const userProfile = await getUserProfileCached(uuid || "");
   const links = userProfile?.links ?? [];
   // console.log(userProfile);

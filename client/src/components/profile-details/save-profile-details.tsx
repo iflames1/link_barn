@@ -58,12 +58,12 @@ export default function SaveProfileDetails({
     return Object.keys(user).some(
       (key) =>
         user[key as keyof UserData] !==
-        initialProfileData.current?.[key as keyof UserData]
+        initialProfileData.current?.[key as keyof UserData],
     );
   }, [initialProfileData, user]);
 
   const handleSubmit = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     e.preventDefault();
     if (!hasChanged() && !selectedFile) {
