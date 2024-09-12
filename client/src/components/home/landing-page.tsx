@@ -48,11 +48,11 @@ const faqs = [
     answer:
       "Once you've set up your links, you'll receive a unique URL for your Link Barn page. You can share this URL on your social media profiles, email signature, or anywhere else you want to provide easy access to your collection of links.",
   },
-  {
-    question: "Is Link Barn free to use?",
-    answer:
-      "Link Barn offers both free and premium tiers. The free tier provides basic functionality, while the premium tier offers advanced features such as advance appearance customization removable Link Barn branding. Check our pricing page for more details.",
-  },
+  // {
+  //   question: "Is Link Barn free to use?",
+  //   answer:
+  //     "Link Barn offers both free and premium tiers. The free tier provides basic functionality, while the premium tier offers advanced features such as advance appearance customization removable Link Barn branding. Check our pricing page for more details.",
+  // },
   {
     question: "Can I use Link Barn for my business or brand?",
     answer:
@@ -75,7 +75,10 @@ export async function LandingPage() {
       <div className="max-w-[1150px] md:mx-auto w-full">
         <Counters stats={stats} />
       </div>
-      <div className="md:h-[50rem] lg:h-[40rem] w-full flex-col dark:bg-black bg-white  dark:bg-grid-small-white/[0.2] bg-grid-small-black/[0.2] relative flex items-center justify-center">
+      <div
+        id="features"
+        className="md:h-[50rem] lg:h-[40rem] w-full flex-col dark:bg-black bg-white  dark:bg-grid-small-white/[0.2] bg-grid-small-black/[0.2] relative flex items-center justify-center"
+      >
         <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
         <h3
           className={cn(

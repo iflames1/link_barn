@@ -2,6 +2,7 @@
 import { themes } from "@/data/themes2";
 import { getUser } from "@/lib/getUser";
 import { checkUserExists } from "@/lib/queries";
+import { cn } from "@/lib/utils";
 import { UserData } from "@/types/links";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -10,6 +11,7 @@ interface ProfileWrapperProps {
   children: React.ReactNode;
   className?: string;
   theme?: string;
+  username?: boolean;
 }
 
 //let userData: UserData | undefined;
@@ -28,6 +30,7 @@ export default function ProfileWrapper({
   children,
   className,
   theme,
+  username,
 }: ProfileWrapperProps) {
   // const [theme, setTheme] = useState("theme1");
   // const [UUID, setUUID] = useState<string | undefined>(undefined);
@@ -61,7 +64,12 @@ export default function ProfileWrapper({
   const userTheme = themes.find((data) => data.name === theme) || themes[0];
 
   return (
-    <main className={`${userTheme.bg} w-full h-full`}>
+    <main
+      className={cn(
+        `${userTheme.bg} w-full h-full`,
+        username && "min-h-screen",
+      )}
+    >
       <div
         className={`max-w-80 mx-auto py-14 px-4 ${userTheme.text} ${className}`}
       >

@@ -118,7 +118,8 @@ export default async function Page({ params }: PageProps) {
           <layout.LayoutComponent
             userData={userProfile}
             links={userProfile?.links}
-            className="min-h-screen"
+            username
+            className="min-h-screen h-screen"
           />
         )}
       </Suspense>

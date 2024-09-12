@@ -4,3 +4,4 @@ export const API_BASE_URL = DEV
   : process.env.NEXT_PUBLIC_API_BASE_URL || "";
 export const BASE_URL =
   process.env.NEXT_PUBLIC_BASE_URL || "https://www.linkbarn.tech";
+export const isFree = false;
