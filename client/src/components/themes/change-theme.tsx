@@ -18,6 +18,7 @@ import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { CgSmileSad } from "react-icons/cg";
 import { PremiumOption } from "../premium-option";
+import { revalidateTagServer, revalidateUserProfile } from "@/app/actions";
 
 export default function ChangeTheme({
   user,
@@ -54,6 +55,8 @@ export default function ChangeTheme({
     if (user && user.theme !== theme) {
       user.theme = theme;
       await saveUserDetails(user);
+      await revalidateTagServer("profile");
+      await revalidateUserProfile(user.uuid);
       console.log("user theme = ", user.theme);
     } else {
       toast.success("Updated successfully.", { richColors: true });

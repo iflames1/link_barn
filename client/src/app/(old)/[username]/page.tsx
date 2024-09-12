@@ -123,14 +123,9 @@ export default async function Page({ params }: PageProps) {
           />
         )}
       </Suspense>
-      <>
-        {!userProfile.tier ||
-          (userProfile?.tier === "free" && (
-            <div className="pb-4">
-              <JoinLinkBarn username={truncUsername} />
-            </div>
-          ))}
-      </>
+      <div className="pb-4">
+        <JoinLinkBarn username={truncUsername} />
+      </div>
     </div>
   );
 }

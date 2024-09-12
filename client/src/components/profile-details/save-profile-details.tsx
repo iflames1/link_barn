@@ -60,12 +60,12 @@ export default function SaveProfileDetails({
     return Object.keys(user).some(
       (key) =>
         user[key as keyof UserData] !==
-        initialProfileData.current?.[key as keyof UserData]
+        initialProfileData.current?.[key as keyof UserData],
     );
   }, [initialProfileData, user]);
 
   const handleSubmit = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     e.preventDefault();
     if (!hasChanged() && !selectedFile) {
@@ -165,12 +165,12 @@ export default function SaveProfileDetails({
                 size={16}
               />
             </Button>
-            <Button
-              onClick={() => setIsOpen(false)}
-              className="bg-base-dark gap-4"
-            >
-              Cancel
-            </Button>
+            {/* <Button */}
+            {/*   onClick={() => setIsOpen(false)} */}
+            {/*   className="bg-base-dark gap-4" */}
+            {/* > */}
+            {/*   Cancel */}
+            {/* </Button> */}
           </div>
         )}
       </DialogContent>
