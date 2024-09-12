@@ -55,7 +55,10 @@ export const JoinLinkBarn = ({
   return (
     <Link
       href={"/"}
-      className={`flex items-center gap-2 bg-gray py-3 px-4 rounded-full hover:bg-opacity-70`}
+      className={`flex items-center gap-2 py-3 px-4 w-fit rounded-full bg-white bg-opacity-20
+    backdrop-filter backdrop-blur-lg
+    hover:bg-opacity-30
+    transition-all duration-300`}
     >
       <motion.div
         initial={{ x: 100 }}
