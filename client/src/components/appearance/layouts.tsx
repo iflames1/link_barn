@@ -18,7 +18,7 @@ interface LayoutProps {
   userData: UserData | undefined;
   links?: LinkSchema[];
   className?: string;
-  username?: boolean;
+  username?: string;
 }
 
 interface ProfileWrapperProps {

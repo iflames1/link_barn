@@ -6,14 +6,8 @@ import {
   getUserProfileByUsername,
 } from "@/lib/queries";
 import { Loader } from "lucide-react";
-import Image from "next/image";
-import { cn } from "@/lib/utils";
-import { linkAttributes } from "@/components/common/links-attr";
-import { FaArrowRight } from "react-icons/fa6";
-import { JoinLinkBarn, LogoLink } from "@/components/ui/logo";
 import type { Metadata } from "next";
 import { layouts } from "@/components/appearance/layouts";
-import { API_BASE_URL } from "@/lib/constants";
 import {
   getProfileByUsernameCached,
   getUserProfileCached,
@@ -106,7 +100,7 @@ export default async function Page({ params }: PageProps) {
   //console.log(layout, "WATASHI WA STAR");
 
   return (
-    <div className="flex flex-col items-center justify-between min-h-screen h-full">
+    <div className="h-full">
       <Suspense
         fallback={
           <div className="flex items-center justify-center h-[50vh]">
@@ -118,14 +112,10 @@ export default async function Page({ params }: PageProps) {
           <layout.LayoutComponent
             userData={userProfile}
             links={userProfile?.links}
-            username
-            className="min-h-screen h-screen"
+            username={truncUsername}
           />
         )}
       </Suspense>
-      <div className="pb-4">
-        <JoinLinkBarn username={truncUsername} />
-      </div>
     </div>
   );
 }
