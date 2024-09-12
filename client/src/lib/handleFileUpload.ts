@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 import { API_BASE_URL } from "./constants";
-import { revalidateTagServer } from "@/app/actions";
+import { revalidateTagServer, revalidateUserProfile } from "@/app/actions";
 import { getUserUUID } from "./auth";
 
 const uploadStagedFile = async (stagedFile: File | Blob, uuid: string) => {
@@ -40,7 +40,7 @@ const uploadStagedFile = async (stagedFile: File | Blob, uuid: string) => {
       if (!response.ok) {
         console.log(responseData);
         throw new Error(
-          `An error occurred while updating profile: ${responseData.detail}`,
+          `An error occurred while updating profile: ${responseData.detail}`
         );
       }
 
@@ -49,7 +49,8 @@ const uploadStagedFile = async (stagedFile: File | Blob, uuid: string) => {
       toast.success("Image updated successfully", {
         richColors: true,
       });
-      await revalidateTagServer("userProfile");
+      await revalidateUserProfile(getUserUUID() as string);
+      await revalidateTagServer("profile");
     } catch (err) {
       console.error("Error updating profile:", err);
 
@@ -70,7 +71,7 @@ const uploadStagedFile = async (stagedFile: File | Blob, uuid: string) => {
 
 export const handleFileUpload = async (
   selectedFile: File | null,
-  uuid: string | undefined = getUserUUID(),
+  uuid: string | undefined = getUserUUID()
 ) => {
   if (selectedFile) {
     await uploadStagedFile(selectedFile, uuid as string);

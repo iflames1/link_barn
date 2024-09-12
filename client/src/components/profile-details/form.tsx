@@ -10,6 +10,8 @@ import { handleFileUpload } from "@/lib/handleFileUpload";
 import { saveUserDetails } from "@/lib/saveUserDetails";
 import { revalidateTagServer, revalidateUserProfile } from "@/app/actions";
 import { getUserUUID } from "@/lib/auth";
+import dynamic from "next/dynamic";
+import { Skeleton } from "../ui/skeleton";
 
 interface FormProps {
   userProfileDetails: UserData | undefined;
@@ -17,6 +19,15 @@ interface FormProps {
     React.SetStateAction<UserData | undefined>
   >;
 }
+
+const SaveProfileDetails = dynamic(() => import("./save-profile-details"), {
+  ssr: false,
+  loading: () => (
+    <Button className="text-white bg-base-dark gap-3 sm:w-fit w-full">
+      <Skeleton className="h-6 w-14" />
+    </Button>
+  ),
+});
 
 export default function Form({
   userProfileDetails,
@@ -50,7 +61,7 @@ export default function Form({
         return { ...prevDetails, ...updatedProfile };
       });
     },
-    [setUserProfileDetails],
+    [setUserProfileDetails]
   );
 
   const hasChanged = useCallback(() => {
@@ -59,7 +70,7 @@ export default function Form({
     return Object.keys(userProfileDetails).some(
       (key) =>
         userProfileDetails[key as keyof UserData] !==
-        initialProfileData.current?.[key as keyof UserData],
+        initialProfileData.current?.[key as keyof UserData]
     );
   }, [userProfileDetails]);
 
@@ -90,7 +101,7 @@ export default function Form({
 
   return (
     <form
-      onSubmit={(e) => handleSubmit(e)}
+      onSubmit={(e) => e.preventDefault()}
       className="bg-white flex flex-col justify-between rounded-xl lg:w-[60%] sm:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-auto"
     >
       <div className="sm:p-10 p-6">
@@ -209,14 +220,19 @@ export default function Form({
       <div>
         <hr className="h-[1px] bg-gray border-none" />
         <div className="sm:py-6 sm:px-10 p-4 flex justify-end">
-          <Button
+          {/*<Button
             type="submit"
-            className={`hS button text-white bg-base-dark hover:bg-opacity-90 sm:w-fit w-full space-x-2 gap-3`}
+            className={`hS button text-white bg-base-dark sm:w-fit w-full space-x-2 gap-3`}
             disabled={isLoading}
           >
             {isLoading && <LoaderCircle className="animate-spin size-[18px]" />}
             Save
-          </Button>
+          </Button>*/}
+          <SaveProfileDetails
+            user={userProfileDetails}
+            initialProfileData={initialProfileData}
+            selectedFile={selectedFile}
+          />
         </div>
       </div>
     </form>

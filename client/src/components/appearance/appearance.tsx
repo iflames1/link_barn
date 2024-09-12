@@ -1,10 +1,6 @@
-"use client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { layouts } from "./layouts";
 import ResponsiveButton from "../common/responsive-button";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
-import { saveUserDetails } from "@/lib/saveUserDetails";
 import dynamic from "next/dynamic";
 import { UserProfileSchema } from "@/types/users";
 
@@ -21,7 +17,6 @@ const ChangeAppearance = dynamic(() => import("./change-appearance"), {
 });
 import PreviewLayout from "./preview-layout";
 import { sampleUserData } from "@/data/sampleUserData";
-import { checkTransactionStatus } from "@/lib/checkTransactionStatus";
 import { Button } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
 
@@ -30,27 +25,6 @@ export default function Themes({
 }: {
   userProfile: UserProfileSchema;
 }) {
-  const [txStatus, setTxStatus] = useState<string>("");
-
-  useEffect(() => {
-    const checkStatus = async () => {
-      if (userProfile) {
-        const status = await checkTransactionStatus(userProfile.prevTxID);
-        setTxStatus(status);
-        if (status === "success") {
-          userProfile.prevTxID = "";
-          userProfile.tier = "premium";
-          console.log("userProfile before = ", userProfile);
-          await saveUserDetails(userProfile);
-          console.log("userProfile after = ", userProfile);
-          toast.success("Transaction successful", { richColors: true });
-        }
-      }
-    };
-
-    checkStatus();
-  });
-
   console.log("current layout = ", userProfile?.appearance);
 
   return (
@@ -74,12 +48,7 @@ export default function Themes({
               className="rounded-lg h-full border border-gray-200 hover:border-gray-300 transition-colors relative"
             >
               <layout.LayoutComponent userData={sampleUserData} />
-              <ChangeAppearance
-                appearance={layout.name}
-                user={userProfile}
-                tier={userProfile?.tier}
-                txStatus={txStatus}
-              />
+              <ChangeAppearance appearance={layout.name} user={userProfile} />
             </TabsTrigger>
           ))}
         </TabsList>
