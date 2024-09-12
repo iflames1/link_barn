@@ -4,12 +4,6 @@ import { API_BASE_URL } from "./constants";
 
 export const getUserProfile = async (uuid: string) => {
   console.log("IM BEING CALLED :sob:");
-  console.log("IM BEING CALLED :sob:");
-  console.log("IM BEING CALLED :sob:");
-  console.log("IM BEING CALLED :sob:");
-  console.log("IM BEING CALLED :sob:");
-  console.log("IM BEING CALLED :sob:");
-  console.log("IM BEING CALLED :sob:");
   try {
     const url = `${API_BASE_URL}/users?user_id=${uuid}`;
     const response = await fetch(url, {
@@ -74,7 +68,11 @@ export const checkUserExists = async (
 
 export const getStats = async () => {
   try {
-    const response = await fetch(`${API_BASE_URL}/stats`);
+    const response = await fetch(`${API_BASE_URL}/stats`, {
+      next: {
+        revalidate: 0,
+      },
+    });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -92,18 +90,6 @@ export const getStats = async () => {
 };
 
 export const getUserProfileByUsername = async (username: string) => {
-  console.log("AIIIT");
-  console.log("AIIIT");
-  console.log("AIIIT");
-  console.log("AIIIT");
-  console.log("AIIIT");
-  console.log("AIIIT");
-  console.log("AIIIT");
-  console.log("AIIIT");
-  console.log("AIIIT");
-  console.log("AIIIT");
-  console.log("AIIIT");
-  console.log("AIIIT");
   console.log("AIIIT");
   try {
     const url = `${API_BASE_URL}/users/profile/${username}`;

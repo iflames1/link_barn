@@ -37,7 +37,7 @@ export function PremiumOption({
       const txId = await sendSTXTransaction(price, title);
       if (user && txId) {
         user.prevTxID = txId;
-        console.log(user);
+        //console.log(user);
         await saveUserDetails(user);
         console.log("tx ID handle payment = ", user.prevTxID);
         const status = await checkTransactionStatus(txId);

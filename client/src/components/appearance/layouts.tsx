@@ -18,7 +18,7 @@ interface LayoutProps {
   userData: UserData | undefined;
   links?: LinkSchema[];
   className?: string;
-  username?: boolean;
+  username?: string;
 }
 
 interface ProfileWrapperProps {
@@ -81,7 +81,7 @@ export function LinkWrapper({ userData, links, children }: LinkWrapperProps) {
 }
 
 export function Layout1({ userData, links, className, username }: LayoutProps) {
-  console.log(userData, "from themes");
+  //console.log(userData, "from themes");
   return (
     <ProfileWrapper
       className={cn("flex flex-col items-center gap-[25px]", className)}

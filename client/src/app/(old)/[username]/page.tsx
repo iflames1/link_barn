@@ -6,14 +6,8 @@ import {
   getUserProfileByUsername,
 } from "@/lib/queries";
 import { Loader } from "lucide-react";
-import Image from "next/image";
-import { cn } from "@/lib/utils";
-import { linkAttributes } from "@/components/common/links-attr";
-import { FaArrowRight } from "react-icons/fa6";
-import { JoinLinkBarn, LogoLink } from "@/components/ui/logo";
 import type { Metadata } from "next";
 import { layouts } from "@/components/appearance/layouts";
-import { API_BASE_URL } from "@/lib/constants";
 import {
   getProfileByUsernameCached,
   getUserProfileCached,
@@ -43,7 +37,7 @@ export async function generateMetadata({
   let userProfile = null;
   let links = null;
   let truncUsername = "";
-  console.log(user_exists);
+  //console.log(user_exists);
 
   const truncateString = (str: string): string => {
     if (str.length > 15) {
@@ -57,7 +51,7 @@ export async function generateMetadata({
     links = userProfile && userProfile?.links;
     truncUsername = truncateString(userProfile?.username);
   } else {
-    console.log("HERERE");
+    //console.log("HERERE");
     notFound();
   }
 
@@ -80,7 +74,7 @@ export default async function Page({ params }: PageProps) {
   let userProfile = null;
   let links = null;
   let truncUsername = "";
-  console.log(user_exists);
+  //console.log(user_exists);
 
   const truncateString = (str: string): string => {
     if (str.length > 15) {
@@ -94,19 +88,19 @@ export default async function Page({ params }: PageProps) {
     links = userProfile && userProfile?.links;
     truncUsername = truncateString(userProfile?.username);
   } else {
-    console.log("HERERE");
+    //console.log("HERERE");
     notFound();
   }
-  console.log(userProfile);
+  //console.log(userProfile);
 
   const layout = layouts.find(
     // (layout) => layout.name === "layout1",
     (layout) => layout.name === userProfile?.appearance ?? "layout1",
   );
-  console.log(layout, "WATASHI WA STAR");
+  //console.log(layout, "WATASHI WA STAR");
 
   return (
-    <div className="flex flex-col items-center justify-between min-h-screen h-full">
+    <div className="h-full">
       <Suspense
         fallback={
           <div className="flex items-center justify-center h-[50vh]">
@@ -118,14 +112,10 @@ export default async function Page({ params }: PageProps) {
           <layout.LayoutComponent
             userData={userProfile}
             links={userProfile?.links}
-            username
-            className="min-h-screen h-screen"
+            username={truncUsername}
           />
         )}
       </Suspense>
-      <div className="pb-4">
-        <JoinLinkBarn username={truncUsername} />
-      </div>
     </div>
   );
 }

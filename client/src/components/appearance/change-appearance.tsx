@@ -40,9 +40,7 @@ export default function UseAppearanceButton({
         if (status === "success") {
           user.prevTxID = "";
           user.tier = "premium";
-          console.log("userProfile before = ", user);
           await saveUserDetails(user);
-          console.log("userProfile after = ", user);
           toast.success("Transaction successful", { richColors: true });
         }
       }
@@ -126,7 +124,7 @@ export default function UseAppearanceButton({
             </DialogTitle>
             <PremiumOption
               title="Link Barn Premium (UNIKIND-holders)"
-              price="3"
+              price="2"
               txStatus={txStatus}
               user={user}
             />

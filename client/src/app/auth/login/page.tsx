@@ -23,7 +23,7 @@ const LoginContent = () => {
 
   useEffect(() => {
     if (uuid) {
-      console.log(uuid);
+      //console.log(uuid);
       router.push("/user/links");
     }
   }, [uuid, router]);
