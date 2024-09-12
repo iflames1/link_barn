@@ -77,9 +77,9 @@ export default function ProfileWrapper({
         {children}
       </div>
       {username && (
-      <div className="pb-4">
-        <JoinLinkBarn username={username} />
-      </div>
+        <div className="pb-4">
+          <JoinLinkBarn username={username} />
+        </div>
       )}
     </main>
   );
