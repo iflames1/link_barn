@@ -52,15 +52,40 @@ export default function SaveProfileDetails({
     checkStatus();
   });
 
-  const hasChanged = useCallback(() => {
-    if (!user || !initialProfileData.current) return false;
+  function isEqual(obj1: any, obj2: any): boolean {
+    if (obj1 === obj2) return true;
+    if (
+      typeof obj1 !== "object" ||
+      typeof obj2 !== "object" ||
+      obj1 == null ||
+      obj2 == null
+    )
+      return false;
+    const keys1 = Object.keys(obj1);
+    const keys2 = Object.keys(obj2);
+    if (keys1.length !== keys2.length) return false;
+    for (const key of keys1) {
+      if (!keys2.includes(key) || !isEqual(obj1[key], obj2[key])) return false;
+    }
+    return true;
+  }
 
-    return Object.keys(user).some(
-      (key) =>
-        user[key as keyof UserData] !==
-        initialProfileData.current?.[key as keyof UserData],
-    );
-  }, [initialProfileData, user]);
+  const hasChanged = useCallback(() => {
+    console.log("hasChanged");
+    console.log(initialProfileData, user);
+    if (!user || !initialProfileData.current) return false;
+    return !isEqual(user, initialProfileData.current);
+  }, [user]);
+
+  // const hasChanged = useCallback(() => {
+  //   if (!user || !initialProfileData.current) return false;
+  //
+  //   return Object.keys(user).some(
+  //     (key) =>
+  //       user[key as keyof UserData] !==
+  //       initialProfileData.current?.[key as keyof UserData],
+  //   );
+  // }, [initialProfileData, user]);
 
   const handleSubmit = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
