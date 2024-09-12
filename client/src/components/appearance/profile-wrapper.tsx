@@ -68,7 +68,8 @@ export default function ProfileWrapper({
     <main
       className={cn(
         `${userTheme.bg} w-full h-full`,
-        username && "min-h-screen flex flex-col items-center justify-between"
+        username &&
+          "min-h-screen min-w-screen flex flex-col items-center justify-between"
       )}
     >
       <div
@@ -77,7 +78,7 @@ export default function ProfileWrapper({
         {children}
       </div>
       {username && (
-        <div className="pb-4">
+        <div className={`pb-4 ${userTheme.text}`}>
           <JoinLinkBarn username={username} />
         </div>
       )}
