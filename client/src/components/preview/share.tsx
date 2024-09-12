@@ -14,20 +14,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRef, useState, useEffect } from "react";
-import { API_BASE_URL } from "@/lib/constants";
 import { toast } from "sonner";
 import { IoCheckmarkSharp } from "react-icons/io5";
 import { checkUserExists } from "@/lib/queries";
-import axios from "axios";
-import { revalidateTagServer } from "@/app/actions";
 import { ConfettiSideCannons } from "../ui/confetti-side";
-import { getUserProfile } from "@/lib/queries";
-import { useAppContext } from "@/context";
-import { getUserUUID } from "@/lib/auth";
 import { FaShareAlt } from "react-icons/fa";
 import { getUser } from "@/lib/getUser";
 import { saveUserDetails } from "@/lib/saveUserDetails";
-import { set } from "zod";
 import { UserData } from "@/types/links";
 
 export default function ShareLink() {
