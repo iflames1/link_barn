@@ -29,7 +29,7 @@ import { FaShareAlt } from "react-icons/fa";
 export default function ShareLink() {
   const { userProfileDetails, saveUsername, updateUserProfile, getData } =
     useAppContext();
-  console.log(userProfileDetails);
+  //console.log(userProfileDetails);
   //const userProfileDetails = await getUserProfile(UUID);
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

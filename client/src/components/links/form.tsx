@@ -14,7 +14,7 @@ export default function Form() {
     const fetchUser = async () => {
       const userID = getUserUUID();
       if (userID) {
-        console.log("UUID", userID);
+        //console.log("UUID", userID);
         const res = await getData(API_BASE_URL + "/users/?user_id=" + userID);
         if (res) {
           console.log("Successfully fetched user details");

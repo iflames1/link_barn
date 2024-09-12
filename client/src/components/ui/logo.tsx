@@ -40,7 +40,11 @@ export const LogoLink = ({ footer = false }: { footer?: boolean }) => {
   );
 };
 
-export const JoinLinkBarn = ({ username }: { username: string }) => {
+export const JoinLinkBarn = ({
+  username,
+}: {
+  username: string | undefined;
+}) => {
   const [showText, setShowText] = useState(false);
 
   useEffect(() => {

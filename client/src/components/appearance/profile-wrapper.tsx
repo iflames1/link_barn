@@ -6,12 +6,13 @@ import { cn } from "@/lib/utils";
 import { UserData } from "@/types/links";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { JoinLinkBarn } from "../ui/logo";
 
 interface ProfileWrapperProps {
   children: React.ReactNode;
   className?: string;
   theme?: string;
-  username?: boolean;
+  username?: string;
 }
 
 //let userData: UserData | undefined;
@@ -67,13 +68,16 @@ export default function ProfileWrapper({
     <main
       className={cn(
         `${userTheme.bg} w-full h-full`,
-        username && "min-h-screen",
+        username && "min-h-screen flex flex-col items-center justify-between"
       )}
     >
       <div
-        className={`max-w-80 mx-auto py-14 px-4 ${userTheme.text} ${className}`}
+        className={`sm:max-w-80 mx-auto py-14 px-4 ${userTheme.text} ${className}`}
       >
         {children}
+      </div>
+      <div className="pb-4">
+        <JoinLinkBarn username={username} />
       </div>
     </main>
   );
