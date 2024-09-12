@@ -18,6 +18,7 @@ interface LayoutProps {
   userData: UserData | undefined;
   links?: LinkSchema[];
   className?: string;
+  username?: boolean;
 }
 
 interface ProfileWrapperProps {
@@ -79,12 +80,13 @@ export function LinkWrapper({ userData, links, children }: LinkWrapperProps) {
   );
 }
 
-export function Layout1({ userData, links, className }: LayoutProps) {
+export function Layout1({ userData, links, className, username }: LayoutProps) {
   console.log(userData, "from themes");
   return (
     <ProfileWrapper
       className={cn("flex flex-col items-center gap-[25px]", className)}
       theme={userData?.theme}
+      username={username}
     >
       {userData?.profile_picture ? (
         <Image
@@ -136,9 +138,13 @@ export function Layout1({ userData, links, className }: LayoutProps) {
   );
 }
 
-export function Layout2({ userData, links }: LayoutProps) {
+export function Layout2({ userData, links, username }: LayoutProps) {
   return (
-    <ProfileWrapper className="flex flex-col gap-6" theme={userData?.theme}>
+    <ProfileWrapper
+      className="flex flex-col gap-6"
+      theme={userData?.theme}
+      username={username}
+    >
       <div className="flex items-center text-center gap-4">
         {userData?.profile_picture ? (
           <Image
@@ -187,9 +193,13 @@ export function Layout2({ userData, links }: LayoutProps) {
   );
 }
 
-export function Layout3({ userData, links }: LayoutProps) {
+export function Layout3({ userData, links, username }: LayoutProps) {
   return (
-    <ProfileWrapper className="text-center space-y-6" theme={userData?.theme}>
+    <ProfileWrapper
+      className="text-center space-y-6"
+      theme={userData?.theme}
+      username={username}
+    >
       {userData?.profile_picture ? (
         <Image
           src={userData?.profile_picture as string}
@@ -228,9 +238,9 @@ export function Layout3({ userData, links }: LayoutProps) {
   );
 }
 
-export function Layout4({ userData, links }: LayoutProps) {
+export function Layout4({ userData, links, username }: LayoutProps) {
   return (
-    <ProfileWrapper theme={userData?.theme}>
+    <ProfileWrapper theme={userData?.theme} username={username}>
       <div className="relative mb-16">
         <div
           className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 rounded-t-lg"
@@ -278,9 +288,13 @@ export function Layout4({ userData, links }: LayoutProps) {
   );
 }
 
-export function Layout5({ userData, links }: LayoutProps) {
+export function Layout5({ userData, links, username }: LayoutProps) {
   return (
-    <ProfileWrapper className="space-y-6" theme={userData?.theme}>
+    <ProfileWrapper
+      className="space-y-6"
+      theme={userData?.theme}
+      username={username}
+    >
       <div className="flex flex-col items-center space-y-4">
         {userData?.profile_picture ? (
           <Image

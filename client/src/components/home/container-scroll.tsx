@@ -44,7 +44,7 @@ export function HeroScrollDemo() {
                 manrope.className,
               )}
             >
-              All your Links in One Place
+              All your Decentralized Links in One Place
             </h1>
             {/* <h1 */}
             {/*   className={ */}

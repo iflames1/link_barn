@@ -87,7 +87,9 @@ export function SiteFooter() {
             {/*   </span> */}
             {/* </Link> */}
             <LogoLink footer />
-            <p className="max-w-xs">Link Sharing app for traders</p>
+            <p className="max-w-xs">
+              A decentralized Link sharing app for everyone
+            </p>
           </div>
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-10">
             {footerNavs.map((nav) => (

@@ -14,6 +14,7 @@ import { Manrope } from "next/font/google";
 import { CheckIcon } from "lucide-react";
 import Link from "next/link";
 import ContactUs from "./contact";
+import { isFree } from "@/lib/constants";
 
 interface PlanFeature {
   type: string;
@@ -37,11 +38,12 @@ const faqs = [
     answer:
       "Link Barn is a versatile tool for managing, organizing, and sharing your links. Similar to LinkTree, it allows you to create a personalized page with multiple links. What sets Link Barn apart is its use of wallet connection for account creation and sign-in, providing enhanced security and seamless integration with blockchain technology.",
   },
-  {
-    question: "Is Link Barn free to use?",
-    answer:
-      "Link Barn offers both free and premium tiers. The free tier provides basic functionality, while the premium tier offers advanced features such as advance appearance customization removable Link Barn branding. Check our pricing page for more details.",
-  },
+  // {
+  //   question: "Is Link Barn free to use?",
+  //   answer: isFree
+  //     ? "Link Barn offers both free and premium tiers. The free tier provides basic functionality, while the premium tier offers advanced features such as advance appearance customization removable Link Barn branding. Check our pricing page for more details."
+  //     : "Link Barn offers premium and business tiers. The free tier provides basic functionality, while the premium tier offers advanced features such as advance appearance customization removable Link Barn branding. Check our pricing page for more details.",
+  // },
   {
     question: "Can I use Link Barn for my business or brand?",
     answer:
@@ -69,80 +71,40 @@ export default function PricingSectionCards() {
           </p>
         </div>
 
-        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:items-center">
+        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:items-center items-center">
           {/* Card */}
-          <Card className="hover:scale-[1.03] transition-transform duration-300">
-            <CardHeader className="text-center pb-2">
-              <CardTitle className="mb-7">Free</CardTitle>
-              <span className="font-bold text-5xl">Free</span>
-            </CardHeader>
-            <CardDescription className="text-center">
-              Forever free
-            </CardDescription>
-            <CardContent>
-              <ul className="mt-7 space-y-2.5 text-sm">
-                <li className="flex space-x-2">
-                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                  <span className="text-muted-foreground">Custom URL</span>
-                </li>
-                <li className="flex space-x-2">
-                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                  <span className="text-muted-foreground">Product support</span>
-                </li>
-              </ul>
-            </CardContent>
-            <CardFooter>
-              <Button className="w-full" variant={"outline"}>
-                <Link href={"/user/preview"}>Get Started</Link>
-              </Button>
-            </CardFooter>
-          </Card>
+          {isFree && (
+            <Card className="hover:scale-[1.03] transition-transform duration-300">
+              <CardHeader className="text-center pb-2">
+                <CardTitle className="mb-7">Free</CardTitle>
+                <span className="font-bold text-5xl">Free</span>
+              </CardHeader>
+              <CardDescription className="text-center">
+                Forever free
+              </CardDescription>
+              <CardContent>
+                <ul className="mt-7 space-y-2.5 text-sm">
+                  <li className="flex space-x-2">
+                    <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
+                    <span className="text-muted-foreground">Custom URL</span>
+                  </li>
+                  <li className="flex space-x-2">
+                    <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
+                    <span className="text-muted-foreground">
+                      Product support
+                    </span>
+                  </li>
+                </ul>
+              </CardContent>
+              <CardFooter>
+                <Button className="w-full" variant={"outline"}>
+                  <Link href={"/user/preview"}>Get Started</Link>
+                </Button>
+              </CardFooter>
+            </Card>
+          )}
           {/* End Card */}
-          {/* Card */}
-          <Card className="border-base-dark hover:scale-[1.03] transition-transform duration-300">
-            <CardHeader className="text-center pb-2">
-              <Badge className="uppercase w-max self-center mb-3">
-                Most popular
-              </Badge>
-              <CardTitle className="!mb-7">Premium (UNIKIND HOLDERS)</CardTitle>
-              <span className="font-bold text-5xl">3stx</span>
-            </CardHeader>
-            <CardDescription className="text-center w-11/12 mx-auto">
-              Everything you need for a growing presence
-            </CardDescription>
-            <CardContent>
-              <ul className="mt-7 space-y-2.5 text-sm">
-                <li className="flex space-x-2">
-                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                  <span className="text-muted-foreground">
-                    All free tier features
-                  </span>
-                </li>
-                <li className="flex space-x-2">
-                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                  <span className="text-muted-foreground">
-                    Remove Link Barn Branding
-                  </span>
-                </li>
-                <li className="flex space-x-2">
-                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                  <span className="text-muted-foreground">
-                    Appearance Customization
-                  </span>
-                </li>
-                <li className="flex space-x-2">
-                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                  <span className="text-muted-foreground">Product support</span>
-                </li>
-              </ul>
-            </CardContent>
-            <CardFooter>
-              <Button className="w-full bg-base-dark text-base-light" asChild>
-                <Link href={"/user/preview"}>Get Started</Link>
-              </Button>
-            </CardFooter>
-          </Card>
-          {/* End Card */}
+
           {/* Card */}
           <Card className="hover:scale-[1.03] transition-transform duration-300">
             <CardHeader className="text-center pb-2">
@@ -180,6 +142,51 @@ export default function PricingSectionCards() {
             </CardContent>
             <CardFooter>
               <Button className="w-full" variant={"outline"} asChild>
+                <Link href={"/user/preview"}>Get Started</Link>
+              </Button>
+            </CardFooter>
+          </Card>
+          {/* End Card */}
+          {/* Card */}
+          <Card className="border-base-dark hover:scale-[1.03] transition-transform duration-300">
+            <CardHeader className="text-center pb-2">
+              <Badge className="uppercase w-max self-center mb-3">
+                Most popular
+              </Badge>
+              <CardTitle className="!mb-7">Premium (UNIKIND HOLDERS)</CardTitle>
+              <span className="font-bold text-5xl">2stx</span>
+            </CardHeader>
+            <CardDescription className="text-center w-11/12 mx-auto">
+              Everything you need for a growing presence
+            </CardDescription>
+            <CardContent>
+              <ul className="mt-7 space-y-2.5 text-sm">
+                <li className="flex space-x-2">
+                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
+                  <span className="text-muted-foreground">
+                    All free tier features
+                  </span>
+                </li>
+                <li className="flex space-x-2">
+                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
+                  <span className="text-muted-foreground">
+                    Remove Link Barn Branding
+                  </span>
+                </li>
+                <li className="flex space-x-2">
+                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
+                  <span className="text-muted-foreground">
+                    Appearance Customization
+                  </span>
+                </li>
+                <li className="flex space-x-2">
+                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
+                  <span className="text-muted-foreground">Product support</span>
+                </li>
+              </ul>
+            </CardContent>
+            <CardFooter>
+              <Button className="w-full bg-base-dark text-base-light" asChild>
                 <Link href={"/user/preview"}>Get Started</Link>
               </Button>
             </CardFooter>
