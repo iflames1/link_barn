@@ -18,13 +18,15 @@ interface FormProps {
   setUserProfileDetails: React.Dispatch<
     React.SetStateAction<UserData | undefined>
   >;
+  initialProfileData: React.RefObject<UserData>;
 }
 
 const SaveProfileDetails = dynamic(() => import("./save-profile-details"), {
   ssr: false,
   loading: () => (
     <Button className="text-white bg-base-dark gap-3 sm:w-fit w-full">
-      <Skeleton className="h-6 w-14" />
+      {/* <Skeleton className="h-6 w-14" /> */}
+      Save
     </Button>
   ),
 });
@@ -32,6 +34,7 @@ const SaveProfileDetails = dynamic(() => import("./save-profile-details"), {
 export default function Form({
   userProfileDetails,
   setUserProfileDetails,
+  initialProfileData,
 }: FormProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -40,7 +43,8 @@ export default function Form({
   const [image, setImage] = useState<string>(
     userProfileDetails?.profile_picture as string,
   );
-  const initialProfileData = useRef<UserData>();
+  // @ts-ignore
+  // const initialProfileData = useRef<UserData>();
 
   //
   // useEffect(() => {
@@ -55,7 +59,12 @@ export default function Form({
   //     }
   //   };
   //   fetchUserData();
-  // }, []);
+  //   initialProfileData.current = userProfileDetails;
+  // }, [userProfileDetails]);
+
+  // useEffect(() => {
+  //   initialProfileData.current = JSON.parse(JSON.stringify(userProfileDetails));
+  // }, [userProfileDetails]);
 
   const updateUserProfile = useCallback(
     (updatedProfile: Partial<UserData>) => {
@@ -92,7 +101,7 @@ export default function Form({
         await saveUserDetails(userProfileDetails);
       await revalidateUserProfile(getUserUUID() as string);
       await revalidateTagServer("profile");
-      initialProfileData.current = userProfileDetails;
+      // initialProfileData.current = userProfileDetails;
       toast.success("Profile updated successfully");
     } catch (error) {
       console.error("Error during submission:", error);
@@ -118,11 +127,6 @@ export default function Form({
           <div className="flex md:flex-row flex-col gap-4 md:items-center items-start justify-between p-5 bg-gray-light rounded-xl w-full">
             <p className="bM text-gray-dark">Profile Picture</p>
             <div className=" flex md:flex-row flex-col gap-6 md:items-center items-start justify-between">
-              {/*<ImageInput
-                image={image}
-                setImage={setImage}
-                setSelectedFile={setSelectedFile}
-              />*/}
               <div
                 className="rounded-xl flex flex-col items-center justify-center cursor-pointer hS size-48 relative overflow-hidden"
                 onClick={() => fileInputRef.current?.click()}
@@ -223,16 +227,9 @@ export default function Form({
       <div>
         <hr className="h-[1px] bg-gray border-none" />
         <div className="sm:py-6 sm:px-10 p-4 flex justify-end">
-          {/*<Button
-            type="submit"
-            className={`hS button text-white bg-base-dark sm:w-fit w-full space-x-2 gap-3`}
-            disabled={isLoading}
-          >
-            {isLoading && <LoaderCircle className="animate-spin size-[18px]" />}
-            Save
-          </Button>*/}
           <SaveProfileDetails
             user={userProfileDetails}
+            // @ts-ignore
             initialProfileData={initialProfileData}
             selectedFile={selectedFile}
           />

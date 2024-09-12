@@ -1,12 +1,14 @@
 "use client";
+
 import Preview from "../appearance/preview";
 import Form from "./form";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { UserData } from "@/types/links";
 
 export default function Profile({ userProfile }: { userProfile: UserData }) {
   const [userProfileDetails, setUserProfileDetails] =
     useState<UserData>(userProfile);
+  const initialProfileData = useRef<UserData>(userProfile);
 
   console.log("rerender", userProfileDetails);
 
@@ -17,6 +19,7 @@ export default function Profile({ userProfile }: { userProfile: UserData }) {
         userProfileDetails={userProfileDetails}
         // @ts-ignore
         setUserProfileDetails={setUserProfileDetails}
+        initialProfileData={initialProfileData}
       />
     </div>
   );

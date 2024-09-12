@@ -17,7 +17,7 @@ export default function ConnectWallet() {
       className="gap-4 w-full max-w-[300px]"
     >
       {pending ? (
-        <Loader2 size={17} className="animate-spin" color="#000" />
+        <Loader2 size={17} className="animate-spin" color="#fff" />
       ) : (
         <LuWallet2 />
       )}
