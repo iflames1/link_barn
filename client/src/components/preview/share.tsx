@@ -98,14 +98,16 @@ export default function ShareLink() {
     if (user) {
       const userExist: { status: boolean; message?: string } =
         await checkUserExists("username", username);
-      console.log(userExist);
       if (!userExist.status && userExist.message === "User does not exist") {
         user.username = username;
         await saveUserDetails(user);
         setPrevUsername(username);
+        setIsEditing(false);
+        setLoading(false);
         return;
       } else if (userExist.status && username !== prevUsername) {
         toast.error("User with that username already exist, try another");
+        setLoading(false);
         return;
       } else {
         toast.error("Something went wrong, please try again later");
@@ -113,6 +115,7 @@ export default function ShareLink() {
       }
       return;
     }
+    console.log("return here");
     setIsEditing(false);
     setLoading(false);
   };
