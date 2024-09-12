@@ -67,11 +67,11 @@ export default function ProfileWrapper({
     <main
       className={cn(
         `${userTheme.bg} w-full h-full`,
-        username && "min-h-screen",
+        username && "min-h-screen"
       )}
     >
       <div
-        className={`max-w-80 mx-auto py-14 px-4 ${userTheme.text} ${className}`}
+        className={`sm:max-w-80 mx-auto py-14 px-4 ${userTheme.text} ${className}`}
       >
         {children}
       </div>
