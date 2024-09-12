@@ -7,7 +7,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { saveUserDetails } from "@/lib/saveUserDetails";
 import { UserData } from "@/types/links";
 import { toast } from "sonner";
@@ -17,22 +17,39 @@ import { cn } from "@/lib/utils";
 import { CgSmileSad } from "react-icons/cg";
 import { PremiumOption } from "../premium-option";
 import { LoaderCircle } from "lucide-react";
+import { checkTransactionStatus } from "@/lib/checkTransactionStatus";
 
 interface UseAppearanceButtonProps {
   appearance: string;
-  user: UserData | undefined;
-  tier: string;
-  txStatus: string;
+  user: UserData;
 }
 
 export default function UseAppearanceButton({
   appearance,
   user,
-  tier,
-  txStatus,
 }: UseAppearanceButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [txStatus, setTxStatus] = useState<string>("");
+
+  useEffect(() => {
+    const checkStatus = async () => {
+      if (user) {
+        const status = await checkTransactionStatus(user.prevTxID);
+        setTxStatus(status);
+        if (status === "success") {
+          user.prevTxID = "";
+          user.tier = "premium";
+          console.log("userProfile before = ", user);
+          await saveUserDetails(user);
+          console.log("userProfile after = ", user);
+          toast.success("Transaction successful", { richColors: true });
+        }
+      }
+    };
+
+    checkStatus();
+  });
 
   const handleConfirm = async () => {
     setLoading(true);
@@ -75,7 +92,7 @@ export default function UseAppearanceButton({
               />
             </Button>
           </div>
-        ) : tier === "free" ? (
+        ) : user.tier === "free" ? (
           <div>
             <p className="">
               {txStatus === "success" ? (
