@@ -33,6 +33,37 @@ interface ProfileWrapperProps {
 //    </main>
 //  );
 //}
+//
+//
+
+interface CircularImageProps {
+  src: string;
+  alt: string;
+  size?: number;
+  className?: string;
+}
+
+export default function CircularImage({
+  src,
+  alt,
+  size = 115,
+  className,
+}: CircularImageProps) {
+  return (
+    <div
+      className={cn("relative overflow-hidden rounded-full", className)}
+      style={{ width: size, height: size }}
+    >
+      <Image
+        src={src}
+        alt={alt}
+        layout="fill"
+        objectFit="cover"
+        className="rounded-full"
+      />
+    </div>
+  );
+}
 
 const getFirstLetter = (username: string | undefined) => {
   if (username && username.length > 0) {
@@ -147,12 +178,9 @@ export function Layout2({ userData, links, username }: LayoutProps) {
     >
       <div className="flex items-center text-center gap-4">
         {userData?.profile_picture ? (
-          <Image
+          <CircularImage
             src={userData?.profile_picture as string}
-            alt={userData?.first_name as string}
-            width={80}
-            height={80}
-            className="rounded-full"
+            alt={userData?.first_name}
           />
         ) : (
           <div className="rounded-full bg-base-dark text-white size-20 min-w-20 min-h-20 flex items-center justify-center text-6xl font-bold uppercase">
@@ -201,12 +229,10 @@ export function Layout3({ userData, links, username }: LayoutProps) {
       username={username}
     >
       {userData?.profile_picture ? (
-        <Image
+        <CircularImage
           src={userData?.profile_picture as string}
-          alt={userData?.first_name as string}
-          width={120}
-          height={120}
-          className="rounded-full mx-auto"
+          alt={userData?.first_name}
+          className="mx-auto"
         />
       ) : (
         <div className="size-[120px] min-w-[120px] min-h-[120px] rounded-full mx-auto flex items-center justify-center text-6xl font-bold uppercase bg-base-dark text-white">
@@ -239,19 +265,29 @@ export function Layout3({ userData, links, username }: LayoutProps) {
 }
 
 export function Layout4({ userData, links, username }: LayoutProps) {
+  // <Image
+  //   src={userData?.profile_picture as string}
+  //   alt={userData?.first_name as string}
+  //   width={100}
+  //   height={100}
+  //   className="rounded-full absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 border-4 border-white"
+  // />
+
   return (
-    <ProfileWrapper theme={userData?.theme} username={username}>
+    <ProfileWrapper
+      theme={userData?.theme}
+      username={username}
+      className="pt-20"
+    >
       <div className="relative mb-16">
         <div
           className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 rounded-t-lg"
           style={{ height: "100px" }}
         />
         {userData?.profile_picture ? (
-          <Image
+          <CircularImage
             src={userData?.profile_picture as string}
-            alt={userData?.first_name as string}
-            width={100}
-            height={100}
+            alt={userData?.first_name}
             className="rounded-full absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 border-4 border-white"
           />
         ) : (
@@ -289,6 +325,13 @@ export function Layout4({ userData, links, username }: LayoutProps) {
 }
 
 export function Layout5({ userData, links, username }: LayoutProps) {
+  // <Image
+  //   src={userData?.profile_picture as string}
+  //   alt={userData?.first_name as string}
+  //   width={150}
+  //   height={150}
+  //   className="rounded-[100%] object-cover"
+  // />
   return (
     <ProfileWrapper
       className="space-y-6"
@@ -297,12 +340,9 @@ export function Layout5({ userData, links, username }: LayoutProps) {
     >
       <div className="flex flex-col items-center space-y-4">
         {userData?.profile_picture ? (
-          <Image
+          <CircularImage
             src={userData?.profile_picture as string}
-            alt={userData?.first_name as string}
-            width={100}
-            height={100}
-            className="rounded-full"
+            alt={userData?.first_name}
           />
         ) : (
           <div className="w-[100px] h-[100px] rounded-full bg-base-dark text-white text-6xl font-bold flex justify-center items-center uppercase">
