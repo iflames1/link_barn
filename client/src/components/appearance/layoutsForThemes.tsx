@@ -40,7 +40,7 @@ export function LinkWrapper({ userData, links, children }: LinkWrapperProps) {
     <>
       {links ? (
         links.length < 1 ? (
-          <div>You have not added any links</div>
+          <div>It looks like you haven&apos;t added any links yet.</div>
         ) : (
           links
             .slice()

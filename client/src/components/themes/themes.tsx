@@ -1,4 +1,4 @@
-import { sampleUserData } from "@/data/sampleUserData";
+import { sampleUserData } from "@/data/sample-user-data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import PreviewLayout from "../appearance/preview-layout";
 import { themes } from "@/data/themes2";

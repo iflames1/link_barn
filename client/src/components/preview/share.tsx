@@ -110,12 +110,16 @@ export default function ShareLink() {
   };
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //setUsername(e.target.value);
+    setUsername(e.target.value);
     updateUserProfile({ username: e.target.value });
   };
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(`https://www.linkbarn.tech/${username}`);
+    navigator.clipboard.writeText(
+      process.env.NODE_ENV === "development"
+        ? `localhost://3000/${username}`
+        : `https://www.linkbarn.tech/${username}`,
+    );
     console.log("Link copied to clipboard!");
     setCopied(true);
     toast.success("Link copied to clipboard!");
