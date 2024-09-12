@@ -7,10 +7,7 @@ import { UserProfileSchema } from "@/types/users";
 const ChangeAppearance = dynamic(() => import("./change-appearance"), {
   ssr: false,
   loading: () => (
-    <Button
-      variant="default"
-      className="absolute top-2 left-2 text-white bg-base-dark"
-    >
+    <Button className="absolute top-2 left-2 text-white bg-base-dark">
       <Skeleton className="w-20 h-6" />
     </Button>
   ),

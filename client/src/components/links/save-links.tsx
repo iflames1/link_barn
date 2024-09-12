@@ -2,13 +2,11 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
 import { useCallback, useEffect, useState } from "react";
-import { saveUserDetails } from "@/lib/saveUserDetails";
 import { UserData } from "@/types/links";
 import { toast } from "sonner";
 import { AiOutlineInfoCircle } from "react-icons/ai";
@@ -18,14 +16,17 @@ import { CgSmileSad } from "react-icons/cg";
 import { PremiumOption } from "../premium-option";
 import { LoaderCircle } from "lucide-react";
 import { checkTransactionStatus } from "@/lib/checkTransactionStatus";
+import { saveUserDetails } from "@/lib/saveUserDetails";
+import { z } from "zod";
 
 interface SaveLinksProps {
   user: UserData | undefined;
+  onSave: () => Promise<void>;
+  isLoading: boolean;
 }
 
-export default function SaveLinks({ user }: SaveLinksProps) {
+export default function SaveLinks({ user, onSave, isLoading }: SaveLinksProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [txStatus, setTxStatus] = useState<string>("");
 
   useEffect(() => {
@@ -45,16 +46,21 @@ export default function SaveLinks({ user }: SaveLinksProps) {
     checkStatus();
   });
 
+  const handleSave = async () => {
+    await onSave();
+    setIsOpen(false);
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button
-          disabled={loading}
-          className="text-white bg-base-dark gap-3 sm:w-fit w-full"
+          disabled={isLoading}
+          className="text-white bg-base-dark self-end gap-3 hS button"
         >
           Save
           <LoaderCircle
-            className={cn(`animate-spin`, loading ? "flex" : "hidden")}
+            className={cn(`animate-spin`, isLoading ? "flex" : "hidden")}
             size={16}
           />
         </Button>
@@ -108,20 +114,19 @@ export default function SaveLinks({ user }: SaveLinksProps) {
         ) : (
           <div className="text-center flex flex-col items-center">
             <DialogTitle className="text-xl font-semibold mb-4">
-              Confirm update profile details
+              Confirm links changes
             </DialogTitle>
             <p className="mb-4">Do you want to save the changes?</p>
             <div className="flex gap-4">
               <Button
-                onClick={handleSubmit}
-                disabled={loading}
+                onClick={handleSave}
+                disabled={isLoading}
                 className="bg-base-dark gap-4"
               >
                 Save
-                <LoaderCircle
-                  className={cn(`animate-spin`, loading ? "flex" : "hidden")}
-                  size={16}
-                />
+                {isLoading && (
+                  <LoaderCircle className="animate-spin" size={16} />
+                )}
               </Button>
               <Button onClick={() => setIsOpen(false)} className="bg-red gap-4">
                 Cancel

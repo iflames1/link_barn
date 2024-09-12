@@ -37,22 +37,25 @@ export default function Form({
   const [isHovered, setIsHovered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [image, setImage] = useState<string>("");
+  const [image, setImage] = useState<string>(
+    userProfileDetails?.profile_picture as string,
+  );
   const initialProfileData = useRef<UserData>();
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const result = await getUser();
-      if (result) {
-        const { userData } = result;
-        setUserProfileDetails(userData);
-        console.log("User data fetched");
-        initialProfileData.current = userData;
-        setImage(userData?.profile_picture || "");
-      }
-    };
-    fetchUserData();
-  }, []);
+  //
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     const result = await getUser();
+  //     if (result) {
+  //       const { userData } = result;
+  //       setUserProfileDetails(userData);
+  //       console.log("User data fetched");
+  //       initialProfileData.current = userData;
+  //       setImage(userData?.profile_picture || "");
+  //     }
+  //   };
+  //   fetchUserData();
+  // }, []);
 
   const updateUserProfile = useCallback(
     (updatedProfile: Partial<UserData>) => {
@@ -61,7 +64,7 @@ export default function Form({
         return { ...prevDetails, ...updatedProfile };
       });
     },
-    [setUserProfileDetails]
+    [setUserProfileDetails],
   );
 
   const hasChanged = useCallback(() => {
@@ -70,7 +73,7 @@ export default function Form({
     return Object.keys(userProfileDetails).some(
       (key) =>
         userProfileDetails[key as keyof UserData] !==
-        initialProfileData.current?.[key as keyof UserData]
+        initialProfileData.current?.[key as keyof UserData],
     );
   }, [userProfileDetails]);
 

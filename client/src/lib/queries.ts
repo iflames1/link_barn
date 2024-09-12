@@ -29,7 +29,7 @@ export const getUserProfile = async (uuid: string) => {
 
 export const checkUserExists = async (
   field: string = "username",
-  value: string
+  value: string,
 ): Promise<{ status: boolean; message: string }> => {
   console.log("Im BEING CALLED");
   try {
@@ -68,7 +68,11 @@ export const checkUserExists = async (
 
 export const getStats = async () => {
   try {
-    const response = await fetch(`${API_BASE_URL}/stats`);
+    const response = await fetch(`${API_BASE_URL}/stats`, {
+      next: {
+        revalidate: 0,
+      },
+    });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

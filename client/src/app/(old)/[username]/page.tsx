@@ -23,7 +23,7 @@ type User = {
 export async function generateStaticParams(): Promise<string[]> {
   const response: User[] = await getAllUsernames();
   const filteredUsers = response.filter(
-    (user: User): user is User & { username: string } => user.username !== null
+    (user: User): user is User & { username: string } => user.username !== null,
   );
   return filteredUsers.map(({ username }) => username);
 }
@@ -95,7 +95,7 @@ export default async function Page({ params }: PageProps) {
 
   const layout = layouts.find(
     // (layout) => layout.name === "layout1",
-    (layout) => layout.name === userProfile?.appearance ?? "layout1"
+    (layout) => layout.name === userProfile?.appearance ?? "layout1",
   );
   //console.log(layout, "WATASHI WA STAR");
 
