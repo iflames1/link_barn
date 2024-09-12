@@ -122,7 +122,7 @@ export default function ChangeTheme({
             </DialogTitle>
             <PremiumOption
               title="Link Barn Premium (UNIKIND-holders)"
-              price="3"
+              price="2"
               txStatus={txStatus}
               user={user}
             />
