@@ -30,7 +30,7 @@ export function HeroScrollDemo() {
                 🎉 <hr className="mx-2 h-4 w-[1px] shrink-0 bg-gray-300" />{" "}
                 <span
                   className={cn(
-                    `inline animate-gradient bg-gradient-to-r from-[#ffaa40] via-[#9c40ff] to-[#ffaa40] bg-[length:var(--bg-size)_100%] bg-clip-text text-transparent`,
+                    `inline animate-gradient bg-gradient-to-r from-[#ffaa40] via-[#9c40ff] to-[#ffaa40] bg-[length:var(--bg-size)_100%] bg-clip-text text-transparent`
                   )}
                 >
                   ✨ Introducing Link Barn
@@ -41,10 +41,10 @@ export function HeroScrollDemo() {
             <h1
               className={cn(
                 "hM text-[54px] text-center relative z-20 text-[#151515]",
-                manrope.className,
+                manrope.className
               )}
             >
-              All your Decentralized Links in One Place
+              All your Links in One Place
             </h1>
             {/* <h1 */}
             {/*   className={ */}
@@ -103,7 +103,7 @@ export function HeroScrollDemo() {
         >
           <div
             className={cn(
-              "relative flex h-[400px] md:h-[600px] w-full max-w-[1100px] flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl",
+              "relative flex h-[400px] md:h-[600px] w-full max-w-[1100px] flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl"
             )}
           >
             <span className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center text-8xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10">
