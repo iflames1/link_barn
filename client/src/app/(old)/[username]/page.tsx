@@ -29,7 +29,7 @@ type User = {
 export async function generateStaticParams(): Promise<string[]> {
   const response: User[] = await getAllUsernames();
   const filteredUsers = response.filter(
-    (user: User): user is User & { username: string } => user.username !== null,
+    (user: User): user is User & { username: string } => user.username !== null
   );
   return filteredUsers.map(({ username }) => username);
 }
@@ -43,7 +43,7 @@ export async function generateMetadata({
   let userProfile = null;
   let links = null;
   let truncUsername = "";
-  console.log(user_exists);
+  //console.log(user_exists);
 
   const truncateString = (str: string): string => {
     if (str.length > 15) {
@@ -57,7 +57,7 @@ export async function generateMetadata({
     links = userProfile && userProfile?.links;
     truncUsername = truncateString(userProfile?.username);
   } else {
-    console.log("HERERE");
+    //console.log("HERERE");
     notFound();
   }
 
@@ -80,7 +80,7 @@ export default async function Page({ params }: PageProps) {
   let userProfile = null;
   let links = null;
   let truncUsername = "";
-  console.log(user_exists);
+  //console.log(user_exists);
 
   const truncateString = (str: string): string => {
     if (str.length > 15) {
@@ -94,16 +94,16 @@ export default async function Page({ params }: PageProps) {
     links = userProfile && userProfile?.links;
     truncUsername = truncateString(userProfile?.username);
   } else {
-    console.log("HERERE");
+    //console.log("HERERE");
     notFound();
   }
-  console.log(userProfile);
+  //console.log(userProfile);
 
   const layout = layouts.find(
     // (layout) => layout.name === "layout1",
-    (layout) => layout.name === userProfile?.appearance ?? "layout1",
+    (layout) => layout.name === userProfile?.appearance ?? "layout1"
   );
-  console.log(layout, "WATASHI WA STAR");
+  //console.log(layout, "WATASHI WA STAR");
 
   return (
     <div className="flex flex-col items-center justify-between min-h-screen h-full">
@@ -123,14 +123,9 @@ export default async function Page({ params }: PageProps) {
           />
         )}
       </Suspense>
-      <>
-        {!userProfile.tier ||
-          (userProfile?.tier === "free" && (
-            <div className="pb-4">
-              <JoinLinkBarn username={truncUsername} />
-            </div>
-          ))}
-      </>
+      <div className="pb-4">
+        <JoinLinkBarn username={truncUsername} />
+      </div>
     </div>
   );
 }
