@@ -1,18 +1,23 @@
 import Header from "@/components/header";
 import Profile from "@/components/profile-details/profile";
+import { getUserProfile } from "@/lib/queries";
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 
 export const metadata: Metadata = {
   title: "Profile",
   description: "Update your information",
 };
 
-export default function ProfilePage() {
+export default async function ProfilePage() {
+  const uuid = cookies().get("uuid")?.value;
+  const userProfileDetails = await getUserProfile(uuid as string);
+
   return (
     <div className="sm:p-6 w-full max-w-[1440px] mx-auto relative">
       <Header />
       <div className="sm:p-0 sm:pt-6 p-4">
-        <Profile />
+        <Profile userProfile={userProfileDetails} />
       </div>
       {/* <Wallet /> */}
     </div>
