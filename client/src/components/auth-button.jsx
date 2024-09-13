@@ -1,7 +1,4 @@
 "use client";
-import { useState } from "react";
-import { FaPowerOff } from "react-icons/fa6";
-import { FaInfo } from "react-icons/fa";
 import { useWallet } from "@/utils/wallet";
 import { Button } from "./ui/button";
 import { getUserUUID } from "@/lib/auth";
