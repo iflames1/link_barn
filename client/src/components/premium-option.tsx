@@ -27,28 +27,36 @@ export function PremiumOption({
 
   const handlePayment = async () => {
     setLoading(true);
-    if (price === "3" && !(await holdsUnik(user?.stx_address_mainnet))) {
-      toast.error("You need to hold UNIKIND to use this option", {
-        richColors: true,
-      });
-      setLoading(false);
-      return;
-    } else {
-      const txId = await sendSTXTransaction(price, title);
-      if (user && txId) {
-        user.prevTxID = txId;
-        //console.log(user);
-        await saveUserDetails(user);
-        console.log("tx ID handle payment = ", user.prevTxID);
-        const status = await checkTransactionStatus(txId);
-        toast.success(
-          "Your transaction have been sent, please refresh this page",
-          { richColors: true }
-        );
-        console.log("tx status = ", status);
+    let hasUNIKIND = false;
+    if (price === "2") {
+      hasUNIKIND = await holdsUnik(user?.stx_address_mainnet);
+      if (!hasUNIKIND) {
+        toast.error("You need to hold UNIKIND to use this option", {
+          richColors: true,
+        });
+        setLoading(false);
+        return;
       }
     }
-    setLoading(false);
+    if ((price === "2" && hasUNIKIND) || price !== "2") {
+      const txId: string | undefined = await sendSTXTransaction(price, title);
+      if (user && txId) {
+        user.prevTxID = txId;
+        await saveUserDetails(user);
+        console.log("tx ID handle payment = ", user.prevTxID);
+        toast.success(
+          "Your transaction have been sent, please check back later",
+          { richColors: true }
+        );
+        setLoading(false);
+        return;
+      } else {
+        toast.error("Something went wrong", { richColors: true });
+        console.log("Failed to get tx ID / error fetching user");
+        setLoading(false);
+        return;
+      }
+    }
   };
 
   return (
