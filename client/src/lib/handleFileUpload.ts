@@ -40,7 +40,7 @@ const uploadStagedFile = async (stagedFile: File | Blob, uuid: string) => {
       if (!response.ok) {
         console.log(responseData);
         throw new Error(
-          `An error occurred while updating profile: ${responseData.detail}`,
+          `An error occurred while updating profile: ${responseData.detail}`
         );
       }
 
@@ -71,10 +71,10 @@ const uploadStagedFile = async (stagedFile: File | Blob, uuid: string) => {
 
 export const handleFileUpload = async (
   selectedFile: File | null,
-  uuid: string | undefined = getUserUUID(),
+  uuid: string | undefined = getUserUUID()
 ) => {
   if (selectedFile) {
-    console.log(uuid, "Where you go i go");
+    //console.log(uuid, "Where you go i go");
     await uploadStagedFile(selectedFile, uuid as string);
   } else {
     console.log("No file selected");
