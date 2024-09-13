@@ -46,7 +46,7 @@ export default function Themes({
                 data-[state=active]:${theme.text}
                 data-[state=active]:shadow-sm
                 group-active:${theme.bg}
-                transition-all`
+                transition-all`,
               )}
               asChild
             >

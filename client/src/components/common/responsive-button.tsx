@@ -1,9 +1,11 @@
 "use client";
+
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { IconType } from "react-icons";
 import { RiPaintFill } from "react-icons/ri";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface TabProps {
   path: string;
@@ -51,21 +53,39 @@ export default function ResponsiveButton({ path, title, className }: TabProps) {
         <span>{title}</span>
       </Link>
       <div className="sm:hidden">
-        <div className="bg-white button py-[11px] px-4 border border-base-dark text-base-dark hover:bg-base-light relative">
-          <Link
-            href={path}
-            className={`items-center transition-transform duration-300 ease-in-out ${
-              showLink ? "flex transform scale-100" : "hidden transform scale-0"
-            }`}
-          >
-            <span>{title}</span>
-          </Link>
-          <Icon
-            className={`size-4 cursor-pointer transition-transform duration-300 ease-in-out ${
-              showLink ? "hidden transform scale-0" : "flex transform scale-100"
-            }`}
-            onClick={handleIconClick}
-          />
+        <div className="bg-white button py-[11px] px-4 border border-base-dark text-base-dark hover:bg-base-light relative overflow-hidden">
+          <div className="flex items-center justify-between h-6">
+            <AnimatePresence mode="wait">
+              {showLink ? (
+                <motion.div
+                  key="title"
+                  initial={{ x: "100%", opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: "100%", opacity: 0 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  className="flex-grow flex items-center justify-center"
+                >
+                  <Link href={path} className="flex items-center">
+                    <span>{title}</span>
+                  </Link>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="icon"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="flex-grow flex items-center justify-center"
+                >
+                  <Icon
+                    className="size-4 cursor-pointer"
+                    onClick={handleIconClick}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </div>
     </div>

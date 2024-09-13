@@ -21,9 +21,8 @@ export default function Header() {
       </Link>
 
       <div className="flex lg:gap-4 items-center text-gray-dark">
-        <Tab path="/user/links" title="Links" />
-
         <Tab path="/user/profile" title="Profile Details" />
+        <Tab path="/user/links" title="Links" />
       </div>
 
       <ButtonTab path="/user/preview" title="Preview" />
