@@ -22,6 +22,7 @@ import { FaShareAlt } from "react-icons/fa";
 import { getUser } from "@/lib/getUser";
 import { saveUserDetails } from "@/lib/saveUserDetails";
 import { UserData } from "@/types/links";
+import { revalidateTagServer } from "@/app/actions";
 
 export default function ShareLink() {
   const [isEditing, setIsEditing] = useState(false);
@@ -97,6 +98,7 @@ export default function ShareLink() {
       if (!userExist.status && userExist.message === "User does not exist") {
         user.username = username;
         await saveUserDetails(user);
+        await revalidateTagServer("usernames");
         setPrevUsername(username);
         setIsEditing(false);
         setLoading(false);
