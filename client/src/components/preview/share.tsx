@@ -22,6 +22,7 @@ import { FaShareAlt } from "react-icons/fa";
 import { getUser } from "@/lib/getUser";
 import { saveUserDetails } from "@/lib/saveUserDetails";
 import { UserData } from "@/types/links";
+import { revalidateTagServer } from "@/app/actions";
 
 export default function ShareLink() {
   const [isEditing, setIsEditing] = useState(false);
@@ -51,8 +52,8 @@ export default function ShareLink() {
   const handleCopyLink = () => {
     navigator.clipboard.writeText(
       process.env.NODE_ENV === "development"
-        ? `localhost://3000/${username}`
-        : `https://www.linkbarn.tech/${username}`
+        ? `http://localhost:3000/${username}`
+        : `https://www.linkbarn.tech/${username}`,
     );
     console.log("Link copied to clipboard!");
     setCopied(true);
@@ -79,7 +80,7 @@ export default function ShareLink() {
         "Usernames ending with '.btc' are reserved for future bns feature",
         {
           richColors: true,
-        }
+        },
       );
       setLoading(false);
       return;
@@ -97,6 +98,7 @@ export default function ShareLink() {
       if (!userExist.status && userExist.message === "User does not exist") {
         user.username = username;
         await saveUserDetails(user);
+        await revalidateTagServer("usernames");
         setPrevUsername(username);
         setIsEditing(false);
         setLoading(false);

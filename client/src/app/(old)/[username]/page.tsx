@@ -74,7 +74,6 @@ export default async function Page({ params }: PageProps) {
   let userProfile = null;
   let links = null;
   let truncUsername = "";
-  //console.log(user_exists);
 
   const truncateString = (str: string): string => {
     if (str.length > 15) {
@@ -88,16 +87,12 @@ export default async function Page({ params }: PageProps) {
     links = userProfile && userProfile?.links;
     truncUsername = truncateString(userProfile?.username);
   } else {
-    //console.log("HERERE");
     notFound();
   }
-  //console.log(userProfile);
 
   const layout = layouts.find(
-    // (layout) => layout.name === "layout1",
     (layout) => layout.name === userProfile?.appearance ?? "layout1",
   );
-  //console.log(layout, "WATASHI WA STAR");
 
   return (
     <div className="h-full">
