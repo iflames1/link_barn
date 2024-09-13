@@ -71,27 +71,7 @@ export default function ChangeTheme({
         </Button>
       </DialogTrigger>
       <DialogContent>
-        {theme === "theme1" ? (
-          <div className="text-center">
-            <DialogTitle className="text-xl font-semibold mb-4">
-              Confirm Theme Change
-            </DialogTitle>
-            <DialogDescription className="mb-4">
-              Are you sure you want to use this theme?
-            </DialogDescription>{" "}
-            <Button
-              onClick={handleConfirm}
-              disabled={loading}
-              className="bg-base-dark gap-4"
-            >
-              Confirm Change
-              <LoaderCircle
-                className={cn(`animate-spin`, loading ? "flex" : "hidden")}
-                size={16}
-              />
-            </Button>
-          </div>
-        ) : user.tier === "free" ? (
+        {user.tier === "free" ? (
           <div>
             <p className="">
               {txStatus === "success" ? (
