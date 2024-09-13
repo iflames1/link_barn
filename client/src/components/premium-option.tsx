@@ -62,7 +62,7 @@ export function PremiumOption({
   return (
     <div className="border rounded-lg p-4 mb-4">
       <h3 className="text-lg font-semibold mb-2">{title}</h3>
-      <p className="text-2xl font-bold mb-4">{price}STX annual payment</p>
+      <p className="text-2xl font-bold mb-4">{price} STX annual payment</p>
       <ul className="space-y-2">
         {[
           "Remove Link Barn Branding",
