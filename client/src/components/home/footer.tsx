@@ -1,8 +1,10 @@
 import { DiscordLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { LogoLink } from "../ui/logo";
-import { Button } from "../ui/button";
-import AuthButton from "../auth-button";
+import dynamic from "next/dynamic";
+const AuthButton = dynamic(() => import("../auth-button"), {
+  ssr: false,
+});
 
 const footerNavs = [
   {
