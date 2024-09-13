@@ -47,7 +47,7 @@ export default function Themes({
               key={index}
               value={layout.name}
               className={cn(
-                "rounded-lg h-full border border-gray-200 hover:border-gray-300 transition-colors relative",
+                "rounded-lg h-full border border-gray-200 hover:border-gray-300 transition-colors relative"
                 //                 `
                 //                 ${theme.bg} ${theme.text}
                 //                 data-[state=active]:${theme.bg}
