@@ -73,7 +73,7 @@ export default function ProfileWrapper({
       )}
     >
       <div
-        className={`sm:max-w-80 mx-auto py-14 px-[5%] w-screen ${userTheme.text} ${className}`}
+        className={`sm:max-w-80 mx-auto py-14 sm:px-0 px-[10%] w-screen ${userTheme.text} ${className}`}
       >
         {children}
       </div>
