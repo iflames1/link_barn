@@ -109,19 +109,13 @@ export default function PricingSectionCards() {
           <Card className="hover:scale-[1.03] transition-transform duration-300">
             <CardHeader className="text-center pb-2">
               <CardTitle className="!mb-7">Premium</CardTitle>
-              <span className="font-bold text-5xl">5stx</span>
+              <span className="font-bold text-5xl">5 STX</span>
             </CardHeader>
             <CardDescription className="text-center  w-11/12 mx-auto">
               Everything you need for a growing presence
             </CardDescription>
             <CardContent>
               <ul className="mt-7 space-y-2.5 text-sm">
-                <li className="flex space-x-2">
-                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                  <span className="text-muted-foreground">
-                    All free tier features
-                  </span>
-                </li>
                 <li className="flex space-x-2">
                   <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
                   <span className="text-muted-foreground">
@@ -154,19 +148,13 @@ export default function PricingSectionCards() {
                 Most popular
               </Badge>
               <CardTitle className="!mb-7">Premium (UNIKIND HOLDERS)</CardTitle>
-              <span className="font-bold text-5xl">2stx</span>
+              <span className="font-bold text-5xl">2 STX</span>
             </CardHeader>
             <CardDescription className="text-center w-11/12 mx-auto">
               Everything you need for a growing presence
             </CardDescription>
             <CardContent>
               <ul className="mt-7 space-y-2.5 text-sm">
-                <li className="flex space-x-2">
-                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                  <span className="text-muted-foreground">
-                    All free tier features
-                  </span>
-                </li>
                 <li className="flex space-x-2">
                   <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
                   <span className="text-muted-foreground">
@@ -196,19 +184,13 @@ export default function PricingSectionCards() {
           <Card className="hover:scale-[1.03] transition-transform duration-300">
             <CardHeader className="text-center pb-2">
               <CardTitle className="!mb-7">Business</CardTitle>
-              <span className="font-bold text-5xl">20stx</span>
+              <span className="font-bold text-5xl">20 STX</span>
             </CardHeader>
             <CardDescription className="text-center  w-11/12 mx-auto">
               Everything you need for a growing presence
             </CardDescription>
             <CardContent>
               <ul className="mt-7 space-y-2.5 text-sm">
-                <li className="flex space-x-2">
-                  <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
-                  <span className="text-muted-foreground">
-                    All Premium tier features
-                  </span>
-                </li>
                 <li className="flex space-x-2">
                   <CheckIcon className="flex-shrink-0 mt-0.5 h-4 w-4" />
                   <span className="text-muted-foreground">
@@ -249,7 +231,7 @@ export default function PricingSectionCards() {
             <h3
               className={cn(
                 "text-[#151515] text-xxl sm:text-2xl md:text-3xl font-bold md:leading-[55.68px]",
-                manrope.className,
+                manrope.className
               )}
             >
               Frequently Aked Questions
