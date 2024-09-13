@@ -23,30 +23,19 @@ import { revalidateTagServer, revalidateUserProfile } from "@/app/actions";
 export default function ChangeTheme({
   user,
   theme,
+  status,
 }: {
   user: UserData;
   theme: string;
+  status: any;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [txStatus, setTxStatus] = useState<string>("");
+  // const [txStatus, setTxStatus] = useState<string>(status);
 
-  useEffect(() => {
-    const checkStatus = async () => {
-      if (user) {
-        const status = await checkTransactionStatus(user.prevTxID);
-        setTxStatus(status);
-        if (status === "success") {
-          user.prevTxID = "";
-          user.tier = "premium";
-          await saveUserDetails(user);
-          toast.success("Transaction successful", { richColors: true });
-        }
-      }
-    };
+  // useEffect(() => {
 
-    checkStatus();
-  });
+  // });
 
   const handleConfirm = async () => {
     setLoading(true);
@@ -74,13 +63,13 @@ export default function ChangeTheme({
         {user.tier === "free" ? (
           <div>
             <p className="">
-              {txStatus === "success" ? (
+              {status === "success" ? (
                 <span className="flex items-center gap-1">
                   Your previous transaction was success please refresh this page
                   to continue{" "}
                   <IoMdCheckmarkCircleOutline className="text-green-500 inline-flex items-center" />
                 </span>
-              ) : txStatus === "pending" ? (
+              ) : status === "pending" ? (
                 <span className="flex items-center gap-1">
                   Your previous transaction is still pending{" "}
                   <LoaderCircle
@@ -88,11 +77,11 @@ export default function ChangeTheme({
                     size={16}
                   />
                 </span>
-              ) : txStatus === "failed" ? (
+              ) : status === "failed" ? (
                 <span className="text-red flex items-center gap-1">
                   Your previous transaction failed <AiOutlineInfoCircle />
                 </span>
-              ) : txStatus === "dropped" ? (
+              ) : status === "dropped" ? (
                 <span>
                   Your previous transaction was dropped <CgSmileSad />
                 </span>
@@ -106,23 +95,23 @@ export default function ChangeTheme({
             <PremiumOption
               title="Link Barn Premium (UNIKIND-holders)"
               price="2"
-              txStatus={txStatus}
+              txStatus={status}
               user={user}
             />
             <PremiumOption
               title="Link Barn Premium"
               price="5"
-              txStatus={txStatus}
+              txStatus={status}
               user={user}
             />
           </div>
         ) : (
           <div className="text-center">
             <DialogTitle className="text-xl font-semibold mb-4">
-              Confirm Appearance Change
+              Confirm theme Change
             </DialogTitle>
             <p className="mb-4">
-              Are you sure you want to use this appearance?
+              Are you sure you want to use the {theme} theme?
             </p>
             <Button
               onClick={handleConfirm}

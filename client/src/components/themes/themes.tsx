@@ -24,9 +24,11 @@ const ChangeTheme = dynamic(() => import("./change-theme"), {
 export default function Themes({
   userProfileDetails,
   selectedTheme = themes[0].name,
+  status,
 }: {
   userProfileDetails: UserProfileSchema;
   selectedTheme?: string;
+  status: any;
 }) {
   const layoutName = userProfileDetails?.appearance || "layout1";
   const selectedLayout = layouts.find((layout) => layout.name === layoutName);
@@ -34,26 +36,27 @@ export default function Themes({
     selectedLayout?.LayoutComponent || layouts[0].LayoutComponent;
 
   return (
-    <ThemeSelector defaultValue={selectedTheme}>
-      <div className="w-full">
+    <Tabs
+      defaultValue={userProfileDetails?.theme}
+      // onValueChange={onValueChange}
+      className="gap-6 w-full grid grid-cols-1 lg:grid-cols-2"
+    >
+      <div className="w-full lg:h-[calc(100vh-152px)] rounded-xl bg-white h-[calc(100vh-96.37px)]">
         {themes.map((theme, index) => (
           <TabsContent
             key={index}
             value={theme.name}
-            className={cn(
-              `${theme.text} w-full
-                data-[state=active]:${theme.bg}
-                data-[state=active]:${theme.text}
-                data-[state=active]:shadow-sm
-                group-active:${theme.bg}
-                transition-all`,
-            )}
+            className="w-full h-full px-12 rounded-none"
             asChild
           >
-            <PreviewLayout bg={theme.bg} className={cn(theme.text)}>
+            <PreviewLayout
+              bg={theme.bg}
+              className={cn(theme.text, "max-w-[410px] mx-auto")}
+            >
               <LayoutComponent
                 className={cn("sm:px-4 w-auto")}
                 userData={userProfileDetails}
+                themesPage={theme}
               />
             </PreviewLayout>
           </TabsContent>
@@ -61,30 +64,34 @@ export default function Themes({
       </div>
       <div className="bg-white rounded-xl lg:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-y-auto w-full p-6 relative">
         <TabsList className="bg-transparent h-full grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {themes.map((theme, index) => (
-            <TabsTrigger
-              key={index}
-              value={theme.name}
-              // className={`max-w-80 mx-auto py-14 px-4 ${theme.bg} ${theme.text} [&[data-state='active']]:bg-`}
-              className={`
-                max-w-80 mx-auto py-14 px-4 relative
-                ${theme.bg} ${theme.text}
-                data-[state=active]:${theme.bg}
-                data-[state=active]:${theme.text}
-                data-[state=active]:shadow-sm
-                transition-all
-              `}
-            >
-              <>
-                {/*<EditTheme />*/}
-                <LayoutComponent
-                  userData={sampleUserData}
-                  className={cn("sm:px-4 w-auto")}
-                />
-                <ChangeTheme user={userProfileDetails} theme={theme.name} />
-              </>
-            </TabsTrigger>
-          ))}
+          {themes.map((theme, index) => {
+            return (
+              <TabsTrigger
+                key={index}
+                value={theme.name}
+                className={cn(`
+                  ${theme.bg} ${theme.text} relative
+                  data-[state=active]:${theme.bg}
+                  data-[state=active]:${theme.text}
+                  data-[state=active]:shadow-sm pb-5
+                  transition-all
+                `)}
+              >
+                <>
+                  <LayoutComponent
+                    userData={userProfileDetails}
+                    className={cn("sm:px-4 w-auto")}
+                    themesPage={theme}
+                  />
+                  <ChangeTheme
+                    user={userProfileDetails}
+                    theme={theme.name}
+                    status={status}
+                  />
+                </>
+              </TabsTrigger>
+            );
+          })}
         </TabsList>
       </div>
       <ResponsiveButton
@@ -92,7 +99,7 @@ export default function Themes({
         title="Go back"
         className="absolute sm:bottom-8 bottom-6 right-12"
       />
-    </ThemeSelector>
+    </Tabs>
   );
 }
 // </Tabs>
