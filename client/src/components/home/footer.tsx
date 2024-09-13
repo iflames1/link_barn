@@ -1,6 +1,8 @@
 import { DiscordLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { LogoLink } from "../ui/logo";
+import { Button } from "../ui/button";
+import AuthButton from "../auth-button";
 
 const footerNavs = [
   {
@@ -77,19 +79,9 @@ export function SiteFooter() {
       <div className="mx-auto w-full max-w-screen-xl xl:pb-2">
         <div className="gap-4 p-4 px-8 py-16 sm:pb-16 md:flex md:justify-between">
           <div className="mb-12 flex flex-col gap-4">
-            {/* <Link href="/" className="flex items-center gap-2"> */}
-            {/*   <img */}
-            {/*     src="https://nyxbui.design/icon.png" */}
-            {/*     className="text-primary size-8" */}
-            {/*   /> */}
-            {/*   <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white"> */}
-            {/*     Link Barn */}
-            {/*   </span> */}
-            {/* </Link> */}
             <LogoLink footer />
-            <p className="max-w-xs">
-              A decentralized Link sharing app for everyone
-            </p>
+            <p className="max-w-xs">A Link sharing app for everyone</p>
+            <AuthButton />
           </div>
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-10">
             {footerNavs.map((nav) => (
