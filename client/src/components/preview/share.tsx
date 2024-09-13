@@ -51,8 +51,8 @@ export default function ShareLink() {
   const handleCopyLink = () => {
     navigator.clipboard.writeText(
       process.env.NODE_ENV === "development"
-        ? `localhost://3000/${username}`
-        : `https://www.linkbarn.tech/${username}`
+        ? `http://localhost:3000/${username}`
+        : `https://www.linkbarn.tech/${username}`,
     );
     console.log("Link copied to clipboard!");
     setCopied(true);
@@ -79,7 +79,7 @@ export default function ShareLink() {
         "Usernames ending with '.btc' are reserved for future bns feature",
         {
           richColors: true,
-        }
+        },
       );
       setLoading(false);
       return;
