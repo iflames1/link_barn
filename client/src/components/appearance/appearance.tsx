@@ -1,6 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { layouts } from "./layouts";
-import ResponsiveButton from "../common/responsive-button";
+// import ResponsiveButton from "../common/responsive-button";
 import dynamic from "next/dynamic";
 import { UserProfileSchema } from "@/types/users";
 
@@ -12,6 +12,11 @@ const ChangeAppearance = dynamic(() => import("./change-appearance"), {
     </Button>
   ),
 });
+
+const ResponsiveButton = dynamic(() => import("../common/responsive-button"), {
+  ssr: false,
+});
+
 import PreviewLayout from "./preview-layout";
 import { sampleUserData } from "@/data/sample-user-data";
 import { Button } from "../ui/button";
@@ -36,42 +41,43 @@ export default function Themes({
       <PreviewLayout>
         {layouts.map((layout, index) => (
           <TabsContent key={index} value={layout.name} asChild>
-            <layout.LayoutComponent userData={sampleUserData} />
+            <layout.LayoutComponent
+              userData={sampleUserData}
+              className={cn("sm:px-5 w-auto")}
+            />
           </TabsContent>
         ))}
       </PreviewLayout>
       <div className="bg-white rounded-xl lg:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-y-auto lg:w-[60%] w-full p-6">
         <TabsList className="bg-transparent h-full grid grid-cols-1 sm:grid-cols-2 gap-4">
           {layouts.map((layout, index) => (
-            <div key={index} className="px-4 w-full h-full">
-              <TabsTrigger
-                key={index}
-                value={layout.name}
-                className={cn(
-                  "rounded-lg h-full border border-gray-200 hover:border-gray-300 transition-colors relative"
-                  //                 `
-                  //                 ${theme.bg} ${theme.text}
-                  //                 data-[state=active]:${theme.bg}
-                  //                 data-[state=active]:${theme.text}
-                  //                 data-[state=active]:shadow-sm
-                  //                 transition-all
-                  // `,
-                )}
-              >
-                <layout.LayoutComponent
-                  userData={sampleUserData}
-                  // className={cn(theme.bg, theme.text, "w-full")}
-                />
-                <ChangeAppearance appearance={layout.name} user={userProfile} />
-              </TabsTrigger>
-            </div>
+            <TabsTrigger
+              key={index}
+              value={layout.name}
+              className={cn(
+                "rounded-lg h-full border border-gray-200 hover:border-gray-300 transition-colors relative",
+                //                 `
+                //                 ${theme.bg} ${theme.text}
+                //                 data-[state=active]:${theme.bg}
+                //                 data-[state=active]:${theme.text}
+                //                 data-[state=active]:shadow-sm
+                //                 transition-all
+                // `,
+              )}
+            >
+              <layout.LayoutComponent
+                userData={sampleUserData}
+                className="sm:px-5 w-auto"
+              />
+              <ChangeAppearance appearance={layout.name} user={userProfile} />
+            </TabsTrigger>
           ))}
         </TabsList>
       </div>
       <ResponsiveButton
         path="/user/themes"
         title="Change theme"
-        className="absolute sm:bottom-2 bottom-0 right-6"
+        className="fixed bottom-4 sm:bottom-2 right-6"
       />
     </Tabs>
   );

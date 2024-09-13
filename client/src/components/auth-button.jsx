@@ -9,10 +9,12 @@ export default function AuthButton() {
   const uuid = getUserUUID();
 
   return uuid ? (
-    <Button onClick={disconnectWallet} className="bg-base-dark">
+    <Button onClick={disconnectWallet} className="bg-base-dark max-w-lg">
       Sign Out
     </Button>
   ) : (
-    <Button onClick={connectWallet}>Sign In</Button>
+    <Button onClick={connectWallet} className="bg-base-dark">
+      Sign In
+    </Button>
   );
 }
