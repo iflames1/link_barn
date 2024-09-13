@@ -49,12 +49,6 @@ export function FeaturesSectionDemo() {
       icon: <Share2 />,
     },
     {
-      title: "Free Tier Available",
-      description:
-        "Get started with our feature-rich free tier, no credit card required.",
-      icon: <Gift />,
-    },
-    {
       title: "Premium Features",
       description:
         "Unlock advanced capabilities with our affordable premium plan.",
