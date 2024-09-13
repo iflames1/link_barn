@@ -40,7 +40,7 @@ export async function generateMetadata({
   //console.log(user_exists);
 
   const truncateString = (str: string): string => {
-    if (str.length > 15) {
+    if (str?.length > 15) {
       return `${str.slice(0, 5)}...${str.slice(-5)}`;
     }
     return str;
@@ -56,7 +56,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: truncUsername,
+    title: truncUsername ?? userProfile?.username,
     description: userProfile?.bio || `${username} Links`,
     openGraph: {
       images: [
@@ -76,7 +76,7 @@ export default async function Page({ params }: PageProps) {
   let truncUsername = "";
 
   const truncateString = (str: string): string => {
-    if (str.length > 15) {
+    if (str?.length > 15) {
       return `${str.slice(0, 5)}...${str.slice(-5)}`;
     }
     return str;
@@ -107,7 +107,7 @@ export default async function Page({ params }: PageProps) {
           <layout.LayoutComponent
             userData={userProfile}
             links={userProfile?.links}
-            username={truncUsername}
+            username={truncUsername ?? userProfile?.username}
           />
         )}
       </Suspense>
