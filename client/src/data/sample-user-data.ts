@@ -37,7 +37,7 @@ export const sampleUserData: UserData = {
   links: [
     {
       uuid: "1",
-      platform: "Portfolio",
+      platform: "portfolio",
       index: 0,
       url: "https://example.com",
       user_id: "link",
@@ -45,7 +45,7 @@ export const sampleUserData: UserData = {
     },
     {
       uuid: "2",
-      platform: "Twitter",
+      platform: "twitter",
       index: 1,
       url: "https://example.com",
       user_id: "twitter",
@@ -53,7 +53,7 @@ export const sampleUserData: UserData = {
     },
     {
       uuid: "3",
-      platform: "Instagram",
+      platform: "instagram",
       index: 2,
       url: "https://example.com",
       user_id: "instagram",
@@ -61,7 +61,7 @@ export const sampleUserData: UserData = {
     },
     // {
     //   uuid: "4",
-    //   platform: "LinkedIn",
+    //   platform: "linkedIn",
     //   index: 3,
     //   url: "https://example.com",
     //   user_id: "linkedin",
@@ -69,7 +69,7 @@ export const sampleUserData: UserData = {
     // },
     // {
     //   uuid: "5",
-    //   platform: "GitHub",
+    //   platform: "gitHub",
     //   index: 4,
     //   url: "https://example.com",
     //   user_id: "github",
