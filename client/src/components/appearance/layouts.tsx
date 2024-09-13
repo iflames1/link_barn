@@ -384,6 +384,6 @@ export const layouts = [
   { name: "layout1", LayoutComponent: Layout1 },
   { name: "layout2", LayoutComponent: Layout2 },
   { name: "layout3", LayoutComponent: Layout3 },
-  { name: "layout4", LayoutComponent: Layout4 },
+  // { name: "layout4", LayoutComponent: Layout4 },
   { name: "layout5", LayoutComponent: Layout5 },
 ];
