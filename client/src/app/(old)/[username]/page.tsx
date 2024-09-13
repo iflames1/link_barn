@@ -74,7 +74,6 @@ export default async function Page({ params }: PageProps) {
   let userProfile = null;
   let links = null;
   let truncUsername = "";
-  //console.log(user_exists);
 
   const truncateString = (str: string): string => {
     if (str.length > 15) {
