@@ -19,6 +19,7 @@ interface LayoutProps {
   links?: LinkSchema[];
   className?: string;
   username?: string;
+  apperance?: boolean;
 }
 
 interface ProfileWrapperProps {
@@ -111,13 +112,20 @@ export function LinkWrapper({ userData, links, children }: LinkWrapperProps) {
   );
 }
 
-export function Layout1({ userData, links, className, username }: LayoutProps) {
+export function Layout1({
+  userData,
+  links,
+  className,
+  username,
+  apperance,
+}: LayoutProps) {
   //console.log(userData, "from themes");
   return (
     <ProfileWrapper
       className={cn("flex flex-col items-center gap-[25px]", className)}
       theme={userData?.theme}
       username={username}
+      apperance={apperance}
     >
       {userData?.profile_picture ? (
         <Image

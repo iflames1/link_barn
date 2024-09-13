@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import { themes } from "@/data/themes2";
 import { getUser } from "@/lib/getUser";
 import { checkUserExists } from "@/lib/queries";
@@ -13,6 +13,7 @@ interface ProfileWrapperProps {
   className?: string;
   theme?: string;
   username?: string;
+  apperance?: boolean;
 }
 
 //let userData: UserData | undefined;
@@ -32,6 +33,7 @@ export default function ProfileWrapper({
   className,
   theme,
   username,
+  apperance,
 }: ProfileWrapperProps) {
   // const [theme, setTheme] = useState("theme1");
   // const [UUID, setUUID] = useState<string | undefined>(undefined);
@@ -63,13 +65,14 @@ export default function ProfileWrapper({
   // }, [pathname, UUID]);
 
   const userTheme = themes.find((data) => data.name === theme) || themes[0];
+  console.log(userTheme);
 
   return (
     <main
       className={cn(
         `${userTheme.bg} w-full h-full`,
         username &&
-          "min-h-dvh min-w-screen flex flex-col items-center justify-between"
+          "min-h-dvh min-w-screen flex flex-col items-center justify-between",
       )}
     >
       <div
