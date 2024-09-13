@@ -23,11 +23,13 @@ export default function ProfileWrapper({
       className={cn(
         `${userTheme.bg} w-full h-full`,
         username &&
-          "min-h-dvh min-w-screen flex flex-col items-center justify-between",
+          "min-h-dvh min-w-screen flex flex-col items-center justify-between"
       )}
     >
       <div
-        className={`sm:max-w-80 mx-auto py-14 sm:px-0 px-[10%] w-screen ${userTheme.text} ${className}`}
+        className={`sm:max-w-80 mx-auto py-14 px-[10%] sm:px-0 ${
+          userTheme.text
+        } ${className} ${username && "w-dvw"}`}
       >
         {children}
       </div>

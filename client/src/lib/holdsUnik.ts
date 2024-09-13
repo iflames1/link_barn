@@ -2,9 +2,10 @@ import axios from "axios";
 import { toast } from "sonner";
 
 export const holdsUnik = async (principal: string | undefined) => {
+  console.log("checking...");
   if (!principal) {
     console.log("No principal found");
-    toast.error("Failed to check if you holder UNIKING NFT", {
+    toast.error("Failed to check if you holder UNIKIND NFT", {
       richColors: true,
     });
     return false;
@@ -16,12 +17,13 @@ export const holdsUnik = async (principal: string | undefined) => {
     const response = await axios.get(url);
 
     if (response.data && response.data.total > 0) {
+      console.log("You hold UNIKIND NFT");
       return true;
     }
 
     return false;
   } catch (error) {
-    console.error("Error checking Unik holdings:", error);
+    console.error("Error checking UNIKIND holdings:", error);
     return false;
   }
 };

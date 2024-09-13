@@ -306,7 +306,7 @@ export const NewLinks = ({
       {/*   </Preview> */}
       <Preview userProfileDetails={userProfile} links={currentLinks} />
 
-      <div className="bg-white flex flex-col justify-between rounded-xl z-0 sm:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-auto w-full">
+      <div className="bg-white rounded-xl lg:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-y-auto w-full p-6 relative">
         <div className="sm:p-10 p-6">
           <div className="pb-6  relative">
             <h2 className="hM text-black pb-2">Customize your links</h2>

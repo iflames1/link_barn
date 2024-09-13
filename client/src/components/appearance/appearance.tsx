@@ -1,6 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { layouts } from "./layouts";
-import ResponsiveButton from "../common/responsive-button";
+// import ResponsiveButton from "../common/responsive-button";
 import dynamic from "next/dynamic";
 import { UserProfileSchema } from "@/types/users";
 
@@ -12,6 +12,11 @@ const ChangeAppearance = dynamic(() => import("./change-appearance"), {
     </Button>
   ),
 });
+
+const ResponsiveButton = dynamic(() => import("../common/responsive-button"), {
+  ssr: false,
+});
+
 import PreviewLayout from "./preview-layout";
 import { sampleUserData } from "@/data/sample-user-data";
 import { Button } from "../ui/button";
@@ -72,7 +77,7 @@ export default function Themes({
       <ResponsiveButton
         path="/user/themes"
         title="Change theme"
-        className="absolute sm:bottom-2 bottom-0 right-6"
+        className="fixed bottom-4 sm:bottom-2 right-6"
       />
     </Tabs>
   );

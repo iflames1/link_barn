@@ -71,7 +71,7 @@ export function HeroScrollDemo() {
                 your online presence and share what matters most.
               </p>
             </InView>
-            <Link href={"/user/links"} className="">
+            <Link href={"/user/profile"} className="">
               <Button
                 variant="outline"
                 className="hS button text-white bg-base-dark hover:bg-opacity-90"
