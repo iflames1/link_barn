@@ -1,3 +1,8 @@
+export interface ThemeSchema {
+  name: string;
+  bg: string;
+  text: string;
+}
 export const theme1 = {
   name: "Light",
   bg: "bg-white",

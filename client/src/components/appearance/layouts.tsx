@@ -4,7 +4,7 @@ import { Fragment } from "react";
 import { LinkSchema, UserData } from "@/types/links";
 import { FaArrowRight } from "react-icons/fa";
 import { getUser } from "@/lib/getUser";
-import { themes } from "@/data/themes2";
+import { themes, ThemeSchema } from "@/data/themes2";
 import ProfileWrapper from "./profile-wrapper";
 import { cn } from "@/lib/utils";
 
@@ -20,6 +20,7 @@ interface LayoutProps {
   className?: string;
   username?: string;
   apperance?: boolean;
+  themesPage?: ThemeSchema;
 }
 
 interface ProfileWrapperProps {
@@ -112,13 +113,19 @@ export function LinkWrapper({ userData, links, children }: LinkWrapperProps) {
   );
 }
 
-export function Layout1({ userData, links, className, username }: LayoutProps) {
-  //console.log(userData, "from themes");
+export function Layout1({
+  userData,
+  links,
+  className,
+  username,
+  themesPage,
+}: LayoutProps) {
   return (
     <ProfileWrapper
       className={cn("flex flex-col items-center gap-[25px]", className)}
       theme={userData?.theme}
       username={username}
+      themesPage={themesPage}
     >
       {userData?.profile_picture ? (
         <CircularImage
@@ -170,12 +177,19 @@ export function Layout1({ userData, links, className, username }: LayoutProps) {
   );
 }
 
-export function Layout2({ userData, links, username, className }: LayoutProps) {
+export function Layout2({
+  userData,
+  links,
+  username,
+  className,
+  themesPage,
+}: LayoutProps) {
   return (
     <ProfileWrapper
       className={cn("flex flex-col gap-6", className)}
       theme={userData?.theme}
       username={username}
+      themesPage={themesPage}
     >
       <div className="flex items-center text-center gap-4">
         {userData?.profile_picture ? (
@@ -224,12 +238,19 @@ export function Layout2({ userData, links, username, className }: LayoutProps) {
   );
 }
 
-export function Layout3({ userData, links, username, className }: LayoutProps) {
+export function Layout3({
+  userData,
+  links,
+  username,
+  className,
+  themesPage,
+}: LayoutProps) {
   return (
     <ProfileWrapper
       className={cn("text-center space-y-6", className)}
       theme={userData?.theme}
       username={username}
+      themesPage={themesPage}
     >
       {userData?.profile_picture ? (
         <CircularImage
@@ -269,12 +290,19 @@ export function Layout3({ userData, links, username, className }: LayoutProps) {
   );
 }
 
-export function Layout4({ userData, links, username, className }: LayoutProps) {
+export function Layout4({
+  userData,
+  links,
+  username,
+  className,
+  themesPage,
+}: LayoutProps) {
   return (
     <ProfileWrapper
       theme={userData?.theme}
       username={username}
       className={cn("pt-20", className)}
+      themesPage={themesPage}
     >
       <div className="relative mb-28">
         <div
@@ -326,12 +354,19 @@ export function Layout4({ userData, links, username, className }: LayoutProps) {
   );
 }
 
-export function Layout5({ userData, links, username, className }: LayoutProps) {
+export function Layout5({
+  userData,
+  links,
+  username,
+  className,
+  themesPage,
+}: LayoutProps) {
   return (
     <ProfileWrapper
       className={cn("space-y-6", className)}
       theme={userData?.theme}
       username={username}
+      themesPage={themesPage}
     >
       <div className="flex flex-col items-center space-y-4">
         {userData?.profile_picture ? (
