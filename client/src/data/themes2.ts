@@ -52,6 +52,12 @@ export const theme9 = {
   text: "text-white",
 };
 
+export const theme10 = {
+  name: "Pink",
+  bg: "bg-gradient-to-br from-purple-400 via-pink-500 to-red-500",
+  text: "text-white",
+};
+
 export const themes = [
   theme1,
   theme2,
@@ -62,4 +68,5 @@ export const themes = [
   theme7,
   theme8,
   theme9,
+  theme10,
 ];

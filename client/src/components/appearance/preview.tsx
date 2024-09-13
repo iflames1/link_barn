@@ -21,6 +21,7 @@ export default function Preview({ userProfileDetails, links }: PreviewProps) {
   return (
     <PreviewLayout bg={theme.bg} className={cn(theme.text)}>
       <LayoutComponent
+        className={cn("sm:px-4 w-auto")}
         userData={userProfileDetails}
         // @ts-ignore
         links={links ? links : userProfileDetails?.links}

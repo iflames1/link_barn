@@ -36,7 +36,10 @@ export default function Themes({
       <PreviewLayout>
         {layouts.map((layout, index) => (
           <TabsContent key={index} value={layout.name} asChild>
-            <layout.LayoutComponent userData={sampleUserData} />
+            <layout.LayoutComponent
+              userData={sampleUserData}
+              className={cn("sm:px-5 w-auto")}
+            />
           </TabsContent>
         ))}
       </PreviewLayout>
@@ -59,7 +62,7 @@ export default function Themes({
             >
               <layout.LayoutComponent
                 userData={sampleUserData}
-                // className={cn(theme.bg, theme.text, "w-full")}
+                className="sm:px-5 w-auto"
               />
               <ChangeAppearance appearance={layout.name} user={userProfile} />
             </TabsTrigger>
