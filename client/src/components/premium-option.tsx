@@ -43,7 +43,7 @@ export function PremiumOption({
         const status = await checkTransactionStatus(txId);
         toast.success(
           "Your transaction have been sent, please refresh this page",
-          { richColors: true },
+          { richColors: true }
         );
         console.log("tx status = ", status);
       }
@@ -54,7 +54,7 @@ export function PremiumOption({
   return (
     <div className="border rounded-lg p-4 mb-4">
       <h3 className="text-lg font-semibold mb-2">{title}</h3>
-      <p className="text-2xl font-bold mb-4">{price}stx one time payment</p>
+      <p className="text-2xl font-bold mb-4">{price}STX annual payment</p>
       <ul className="space-y-2">
         {[
           "Remove Link Barn Branding",
@@ -70,7 +70,7 @@ export function PremiumOption({
       <Button
         className={cn(
           "w-full mt-4 bg-base-dark gap-4",
-          txStatus === "success" && "cursor-not-allowed",
+          txStatus === "success" && "cursor-not-allowed"
         )}
         onClick={handlePayment}
         disabled={txStatus === "success" || txStatus === "pending" || loading}
@@ -79,7 +79,7 @@ export function PremiumOption({
         <LoaderCircle
           className={cn(
             `animate-spin`,
-            loading || txStatus === "pending" ? "flex" : "hidden",
+            loading || txStatus === "pending" ? "flex" : "hidden"
           )}
           size={16}
         />
