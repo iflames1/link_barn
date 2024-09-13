@@ -2,7 +2,6 @@ import { sampleUserData } from "@/data/sample-user-data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import PreviewLayout from "../appearance/preview-layout";
 import { themes } from "@/data/themes2";
-import { layouts } from "@/components/appearance/layoutsForThemes";
 import { UserProfileSchema } from "@/types/users";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
@@ -10,6 +9,8 @@ import { ThemeSelector } from "./wrapper";
 import dynamic from "next/dynamic";
 import ResponsiveButton from "../common/responsive-button";
 import { Skeleton } from "../ui/skeleton";
+import { layouts } from "../appearance/layouts";
+import Preview from "../appearance/preview";
 
 const ChangeTheme = dynamic(() => import("./change-theme"), {
   ssr: false,
@@ -35,25 +36,28 @@ export default function Themes({
   return (
     <ThemeSelector defaultValue={selectedTheme}>
       <div className="w-full">
-        <PreviewLayout className="group w-full">
-          {themes.map((theme, index) => (
-            <TabsContent
-              key={index}
-              value={theme.name}
-              className={cn(
-                `${theme.text}
+        {themes.map((theme, index) => (
+          <TabsContent
+            key={index}
+            value={theme.name}
+            className={cn(
+              `${theme.text} w-full
                 data-[state=active]:${theme.bg}
                 data-[state=active]:${theme.text}
                 data-[state=active]:shadow-sm
                 group-active:${theme.bg}
                 transition-all`,
-              )}
-              asChild
-            >
-              <LayoutComponent userData={sampleUserData} />
-            </TabsContent>
-          ))}
-        </PreviewLayout>
+            )}
+            asChild
+          >
+            <PreviewLayout bg={theme.bg} className={cn(theme.text)}>
+              <LayoutComponent
+                className={cn("sm:px-4 w-auto")}
+                userData={userProfileDetails}
+              />
+            </PreviewLayout>
+          </TabsContent>
+        ))}
       </div>
       <div className="bg-white rounded-xl lg:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-y-auto w-full p-6 relative">
         <TabsList className="bg-transparent h-full grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -73,7 +77,10 @@ export default function Themes({
             >
               <>
                 {/*<EditTheme />*/}
-                <LayoutComponent userData={sampleUserData} />
+                <LayoutComponent
+                  userData={sampleUserData}
+                  className={cn("sm:px-4 w-auto")}
+                />
                 <ChangeTheme user={userProfileDetails} theme={theme.name} />
               </>
             </TabsTrigger>
