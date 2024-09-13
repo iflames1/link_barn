@@ -21,7 +21,7 @@ let username = truncateString(userData?.username);
 
 export const sampleUserData: UserData = {
   first_name: userData?.first_name || "Johnson",
-  last_name: "Johnson",
+  last_name: "",
   username: username,
   email: "",
   stx_address_mainnet: "",

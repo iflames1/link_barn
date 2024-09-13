@@ -30,7 +30,11 @@ export default async function PreviewPage() {
       <div className="sm:p-0 sm:pt-6 p-4 relative">
         <div className="bg-white rounded-xl sm:sm:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-y-auto">
           {layout ? (
-            <layout.LayoutComponent userData={userProfile} links={links} />
+            <layout.LayoutComponent
+              userData={userProfile}
+              className="sm:px-0"
+              links={links}
+            />
           ) : (
             <p>We are currently experiencing some issues</p>
           )}

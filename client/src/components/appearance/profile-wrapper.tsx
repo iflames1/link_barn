@@ -76,9 +76,9 @@ export default function ProfileWrapper({
       )}
     >
       <div
-        className={`sm:max-w-80 mx-auto py-14  px-[10%] ${
+        className={`sm:max-w-80 mx-auto py-14 px-[10%] sm:px-0 ${
           userTheme.text
-        } ${className} ${username && "sm:px-0 w-dvw"}`}
+        } ${className} ${username && "w-dvw"}`}
       >
         {children}
       </div>
