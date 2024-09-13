@@ -142,7 +142,9 @@ export function Layout1({
       )}
 
       <div className="flex flex-col items-center gap-2">
-        <p className="text-xl font-bold">{userData?.first_name}</p>
+        <p className="text-xl font-bold">
+          {userData?.first_name} {userData?.last_name}
+        </p>
         {/*<p className={cn("text-md font-semibold text-black")}>
             @{truncUsername}
           </p>*/}
@@ -196,7 +198,9 @@ export function Layout2({ userData, links, username }: LayoutProps) {
           </div>
         )}
         <div className="">
-          <h1 className="text-2xl font-bold">{userData?.first_name}</h1>
+          <h1 className="text-2xl font-bold">
+            {userData?.first_name} {userData?.last_name}
+          </h1>
           <p className="text-sm text-gray-600 break-words text-wrap">
             {userData?.bio}
           </p>
@@ -249,7 +253,9 @@ export function Layout3({ userData, links, username }: LayoutProps) {
       )}
 
       <div>
-        <h1 className="text-2xl font-bold">{userData?.first_name}</h1>
+        <h1 className="text-2xl font-bold">
+          {userData?.first_name} {userData?.last_name}
+        </h1>
         <p className="text-sm text-gray-600 mt-2 text-wrap">{userData?.bio}</p>
       </div>
       <div className="flex justify-center space-x-4">
@@ -357,7 +363,9 @@ export function Layout5({ userData, links, username }: LayoutProps) {
             <p>{getFirstLetter(userData?.username)}</p>
           </div>
         )}
-        <h1 className="text-2xl font-bold">{userData?.first_name}</h1>
+        <h1 className="text-2xl font-bold">
+          {userData?.first_name} {userData?.last_name}
+        </h1>
       </div>
       <p className="text-center text-sm text-gray-600 text-wrap">
         {userData?.bio}

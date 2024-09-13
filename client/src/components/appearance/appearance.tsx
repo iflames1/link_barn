@@ -43,26 +43,28 @@ export default function Themes({
       <div className="bg-white rounded-xl lg:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-y-auto lg:w-[60%] w-full p-6">
         <TabsList className="bg-transparent h-full grid grid-cols-1 sm:grid-cols-2 gap-4">
           {layouts.map((layout, index) => (
-            <TabsTrigger
-              key={index}
-              value={layout.name}
-              className={cn(
-                "rounded-lg h-full border border-gray-200 hover:border-gray-300 transition-colors relative",
-                //                 `
-                //                 ${theme.bg} ${theme.text}
-                //                 data-[state=active]:${theme.bg}
-                //                 data-[state=active]:${theme.text}
-                //                 data-[state=active]:shadow-sm
-                //                 transition-all
-                // `,
-              )}
-            >
-              <layout.LayoutComponent
-                userData={sampleUserData}
-                // className={cn(theme.bg, theme.text, "w-full")}
-              />
-              <ChangeAppearance appearance={layout.name} user={userProfile} />
-            </TabsTrigger>
+            <div key={index} className="px-4 w-full h-full">
+              <TabsTrigger
+                key={index}
+                value={layout.name}
+                className={cn(
+                  "rounded-lg h-full border border-gray-200 hover:border-gray-300 transition-colors relative"
+                  //                 `
+                  //                 ${theme.bg} ${theme.text}
+                  //                 data-[state=active]:${theme.bg}
+                  //                 data-[state=active]:${theme.text}
+                  //                 data-[state=active]:shadow-sm
+                  //                 transition-all
+                  // `,
+                )}
+              >
+                <layout.LayoutComponent
+                  userData={sampleUserData}
+                  // className={cn(theme.bg, theme.text, "w-full")}
+                />
+                <ChangeAppearance appearance={layout.name} user={userProfile} />
+              </TabsTrigger>
+            </div>
           ))}
         </TabsList>
       </div>

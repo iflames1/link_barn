@@ -11,7 +11,7 @@ import { Eye } from "lucide-react";
 
 export default function Themes() {
   return (
-    <Tabs className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12 px-4">
+    <Tabs className="grid grid-cols-1 md:grid-cols-2 gap-6 px-4">
       <TabsList className="grid grid-cols-2 md:grid-cols-3 bg-transparent max-w-[700px] gap-4">
         {themes.map((theme, index) => (
           <TabsTrigger
