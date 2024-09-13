@@ -69,7 +69,7 @@ export default function ProfileWrapper({
       className={cn(
         `${userTheme.bg} w-full h-full`,
         username &&
-          "min-h-screen min-w-screen flex flex-col items-center justify-between"
+          "min-h-[100vh-60px] min-w-screen flex flex-col items-center justify-between"
       )}
     >
       <div
