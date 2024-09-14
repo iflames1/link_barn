@@ -52,7 +52,7 @@ const formSchema = z.object({
       url: z.string().url().min(2).max(50),
       index: z.number(),
       link_title: z.string().max(20).optional(),
-    }),
+    })
   ),
 });
 
@@ -306,8 +306,8 @@ export const NewLinks = ({
       {/*   </Preview> */}
       <Preview userProfileDetails={userProfile} links={currentLinks} />
 
-      <div className="bg-white rounded-xl lg:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-y-auto w-full p-6 relative">
-        <div className="sm:p-10 p-6">
+      <div className="bg-white rounded-xl lg:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-y-auto lg:w-[60%] w-full p-6 relative">
+        <div className="">
           <div className="pb-6  relative">
             <h2 className="hM text-black pb-2">Customize your links</h2>
             <p className="bM text-gray-dark pb-10">
@@ -471,7 +471,7 @@ export const NewLinks = ({
                                       <SelectTrigger
                                         disabled={
                                           form.watch(
-                                            `links.${index}.platform`,
+                                            `links.${index}.platform`
                                           ) === "link"
                                         }
                                         className="focus:shadow-active py-5 placeholder:text-black"
