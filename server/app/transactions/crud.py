@@ -5,7 +5,6 @@ from typing import List
 from uuid import UUID
 from fastapi import HTTPException, status as http_status
 from sqlalchemy import select, delete
-from sqlalchemy.exc import SQLAlchemyError
 from sqlmodel.ext.asyncio.session import AsyncSession
 from app.transactions.models import Transaction, TransactionBase
 
@@ -32,4 +31,10 @@ class TransactionsCRUD:
         results = await self.session.execute(statement)
         transactions = results.scalars().all()
 
+        return transactions
+
+    async def get_transaction_by_user_id(self, user_id: UUID) -> Transaction:
+        statement = select(Transaction).where(Transaction.user_id == user_id)
+        results = await self.session.execute(statement)
+        transactions = results.scalars().all()
         return transactions
