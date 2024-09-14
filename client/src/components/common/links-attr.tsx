@@ -27,6 +27,7 @@ import {
   SiWix,
 } from "react-icons/si";
 import Image from "next/image";
+import { text } from "stream/consumers";
 
 const randomColors = [
   "bg-blue-500",
@@ -54,6 +55,19 @@ export const linkAttributes = {
     bg: "bg-[#43B7E9]",
     icon: <FaXTwitter className="size-4" />,
   },
+  console: {
+    text: "text-white",
+    bg: "bg-[#1dd6b3]",
+    icon: (
+      <Image
+        src={"/images/console.jpg"}
+        alt="console"
+        width={20}
+        height={20}
+        className="rounded-full"
+      />
+    ),
+  },
   discord: {
     text: "text-white",
     text2: "text-[#5865F2]",
@@ -65,6 +79,18 @@ export const linkAttributes = {
     text2: "text-[#0088cc]",
     bg: "bg-[#0088cc]",
     icon: <FaTelegram className="size-4" />,
+  },
+  bitflow: {
+    text: "text-black",
+    bg: "bg-[#00D1AC]",
+    icon: (
+      <Image
+        src={"/images/bitflow.webp"}
+        alt="bitflow"
+        width={20}
+        height={20}
+      />
+    ),
   },
   velar: {
     text: "text-[#df861b]",
@@ -108,6 +134,24 @@ export const linkAttributes = {
       />
     ),
   },
+  charisma: {
+    text: "text-white",
+    bg: "bg-black",
+    icon: (
+      <Image
+        src={"/images/charisma.jpg"}
+        alt="charima"
+        width={20}
+        height={20}
+        className="rounded-full"
+      />
+    ),
+  },
+  goat: {
+    text: "text-[#fefffe]",
+    bg: "bg-[#f36336]",
+    icon: <Image src="/images/goat.jpg" alt="goat" width={16} height={16} />,
+  },
   youtube: {
     text: "text-white",
     text2: "white",
@@ -119,6 +163,13 @@ export const linkAttributes = {
     text2: "white",
     bg: "bg-black",
     icon: <TbBrandGithubFilled className="size-4" />,
+  },
+  docs: {
+    text: "text-black",
+    bg: "bg-white",
+    icon: (
+      <Image src={"/images/gitbook.jpg"} alt="gitbook" width={20} height={20} />
+    ),
   },
   medium: {
     text: "text-white",
