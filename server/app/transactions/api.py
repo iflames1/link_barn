@@ -22,3 +22,9 @@ async def get_all_transactions(transactions: TransactionsCRUD = Depends(get_tran
     transactions = await transactions.get_all()
 
     return transactions
+
+@router.get("/{user_id}", response_model=List[TransactionBase], status_code=http_status.HTTP_200_OK)
+async def get_transactions_by_user_id(user_id:str, transactions: TransactionsCRUD = Depends(get_transactions_crud)):
+    results = await transactions.get_transaction_by_user_id(user_id=user_id)
+
+    return results
