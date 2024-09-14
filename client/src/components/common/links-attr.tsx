@@ -69,7 +69,7 @@ export const linkAttributes = {
     ),
   },
   discord: {
-    text: "text-white",
+    text: "text-[#EFEFEF]",
     text2: "text-[#5865F2]",
     bg: "bg-[#5865F2]",
     icon: <FaDiscord className="size-4" />,
@@ -79,6 +79,13 @@ export const linkAttributes = {
     text2: "text-[#0088cc]",
     bg: "bg-[#0088cc]",
     icon: <FaTelegram className="size-4" />,
+  },
+  gamma: {
+    text: "text-white",
+    bg: "bg-black",
+    icon: (
+      <Image src={"/images/gamma.svg"} alt="gamma" height={16} width={16} />
+    ),
   },
   bitflow: {
     text: "text-black",
