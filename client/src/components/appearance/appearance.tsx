@@ -31,24 +31,50 @@ export default function Themes({
 }) {
   console.log("current layout = ", userProfile?.appearance);
   const theme =
-    themes.find((data) => data.name === userProfile?.theme) || themes[0];
+    themes.find((theme) => theme.name === userProfile?.theme) || themes[0];
 
   return (
     <Tabs
       defaultValue={userProfile?.appearance}
-      className="lg:flex gap-6 w-full relative"
+      className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full relative"
     >
-      <PreviewLayout>
+      <div className="w-full hidden lg:flex lg:h-[calc(100vh-152px)] rounded-xl bg-white h-[calc(100vh-96.37px)]">
         {layouts.map((layout, index) => (
-          <TabsContent key={index} value={layout.name} asChild>
-            <layout.LayoutComponent
-              userData={sampleUserData}
-              className={cn("sm:px-5 w-auto")}
-            />
+          <TabsContent
+            key={index}
+            value={layout.name}
+            className="w-full h-full px-12 rounded-none"
+            asChild
+          >
+            <PreviewLayout
+              bg={theme.bg}
+              className={cn(theme.text, "max-w-[410px] w-full h-full mx-auto")}
+            >
+              <layout.LayoutComponent
+                className={cn("sm:px-4 w-auto")}
+                userData={sampleUserData}
+                themesPage={theme}
+              />
+            </PreviewLayout>
           </TabsContent>
         ))}
-      </PreviewLayout>
-      <div className="bg-white rounded-xl lg:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-y-auto lg:w-[60%] w-full p-6">
+      </div>
+      {/* <PreviewLayout > */}
+      {/*   {layouts.map((layout, index) => ( */}
+      {/*     <TabsContent */}
+      {/*       key={index} */}
+      {/*       value={layout.name} */}
+      {/*       asChild */}
+      {/*       className="max-w-[420px] mx-auto" */}
+      {/*     > */}
+      {/*       <layout.LayoutComponent */}
+      {/*         userData={sampleUserData} */}
+      {/*         className={cn("sm:px-5 w-auto")} */}
+      {/*       /> */}
+      {/*     </TabsContent> */}
+      {/*   ))} */}
+      {/* </PreviewLayout> */}
+      <div className="bg-white rounded-xl lg:h-[calc(100vh-152px)] h-[calc(100vh-96.37px)] overflow-y-auto w-full p-6">
         <TabsList className="bg-transparent h-full grid grid-cols-1 sm:grid-cols-2 gap-4">
           {layouts.map((layout, index) => (
             <TabsTrigger
@@ -56,24 +82,21 @@ export default function Themes({
               value={layout.name}
               className={cn(
                 "rounded-lg h-full border border-gray-200 hover:border-gray-300 transition-colors relative",
-                //                 `
-                //                 ${theme.bg} ${theme.text}
-                //                 data-[state=active]:${theme.bg}
-                //                 data-[state=active]:${theme.text}
-                //                 data-[state=active]:shadow-sm
-                //                 transition-all
-                // `,
+                theme.bg,
+                theme.text,
               )}
             >
               <layout.LayoutComponent
                 userData={sampleUserData}
                 className="sm:px-5 w-auto"
+                themesPage={theme}
               />
               <ChangeAppearance appearance={layout.name} user={userProfile} />
             </TabsTrigger>
           ))}
         </TabsList>
       </div>
+
       <ResponsiveButton
         path="/user/themes"
         title="Change theme"

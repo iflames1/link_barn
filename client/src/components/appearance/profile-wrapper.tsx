@@ -1,4 +1,4 @@
-import { themes } from "@/data/themes2";
+import { themes, ThemeSchema } from "@/data/themes2";
 import { cn } from "@/lib/utils";
 import { JoinLinkBarn } from "../ui/logo";
 
@@ -7,6 +7,7 @@ interface ProfileWrapperProps {
   className?: string;
   theme?: string;
   username?: string;
+  themesPage?: ThemeSchema;
 }
 
 export default function ProfileWrapper({
@@ -14,27 +15,33 @@ export default function ProfileWrapper({
   className,
   theme,
   username,
+  themesPage,
 }: ProfileWrapperProps) {
   const userTheme = themes.find((data) => data.name === theme) || themes[0];
-  console.log(userTheme);
 
   return (
     <main
       className={cn(
-        `${userTheme.bg} w-full h-full`,
+        themesPage ? themesPage.bg : userTheme.bg,
+        "w-full h-full",
         username &&
-          "min-h-dvh min-w-screen flex flex-col items-center justify-between"
+          "min-h-dvh min-w-screen flex flex-col items-center justify-between",
       )}
     >
       <div
-        className={`sm:max-w-80 mx-auto py-14 px-[10%] sm:px-0 ${
-          userTheme.text
-        } ${className} ${username && "w-dvw"}`}
+        className={cn(
+          "sm:max-w-80 mx-auto py-14 px-[10%] sm:px-0",
+          className,
+          username && "w-dvw",
+          themesPage ? themesPage.text : userTheme.text,
+        )}
       >
         {children}
       </div>
       {username && (
-        <div className={`pb-4 ${userTheme.text}`}>
+        <div
+          className={cn(`pb-4`, themesPage ? themesPage.text : userTheme?.text)}
+        >
           <JoinLinkBarn username={username} />
         </div>
       )}
