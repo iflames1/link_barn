@@ -100,7 +100,7 @@ export default function SaveLinks({ user, onSave, isLoading }: SaveLinksProps) {
             </DialogTitle>
             <PremiumOption
               title="Link Barn Premium (UNIKIND-holders)"
-              price="2"
+              price="0"
               txStatus={txStatus}
               user={user}
             />

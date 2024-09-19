@@ -34,11 +34,10 @@ export default function UseAppearanceButton({
 
   useEffect(() => {
     const checkStatus = async () => {
-      if (user) {
+      if (user && user.tier === "free") {
         const status = await checkTransactionStatus(user.prevTxID);
         setTxStatus(status);
         if (status === "success") {
-          user.prevTxID = "";
           user.tier = "premium";
           await saveUserDetails(user);
           toast.success("Transaction successful", { richColors: true });
@@ -104,7 +103,7 @@ export default function UseAppearanceButton({
             </DialogTitle>
             <PremiumOption
               title="Link Barn Premium (UNIKIND-holders)"
-              price="2"
+              price="0"
               txStatus={txStatus}
               user={user}
             />
