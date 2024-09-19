@@ -88,7 +88,7 @@ export default function SaveProfileDetails({
   // }, [initialProfileData, user]);
 
   const handleSubmit = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
     if (!hasChanged() && !selectedFile) {
@@ -163,7 +163,7 @@ export default function SaveProfileDetails({
             </DialogTitle>
             <PremiumOption
               title="Link Barn Premium (UNIKIND-holders)"
-              price="2"
+              price="0"
               txStatus={txStatus}
               user={user}
             />

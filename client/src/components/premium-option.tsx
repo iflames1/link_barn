@@ -28,7 +28,7 @@ export function PremiumOption({
   const handlePayment = async () => {
     setLoading(true);
     let hasUNIKIND = false;
-    if (price === "2") {
+    if (price === "0") {
       hasUNIKIND = await holdsUnik(user?.stx_address_mainnet);
       if (!hasUNIKIND) {
         toast.error("You need to hold UNIKIND to use this option", {
@@ -36,9 +36,18 @@ export function PremiumOption({
         });
         setLoading(false);
         return;
+      } else {
+        if (user) {
+          user.tier = "premium";
+          await saveUserDetails(user);
+          toast.success("Transaction successful", {
+            richColors: true,
+          });
+        }
+        setLoading(false);
+        return;
       }
-    }
-    if ((price === "2" && hasUNIKIND) || price !== "2") {
+    } else {
       const txId: string | undefined = await sendSTXTransaction(price, title);
       if (user && txId) {
         user.prevTxID = txId;

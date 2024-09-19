@@ -83,7 +83,7 @@ export default function Themes({
               className={cn(
                 "rounded-lg h-full border border-gray-200 hover:border-gray-300 transition-colors relative",
                 theme.bg,
-                theme.text,
+                theme.text
               )}
             >
               <layout.LayoutComponent
